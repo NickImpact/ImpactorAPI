@@ -43,6 +43,10 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-api:2.18.0")
     implementation(group = "com.zaxxer", name = "HikariCP", version = "4.0.3")
     compileOnly("com.mojang:brigadier:1.0.18")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+    testImplementation("org.mockito:mockito-core:4.7.0")
 }
 
 publishing {
