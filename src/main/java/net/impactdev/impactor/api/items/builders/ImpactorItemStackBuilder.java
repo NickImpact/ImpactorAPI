@@ -29,7 +29,6 @@ import net.impactdev.impactor.api.builders.Builder;
 import net.impactdev.impactor.api.items.ImpactorItemStack;
 import net.impactdev.impactor.api.items.properties.MetaFlag;
 import net.impactdev.impactor.api.items.properties.enchantments.Enchantment;
-import net.impactdev.impactor.api.services.text.CustomComponents;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Contract;
 
@@ -52,9 +51,6 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
      * italics due to a Minecraft standard. In order to combat this, you need to forcibly
      * set within the component's style to have italics disabled.
      *
-     * <p>If you wish to simplify this process, consider creating a component using the
-     * {@link CustomComponents} provided calls.
-     *
      * @param title The title for the item stack
      * @return This builder
      */
@@ -65,9 +61,6 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
      * Applies the set of lore to the item stack. By default, each line will be subject to italics
      * per a Minecraft standard. In order to combat this, you need to forcibly set within the
      * component's style to have italics disabled.
-     *
-     * <p>If you wish to simplify this process, consider creating a component using the
-     * {@link CustomComponents} provided calls.
      *
      * @param lore The collection of components to assign to the stack's lore, in order of
      *             occurrence
@@ -80,9 +73,6 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
      * Applies the set of lore to the item stack. By default, each line will be subject to italics
      * per a Minecraft standard. In order to combat this, you need to forcibly set within the
      * component's style to have italics disabled.
-     *
-     * <p>If you wish to simplify this process, consider creating a component using the
-     * {@link CustomComponents} provided calls.
      *
      * @param lore The collection of components to assign to the stack's lore, in order of
      *             occurrence

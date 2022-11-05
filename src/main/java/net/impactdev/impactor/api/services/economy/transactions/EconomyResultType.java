@@ -23,18 +23,29 @@
  *
  */
 
-package net.impactdev.impactor.api.services.text;
+package net.impactdev.impactor.api.services.economy.transactions;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.Style;
-import net.kyori.adventure.text.format.TextDecoration;
+public enum EconomyResultType {
 
-public class CustomComponents {
+    /**
+     * Indicates a transaction completed with no detectable errors.
+     */
+    SUCCESS,
 
-    private static final Style NO_ITALICS = Style.style().decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE).build();
+    /**
+     * The transaction failed for an unspecified reason
+     */
+    FAILED,
 
-    public static Component noItalic(final Component component) {
-        return component.applyFallbackStyle(NO_ITALICS);
-    }
+    /**
+     * The account did not have enough funds to process the transaction
+     */
+    NOT_ENOUGH_FUNDS,
+
+    /**
+     * The account would breach the maximum capacity of the account, so the transaction
+     * was rejected
+     */
+    NO_REMAINING_SPACE,
 
 }

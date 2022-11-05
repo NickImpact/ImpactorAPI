@@ -51,4 +51,8 @@ public final class ConfigPath {
         return this.split;
     }
 
+    public ConfigPath resolve(String key) {
+        return new ConfigPath(this.path + "." + key, this.split);
+    }
+
 }

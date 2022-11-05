@@ -23,19 +23,21 @@
  *
  */
 
-package net.impactdev.impactor.api.storage.file.loaders;
+package net.impactdev.impactor.api.storage.connection;
 
+import net.impactdev.impactor.api.utilities.printing.PrettyPrinter;
+import net.kyori.adventure.text.Component;
 
-import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.loader.ConfigurationLoader;
+import java.util.Map;
 
-import java.nio.file.Path;
+public interface StorageConnection {
 
-/**
- * Wraps an object which can produce configurate {@link ConfigurationLoader}s.
- */
-public interface ConfigurateLoader {
+    String name();
 
-    ConfigurationLoader<? extends ConfigurationNode> loader(Path path);
+    void init() throws Exception;
+
+    void shutdown() throws Exception;
+
+    PrettyPrinter.IPrettyPrintable meta();
 
 }

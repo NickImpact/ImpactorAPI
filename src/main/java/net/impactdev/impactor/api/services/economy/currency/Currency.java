@@ -23,23 +23,54 @@
  *
  */
 
-package net.impactdev.impactor.api.storage.file.loaders;
+package net.impactdev.impactor.api.services.economy.currency;
 
-import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.gson.GsonConfigurationLoader;
-import org.spongepowered.configurate.loader.ConfigurationLoader;
+import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.builders.Buildable;
+import net.impactdev.impactor.api.builders.Builder;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.math.BigDecimal;
 
-public class JsonLoader implements ConfigurateLoader {
-    @Override
-    public ConfigurationLoader<? extends ConfigurationNode> loader(Path path) {
-        return GsonConfigurationLoader.builder()
-                .indent(2)
-                .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
-                .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8))
-                .build();
+public interface Currency {
+
+    Key key();
+
+    boolean primary();
+
+    Component name();
+
+    Component plural();
+
+    Component symbol();
+
+    Component format(final BigDecimal amount);
+
+    BigDecimal starting();
+
+    int decimals();
+
+    static CurrencyBuilder builder() {
+        return Impactor.instance().builders().provide(CurrencyBuilder.class);
     }
+
+    interface CurrencyBuilder extends Builder<Currency> {
+
+        CurrencyBuilder key(final Key key);
+
+        CurrencyBuilder primary(final boolean primary);
+
+        CurrencyBuilder name(final Component name);
+
+        CurrencyBuilder plural(final Component plural);
+
+        CurrencyBuilder symbol(final Component symbol);
+
+        CurrencyBuilder starting(final BigDecimal amount);
+
+        CurrencyBuilder decimals(final int decimals);
+
+    }
+
 }

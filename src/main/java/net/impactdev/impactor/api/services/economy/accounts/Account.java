@@ -23,22 +23,28 @@
  *
  */
 
-package net.impactdev.impactor.api.storage.file.loaders;
+package net.impactdev.impactor.api.services.economy.accounts;
 
-import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
-import org.spongepowered.configurate.loader.ConfigurationLoader;
+import net.impactdev.impactor.api.services.economy.currency.Currency;
+import net.impactdev.impactor.api.services.economy.transactions.EconomyTransaction;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.math.BigDecimal;
+import java.util.UUID;
 
-public class HoconLoader implements ConfigurateLoader {
-    @Override
-    public ConfigurationLoader<? extends ConfigurationNode> loader(Path path) {
-        return HoconConfigurationLoader.builder()
-                .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
-                .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8))
-                .build();
-    }
+public interface Account {
+
+    Currency currency();
+
+    BigDecimal balance();
+
+    EconomyTransaction set(BigDecimal amount);
+
+    EconomyTransaction withdraw(BigDecimal amount);
+
+    EconomyTransaction deposit(BigDecimal amount);
+
+    EconomyTransaction transfer(Account to, BigDecimal amount);
+
+    EconomyTransaction reset();
+
 }

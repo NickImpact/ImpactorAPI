@@ -28,6 +28,8 @@ package net.impactdev.impactor.api.platform.players;
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.items.ImpactorItemStack;
 import net.impactdev.impactor.api.platform.players.transactions.ItemTransaction;
+import net.impactdev.impactor.api.services.economy.accounts.Account;
+import net.impactdev.impactor.api.services.economy.accounts.AccountAccessor;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.math.vector.Vector3d;
@@ -78,6 +80,14 @@ public interface PlatformPlayer extends PlatformSource {
      * @return The position of the player within a world
      */
     Vector3d position();
+
+    /**
+     * Provides an accessor meant to aid in retrieving accounts pertaining to the player for the economy
+     * service.
+     *
+     * @return
+     */
+    AccountAccessor accountAccessor();
 
     /**
      * Attempts to offer the given stack to the target player. In return, a receipt will specify

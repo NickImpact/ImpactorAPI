@@ -23,28 +23,15 @@
  *
  */
 
-package net.impactdev.impactor.api.storage;
+package net.impactdev.impactor.api.storage.connection.sql.file;
 
-import net.impactdev.impactor.api.utilities.printing.PrettyPrinter;
+import net.impactdev.impactor.api.builders.Builder;
+import net.impactdev.impactor.api.storage.connection.sql.SQLConnection;
 
-import java.util.concurrent.CompletableFuture;
+import java.nio.file.Path;
 
-public interface Storage {
+public interface FlatfileConnectionBuilder<T extends SQLConnection, B extends FlatfileConnectionBuilder<T, B>> extends Builder<T> {
 
-	/**
-	 * Initializes the Storage Provider
-	 *
-	 * @throws Exception In the event any error manages to occur during initialization
-	 */
-	void init() throws Exception;
+    B file(Path target);
 
-	/**
-	 * Closes the Storage provider. This is where we should perform our final operations before
-	 * we kill the system.
-	 *
-	 * @throws Exception In the event any error manages to occur during shutdown
-	 */
-	void shutdown() throws Exception;
-
-	CompletableFuture<PrettyPrinter.IPrettyPrintable> meta();
 }

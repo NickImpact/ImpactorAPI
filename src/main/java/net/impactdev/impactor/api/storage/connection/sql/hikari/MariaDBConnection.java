@@ -23,28 +23,12 @@
  *
  */
 
-package net.impactdev.impactor.api.storage;
+package net.impactdev.impactor.api.storage.connection.sql.hikari;
 
-import net.impactdev.impactor.api.utilities.printing.PrettyPrinter;
+import net.impactdev.impactor.api.storage.connection.sql.SQLConnection;
 
-import java.util.concurrent.CompletableFuture;
+public interface MariaDBConnection extends SQLConnection {
 
-public interface Storage {
+    interface MariaDBConnectionBuilder extends HikariConnectionBuilder<MariaDBConnection, MariaDBConnectionBuilder> {}
 
-	/**
-	 * Initializes the Storage Provider
-	 *
-	 * @throws Exception In the event any error manages to occur during initialization
-	 */
-	void init() throws Exception;
-
-	/**
-	 * Closes the Storage provider. This is where we should perform our final operations before
-	 * we kill the system.
-	 *
-	 * @throws Exception In the event any error manages to occur during shutdown
-	 */
-	void shutdown() throws Exception;
-
-	CompletableFuture<PrettyPrinter.IPrettyPrintable> meta();
 }

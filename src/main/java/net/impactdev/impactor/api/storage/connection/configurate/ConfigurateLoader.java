@@ -23,28 +23,17 @@
  *
  */
 
-package net.impactdev.impactor.api.storage;
+package net.impactdev.impactor.api.storage.connection.configurate;
 
-import net.impactdev.impactor.api.utilities.printing.PrettyPrinter;
+import org.spongepowered.configurate.ConfigurationNode;
+import org.spongepowered.configurate.loader.ConfigurationLoader;
 
-import java.util.concurrent.CompletableFuture;
+import java.nio.file.Path;
 
-public interface Storage {
+public interface ConfigurateLoader {
 
-	/**
-	 * Initializes the Storage Provider
-	 *
-	 * @throws Exception In the event any error manages to occur during initialization
-	 */
-	void init() throws Exception;
+    String name();
 
-	/**
-	 * Closes the Storage provider. This is where we should perform our final operations before
-	 * we kill the system.
-	 *
-	 * @throws Exception In the event any error manages to occur during shutdown
-	 */
-	void shutdown() throws Exception;
+    ConfigurationLoader<? extends ConfigurationNode> loader(Path path);
 
-	CompletableFuture<PrettyPrinter.IPrettyPrintable> meta();
 }

@@ -26,8 +26,8 @@
 package net.impactdev.impactor.api.scoreboard.effects;
 
 import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.adventure.TextProcessor;
 import net.impactdev.impactor.api.builders.Builder;
-import net.impactdev.impactor.api.services.text.MessageService;
 import net.impactdev.impactor.api.utilities.context.Context;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
@@ -100,9 +100,9 @@ public class CountdownEffect implements FrameEffect {
         }
 
         public CountdownEffectBuilder whenComplete(String raw, Context context) {
-            MessageService service = Impactor.instance().services().provide(MessageService.class);
-
+            TextProcessor service = TextProcessor.legacy('&');
             this.complete = service.parse(raw, context);
+
             return this;
         }
 

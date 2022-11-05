@@ -23,55 +23,17 @@
  *
  */
 
-package net.impactdev.impactor.api.storage.sql.file;
+package net.impactdev.impactor.api.services.economy.accounts;
 
-import net.impactdev.impactor.api.storage.sql.ConnectionFactory;
+import net.impactdev.impactor.api.services.economy.currency.Currency;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.text.DecimalFormat;
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
-abstract class FlatfileConnectionFactory implements ConnectionFactory {
+public interface AccountAccessor {
 
-    protected static final DecimalFormat DF = new DecimalFormat("#.##");
+    CompletableFuture<Account> account(Currency currency);
 
-    protected final Path file;
+    CompletableFuture<Map<Currency, Account>> accounts();
 
-    protected FlatfileConnectionFactory(Path file) {
-        this.file = file;
-    }
-
-    @Override
-    public void init() {
-
-    }
-
-    protected Path getWriteFile() {
-        return this.file;
-    }
-
-    @Override
-    public Map<String, String> getMeta() {
-        Map<String, String> ret = new LinkedHashMap<>();
-
-        Path databaseFile = getWriteFile();
-        if (Files.exists(databaseFile)) {
-            long length;
-            try {
-                length = Files.size(databaseFile);
-            } catch (IOException e) {
-                length = 0;
-            }
-
-            double size = length / 1048576D;
-            ret.put("File Size", DF.format(size) + "MB");
-        } else {
-            ret.put("File Size", "0MB");
-        }
-
-        return ret;
-    }
 }

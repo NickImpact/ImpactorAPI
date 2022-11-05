@@ -23,7 +23,7 @@
  *
  */
 
-package net.impactdev.impactor.api.commands;
+package net.impactdev.impactor.api.services.permissions;
 
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.platform.players.PlatformSource;

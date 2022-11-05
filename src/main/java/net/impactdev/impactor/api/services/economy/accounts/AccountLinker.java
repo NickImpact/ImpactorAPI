@@ -23,28 +23,10 @@
  *
  */
 
-package net.impactdev.impactor.api.storage.sql;
+package net.impactdev.impactor.api.services.economy.accounts;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Collections;
-import java.util.Map;
-import java.util.function.Function;
+public interface AccountLinker {
 
-public interface ConnectionFactory {
-
-	String getImplementationName();
-
-	void init();
-
-	void shutdown() throws Exception;
-
-	default Map<String, String> getMeta() {
-		return Collections.emptyMap();
-	}
-
-	Function<String, String> getStatementProcessor();
-
-	Connection getConnection() throws SQLException;
+    void save(Account account);
 
 }

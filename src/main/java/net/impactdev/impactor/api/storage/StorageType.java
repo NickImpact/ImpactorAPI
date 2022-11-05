@@ -42,7 +42,6 @@ public enum StorageType {
 	H2("H2", "h2");
 
 	private final String name;
-
 	private final List<String> identifiers;
 
 	StorageType(String name, String... identifiers) {

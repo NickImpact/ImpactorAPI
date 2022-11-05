@@ -23,25 +23,27 @@
  *
  */
 
-package net.impactdev.impactor.api.storage.file.loaders;
+package net.impactdev.impactor.api.storage.factory;
 
-import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.loader.ConfigurationLoader;
-import org.spongepowered.configurate.yaml.NodeStyle;
-import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
+import net.impactdev.impactor.api.plugin.PluginMetadata;
+import net.impactdev.impactor.api.storage.StorageCredentials;
+import net.impactdev.impactor.api.storage.connection.configurate.ConfigurateConnection;
+import net.impactdev.impactor.api.storage.connection.sql.SQLConnection;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class YamlLoader implements ConfigurateLoader {
-    @Override
-    public ConfigurationLoader<? extends ConfigurationNode> loader(Path path) {
-        return YamlConfigurationLoader.builder()
-                .nodeStyle(NodeStyle.BLOCK)
-                .indent(2)
-                .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
-                .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8))
-                .build();
-    }
+public interface StorageFactory {
+
+    ConfigurateConnection hocon();
+
+    ConfigurateConnection json();
+
+    ConfigurateConnection yaml();
+
+    SQLConnection h2(Path location);
+
+    SQLConnection mysql(PluginMetadata metadata, StorageCredentials credentials);
+
+    SQLConnection mariaDB(PluginMetadata metadata, StorageCredentials credentials);
+
 }

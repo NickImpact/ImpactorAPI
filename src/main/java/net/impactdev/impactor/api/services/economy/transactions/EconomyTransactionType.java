@@ -23,28 +23,14 @@
  *
  */
 
-package net.impactdev.impactor.api.storage;
+package net.impactdev.impactor.api.services.economy.transactions;
 
-import net.impactdev.impactor.api.utilities.printing.PrettyPrinter;
+public enum EconomyTransactionType {
 
-import java.util.concurrent.CompletableFuture;
+    DEPOSIT,
+    WITHDRAW,
+    TRANSFER,
+    SET,
+    RESET,
 
-public interface Storage {
-
-	/**
-	 * Initializes the Storage Provider
-	 *
-	 * @throws Exception In the event any error manages to occur during initialization
-	 */
-	void init() throws Exception;
-
-	/**
-	 * Closes the Storage provider. This is where we should perform our final operations before
-	 * we kill the system.
-	 *
-	 * @throws Exception In the event any error manages to occur during shutdown
-	 */
-	void shutdown() throws Exception;
-
-	CompletableFuture<PrettyPrinter.IPrettyPrintable> meta();
 }

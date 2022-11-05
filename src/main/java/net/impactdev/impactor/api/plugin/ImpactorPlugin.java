@@ -31,6 +31,7 @@ import net.impactdev.impactor.api.plugin.registry.PluginRegistry;
 import net.impactdev.impactor.api.storage.StorageType;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
@@ -75,7 +76,7 @@ public interface ImpactorPlugin {
 	 * @return
 	 */
 	default Optional<Path> configDirectory() {
-		return Optional.empty();
+		return Optional.of(Paths.get("impactor"));
 	}
 
 	default Optional<Config> config() {

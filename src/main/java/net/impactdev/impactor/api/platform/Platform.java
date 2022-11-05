@@ -29,12 +29,13 @@ import net.impactdev.impactor.api.platform.performance.PerformanceMonitor;
 import net.impactdev.impactor.api.platform.players.PlatformPlayer;
 import net.impactdev.impactor.api.services.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface Platform extends Service {
 
     @Override
-    default String getServiceName() {
+    default String name() {
         return "Platform";
     }
 
@@ -43,5 +44,7 @@ public interface Platform extends Service {
     PerformanceMonitor performance();
 
     PlatformPlayer player(final UUID target);
+
+    List<PlatformPlayer> onlinePlayers();
 
 }

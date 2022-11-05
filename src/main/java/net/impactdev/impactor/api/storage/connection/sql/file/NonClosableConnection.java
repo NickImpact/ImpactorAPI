@@ -23,7 +23,7 @@
  *
  */
 
-package net.impactdev.impactor.api.storage.sql.file;
+package net.impactdev.impactor.api.storage.connection.sql.file;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -78,4 +78,5 @@ public interface NonClosableConnection extends Connection {
             return method.invoke(this.connection, args);
         }
     }
+
 }
