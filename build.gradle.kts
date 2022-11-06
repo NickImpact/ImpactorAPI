@@ -48,7 +48,7 @@ dependencies {
     // Misc
     api("io.leangen.geantyref:geantyref:1.3.13")
     api(group = "org.spongepowered", name = "math", version = "2.0.1")
-    implementation("org.apache.logging.log4j:log4j-api:2.18.0")
+    implementation("org.apache.logging.log4j:log4j-api:2.17.1")
     implementation(group = "com.zaxxer", name = "HikariCP", version = "4.0.3")
     compileOnly("com.mojang:brigadier:1.0.18")
 
