@@ -50,6 +50,7 @@ package net.impactdev.impactor.api.scheduler;
  *  SOFTWARE.
  */
 
+import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.plugin.ImpactorPlugin;
 
 import java.util.Arrays;
@@ -183,6 +184,7 @@ public abstract class AbstractJavaScheduler implements SchedulerAdapter {
             ForkJoinWorkerThread thread = ForkJoinPool.defaultForkJoinWorkerThreadFactory.newThread(pool);
             thread.setDaemon(true);
             thread.setName(WORKER_PREFIX + COUNT.getAndIncrement());
+            thread.setContextClassLoader(Impactor.class.getClassLoader());
             return thread;
         }
     }
