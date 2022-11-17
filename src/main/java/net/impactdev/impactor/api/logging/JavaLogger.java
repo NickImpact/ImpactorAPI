@@ -25,22 +25,16 @@
 
 package net.impactdev.impactor.api.logging;
 
-import net.impactdev.impactor.api.plugin.ImpactorPlugin;
-
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class JavaLogger implements PluginLogger {
 
-    private final ImpactorPlugin plugin;
     private final Logger delegate;
     private final Function<String, String> colorizer = in -> in.replaceAll("&", "\u00a7");
-    private final BiFunction<String, String, String> preprocessor = (marker, input) -> "[" + marker + "] " + input;
 
-    public JavaLogger(ImpactorPlugin plugin, Logger delegate) {
-        this.plugin = plugin;
+    public JavaLogger(Logger delegate) {
         this.delegate = delegate;
     }
 
