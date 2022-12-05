@@ -23,19 +23,31 @@
  *
  */
 
-package net.impactdev.impactor.api.commands.annotations;
+package net.impactdev.impactor.api.platform.sources.metadata;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import io.leangen.geantyref.TypeToken;
+import net.impactdev.impactor.api.Impactor;
+import net.kyori.adventure.key.Key;
 
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Alias {
+/**
+ * Represents a key which would map to a particular value for a platform source. This comes in handy
+ * for cases like game versus proxy, where details like the world of a source would not necessarily be
+ * available for all source types.
+ */
+public interface MetadataKey<T> {
 
-    String value();
+    Key key();
 
-    String[] redirects() default {};
+    TypeToken<T> type();
+
+    static <T> MetadataKey<T> create(Key key) {
+        return Impactor.instance().factories().provide(Factory.class).create(key);
+    }
+
+    interface Factory {
+
+        <T> MetadataKey<T> create(Key key);
+
+    }
 
 }

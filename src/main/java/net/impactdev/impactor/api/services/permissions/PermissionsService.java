@@ -26,7 +26,7 @@
 package net.impactdev.impactor.api.services.permissions;
 
 import net.impactdev.impactor.api.Impactor;
-import net.impactdev.impactor.api.platform.players.PlatformSource;
+import net.impactdev.impactor.api.platform.sources.PlatformSource;
 import net.impactdev.impactor.api.services.Service;
 
 import java.util.function.Predicate;

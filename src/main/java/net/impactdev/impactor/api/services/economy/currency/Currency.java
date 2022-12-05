@@ -35,7 +35,7 @@ import java.math.BigDecimal;
 
 public interface Currency {
 
-    Key key();
+    String key();
 
     boolean primary();
 
@@ -57,7 +57,7 @@ public interface Currency {
 
     interface CurrencyBuilder extends Builder<Currency> {
 
-        CurrencyBuilder key(final Key key);
+        CurrencyBuilder key(final String key);
 
         CurrencyBuilder primary(final boolean primary);
 

@@ -23,16 +23,14 @@
  *
  */
 
-package net.impactdev.impactor.api.platform.players;
+package net.impactdev.impactor.api.platform.sources;
 
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.items.ImpactorItemStack;
-import net.impactdev.impactor.api.platform.players.transactions.ItemTransaction;
-import net.impactdev.impactor.api.services.economy.accounts.Account;
+import net.impactdev.impactor.api.platform.sources.transactions.ItemTransaction;
 import net.impactdev.impactor.api.services.economy.accounts.AccountAccessor;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.math.vector.Vector3d;
 
 import java.util.UUID;
 
@@ -48,46 +46,9 @@ import java.util.UUID;
  */
 public interface PlatformPlayer extends PlatformSource {
 
-    /**
-     * Creates a new platform player instance, if one is not already cached.
-     *
-     * @param uuid The UUID of the target player instance
-     * @return A PlatformPlayer instance mirroring the game player instance
-     */
     static PlatformPlayer getOrCreate(@NotNull final UUID uuid) {
-        return Impactor.instance().factories().provide(Factory.class).create(uuid);
+        return Impactor.instance().factories().provide(PlatformSource.Factory.class).player(uuid);
     }
-
-    /**
-     * Specifies the display name of a player, if they have one. Otherwise, this call will
-     * fall back to their actual username, represented via {@link PlatformSource#name()}.
-     *
-     * @return The display name of a user, or their actual username
-     */
-    Component displayName();
-
-//    /**
-//     * Indicates the current world the player exists in.
-//     *
-//     * @return The world the player is currently in
-//     */
-//    ServerLevel world();
-
-    /**
-     * Specifies the current block coordinates of a player. This is where the player
-     * would be standing in a particular world.
-     *
-     * @return The position of the player within a world
-     */
-    Vector3d position();
-
-    /**
-     * Provides an accessor meant to aid in retrieving accounts pertaining to the player for the economy
-     * service.
-     *
-     * @return
-     */
-    AccountAccessor accountAccessor();
 
     /**
      * Attempts to offer the given stack to the target player. In return, a receipt will specify
@@ -98,17 +59,5 @@ public interface PlatformPlayer extends PlatformSource {
      * @return A receipt indicating the result of the transaction
      */
     ItemTransaction offer(ImpactorItemStack stack);
-
-    interface Factory {
-
-        /**
-         * Creates a platform player using the target UUID.
-         *
-         * @param uuid The UUID of the target player
-         * @return A Platform Player representing the player instance
-         */
-        PlatformPlayer create(@NotNull final UUID uuid);
-
-    }
 
 }

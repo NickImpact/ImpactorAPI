@@ -23,32 +23,14 @@
  *
  */
 
-package net.impactdev.impactor.api.commands;
+package net.impactdev.impactor.api.platform.sources.transactions;
 
-import com.mojang.brigadier.arguments.ArgumentType;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.impactdev.impactor.api.commands.executors.CommandContext;
-import net.impactdev.impactor.api.commands.executors.CommandResult;
-import net.impactdev.impactor.api.commands.executors.CommandSource;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import java.util.Optional;
 
-import java.util.function.Predicate;
+public interface Transaction {
 
-public interface ImpactorCommand {
+    boolean successful();
 
-    @Nullable
-    default Predicate<CommandSource> requirement() {
-        return null;
-    }
-
-    @NotNull
-    CommandResult execute(CommandContext context) throws CommandSyntaxException;
-
-    interface Argument<T> extends ImpactorCommand {
-
-        ArgumentType<T> type();
-
-    }
+    Optional<Throwable> failureTrace();
 
 }

@@ -26,7 +26,7 @@
 package net.impactdev.impactor.api.platform;
 
 import net.impactdev.impactor.api.platform.performance.PerformanceMonitor;
-import net.impactdev.impactor.api.platform.players.PlatformPlayer;
+import net.impactdev.impactor.api.platform.sources.PlatformPlayer;
 import net.impactdev.impactor.api.services.Service;
 
 import java.util.List;

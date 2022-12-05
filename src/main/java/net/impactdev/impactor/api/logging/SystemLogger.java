@@ -23,15 +23,38 @@
  *
  */
 
-package net.impactdev.impactor.api.commands;
+package net.impactdev.impactor.api.logging;
 
-import net.impactdev.impactor.api.events.ImpactorEvent;
+public class SystemLogger implements PluginLogger {
 
-/**
- * Fired once the game platform indicates commands are being registered.
- */
-public interface CommandRegistrationEvent extends ImpactorEvent {
+    @Override
+    public void info(String line) {
+        System.out.println(line);
+    }
 
-    void register(ImpactorCommand... commands);
+    @Override
+    public void warn(String line) {
+        System.out.println(line);
+    }
+
+    @Override
+    public void warn(String line, Throwable throwable) {
+        System.out.println(line);
+    }
+
+    @Override
+    public void severe(String line) {
+        System.out.println(line);
+    }
+
+    @Override
+    public void severe(String line, Throwable throwable) {
+        System.out.println(line);
+    }
+
+    @Override
+    public void debug(String line) {
+        System.out.println(line);
+    }
 
 }

@@ -23,19 +23,11 @@
  *
  */
 
-package net.impactdev.impactor.api.commands.annotations;
+package net.impactdev.impactor.api.platform.sources;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public enum SourceType {
 
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface RestrictedExecutor {
-
-    boolean players() default true;
-
-    boolean system() default true;
-
+    PLAYER,
+    CONSOLE,
+    ENTITY,
 }

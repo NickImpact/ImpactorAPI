@@ -23,14 +23,29 @@
  *
  */
 
-package net.impactdev.impactor.api.platform.players.transactions;
+package net.impactdev.impactor.api.commands.events;
 
-import net.impactdev.impactor.api.items.ImpactorItemStack;
+import cloud.commandframework.captions.Caption;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import net.impactdev.impactor.api.events.ImpactorEvent;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-public interface ItemTransaction extends Transaction {
+public interface CaptionRegistrationEvent extends ImpactorEvent {
 
-    ImpactorItemStack source();
-
-    int received();
+    /**
+     * Registers a caption used for argument parsing. A caption for the cloud command framework is
+     * simply a registration key unique to the given format. The format should ideally contain
+     * variables your argument parsers would fill in, using the given format: {variable}. For
+     * example, on an invalid input of any kind, we could have our format be: "{input} is invalid",
+     * where "{input}" would be supplied by the parser.
+     *
+     * @param key The caption to use for the particular format
+     * @param format The format of the message to be sent to the command source
+     * @return This event for registration chaining
+     */
+    @Contract("_,_ -> this")
+    @CanIgnoreReturnValue
+    CaptionRegistrationEvent register(final @NotNull Caption key, final @NotNull String format);
 
 }

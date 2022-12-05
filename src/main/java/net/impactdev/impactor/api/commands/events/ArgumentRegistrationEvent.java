@@ -23,25 +23,28 @@
  *
  */
 
-package net.impactdev.impactor.api.commands.annotations;
+package net.impactdev.impactor.api.commands.events;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import cloud.commandframework.arguments.parser.ArgumentParser;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import io.leangen.geantyref.TypeToken;
+import net.impactdev.impactor.api.commands.CommandSource;
+import net.impactdev.impactor.api.events.ImpactorEvent;
+import org.jetbrains.annotations.Contract;
 
-/**
- * Specifies the root of a particular command. For instance, in this particular path, "impactor testing abc",
- * if our target {@link Alias} is "abc", we can specify "impactor testing" via {@link #value()} to scan
- * the command tree for that particular path. Should that path not yet exist, this path will be generated as
- * literal nodes down to the target alias.
- *
- * <p>This particular element need only be applied to a
- */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface CommandPath {
+public interface ArgumentRegistrationEvent extends ImpactorEvent {
 
-    String value();
+    /**
+     * Registers a particular argument parser for an argument to the cloud command framework, using the
+     * given type token for identification.
+     *
+     * @param type A type token used to map the parser to a target value
+     * @param parser A parser responsible for providing the resulting argument value
+     * @return This event for registration chaining
+     * @param <T> The type of object parsed by the given parser
+     */
+    @Contract("_,_ -> this")
+    @CanIgnoreReturnValue
+    <T> ArgumentRegistrationEvent register(TypeToken<T> type, ArgumentParser<CommandSource, T> parser);
 
 }

@@ -29,8 +29,8 @@ public enum PlatformType {
 
     FORGE,
     FABRIC,
-    SPIGOT,
     PAPER,
     SPONGE,
+    JUNIT_TESTING,
 
 }

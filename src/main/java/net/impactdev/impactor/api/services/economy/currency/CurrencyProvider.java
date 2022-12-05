@@ -25,7 +25,6 @@
 
 package net.impactdev.impactor.api.services.economy.currency;
 
-import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -50,7 +49,7 @@ public interface CurrencyProvider {
      * @param key The key for the currency
      * @return An optionally populated currency, if it exists
      */
-    Optional<Currency> currency(Key key);
+    Optional<Currency> currency(String key);
 
     /**
      * Provides a set of all currencies registered with this provider.

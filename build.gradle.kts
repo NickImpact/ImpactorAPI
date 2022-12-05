@@ -15,18 +15,23 @@ dependencies {
     api("net.impactdev:json:1.0.0")
 
     // Adventure
-    api("net.kyori:adventure-api:4.11.0")
-    api("net.kyori:adventure-nbt:4.11.0")
-    api("net.kyori:adventure-text-serializer-plain:4.11.0")
-    api("net.kyori:adventure-text-serializer-legacy:4.11.0")
-    api("net.kyori:adventure-text-serializer-gson:4.11.0")
-    api("net.kyori:adventure-text-minimessage:4.11.0")
+    api("net.kyori:adventure-api:4.12.0")
+    api("net.kyori:adventure-nbt:4.12.0")
+    api("net.kyori:adventure-text-serializer-plain:4.12.0")
+    api("net.kyori:adventure-text-serializer-legacy:4.12.0")
+    api("net.kyori:adventure-text-serializer-gson:4.12.0")
+    api("net.kyori:adventure-text-minimessage:4.12.0")
 
     // Kyori Events
     api("net.kyori:event-api:5.0.0-SNAPSHOT")
 
     // Event Generation
     compileOnlyApi("org.spongepowered:event-impl-gen-annotations:8.0.0-SNAPSHOT")
+
+    // Cloud Command Framework
+    api("cloud.commandframework:cloud-core:1.7.1")
+    api("cloud.commandframework:cloud-annotations:1.7.1")
+    api("cloud.commandframework:cloud-brigadier:1.7.1")
 
     // Configurate
     api("org.spongepowered:configurate-core:4.1.2")

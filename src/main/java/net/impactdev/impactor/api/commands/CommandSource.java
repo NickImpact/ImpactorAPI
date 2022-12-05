@@ -23,21 +23,33 @@
  *
  */
 
-package net.impactdev.impactor.api.commands.exceptions;
+package net.impactdev.impactor.api.commands;
 
-import net.impactdev.impactor.api.commands.executors.CommandResult;
+import net.impactdev.impactor.api.platform.sources.PlatformPlayer;
+import net.impactdev.impactor.api.platform.sources.PlatformSource;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
 
-public class CommandResultException extends Exception {
+import java.util.UUID;
 
-    private final CommandResult result;
+public interface CommandSource extends Audience {
 
-    public CommandResultException(CommandResult result, Throwable cause) {
-        super(cause);
-        this.result = result;
-    }
+    UUID uuid();
 
-    public CommandResult result() {
-        return this.result;
+    Component name();
+
+    PlatformSource source();
+
+    PlatformPlayer player();
+
+    SourceMetadata metadata();
+
+    interface SourceMetadata {
+
+        boolean acceptsSuccess();
+
+        boolean acceptsFailure();
+
     }
 
 }

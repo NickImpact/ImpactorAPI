@@ -23,14 +23,14 @@
  *
  */
 
-package net.impactdev.impactor.api.platform.players.transactions;
+package net.impactdev.impactor.api.platform.sources.transactions;
 
-import java.util.Optional;
+import net.impactdev.impactor.api.items.ImpactorItemStack;
 
-public interface Transaction {
+public interface ItemTransaction extends Transaction {
 
-    boolean successful();
+    ImpactorItemStack source();
 
-    Optional<Throwable> failureTrace();
+    int received();
 
 }
