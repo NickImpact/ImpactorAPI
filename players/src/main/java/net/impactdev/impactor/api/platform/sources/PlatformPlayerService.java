@@ -23,30 +23,22 @@
  *
  */
 
-package net.impactdev.impactor.api.events.lifecycle;
+package net.impactdev.impactor.api.platform.sources;
 
-import net.impactdev.impactor.api.events.ImpactorEvent;
-import net.impactdev.impactor.api.platform.sources.PlatformPlayer;
-import net.impactdev.impactor.api.platform.sources.PlatformSource;
+import net.impactdev.impactor.api.services.Service;
+import org.jetbrains.annotations.NotNull;
 
-public interface ClientConnectionEvent extends ImpactorEvent {
+import java.util.Set;
+import java.util.UUID;
 
-    interface Login extends ClientConnectionEvent {
+public interface PlatformPlayerService extends Service {
 
-        PlatformSource profile();
-
+    @Override
+    default String name() {
+        return "Impactor Platform Player Service";
     }
 
-    interface Join extends ClientConnectionEvent {
+    PlatformPlayer getOrCreate(@NotNull final UUID uuid);
 
-        PlatformPlayer player();
-
-    }
-
-    interface Disconnect extends ClientConnectionEvent {
-
-        PlatformPlayer player();
-
-    }
-
+    Set<PlatformPlayer> online();
 }

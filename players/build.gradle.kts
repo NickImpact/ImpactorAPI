@@ -6,5 +6,4 @@ plugins {
 dependencies {
     api(project(":api:core"))
     api(project(":api:items"))
-    api(project(":api:players"))
 }

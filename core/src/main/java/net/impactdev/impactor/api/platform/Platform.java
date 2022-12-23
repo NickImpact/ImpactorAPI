@@ -26,11 +26,7 @@
 package net.impactdev.impactor.api.platform;
 
 import net.impactdev.impactor.api.platform.performance.PerformanceMonitor;
-import net.impactdev.impactor.api.platform.sources.PlatformPlayer;
 import net.impactdev.impactor.api.services.Service;
-
-import java.util.List;
-import java.util.UUID;
 
 public interface Platform extends Service {
 
@@ -42,9 +38,5 @@ public interface Platform extends Service {
     PlatformInfo info();
 
     PerformanceMonitor performance();
-
-    PlatformPlayer player(final UUID target);
-
-    List<PlatformPlayer> onlinePlayers();
 
 }

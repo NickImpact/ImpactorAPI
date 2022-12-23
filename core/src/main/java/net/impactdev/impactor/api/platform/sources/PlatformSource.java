@@ -115,34 +115,14 @@ public interface PlatformSource extends LocalizedAudience {
         PlatformSource console();
 
         /**
-         * Creates a source linked to an entity within the world, bound by a particular ID. If the given UUID
-         * maps to a player, this will instead return a {@link PlatformPlayer}.
+         * Creates a source linked to an entity within the world, bound by a particular ID. If the given
+         * UUID is bound to a player, this call will fail.
          *
          * @param uuid The UUID of the target entity
-         * @return A platform source, or {@link PlatformPlayer}, representing the entity mapped to the given UUID
+         * @return A platform source representing an entity existing within the world
+         * @throws IllegalArgumentException If the given UUID is bound to a player
          */
         PlatformSource entity(UUID uuid);
-
-        /**
-         * Creates a new platform player instance, or fetches this player from the factory cache if
-         * requested at least once. These type of sources represent the
-         *
-         * @param uuid The UUID of the target player instance
-         * @return A PlatformPlayer instance mirroring the game player instance
-         */
-        PlatformPlayer player(UUID uuid);
-
-        /**
-         *
-         * @param uuid
-         */
-        void invalidate(UUID uuid);
-
-        /**
-         *
-         *
-         */
-        void invalidateAll();
 
     }
 

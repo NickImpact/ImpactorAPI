@@ -23,27 +23,30 @@
  *
  */
 
-package net.impactdev.impactor.api.platform.sources;
+package net.impactdev.impactor.api.platform.sources.events;
 
-import net.impactdev.impactor.api.Impactor;
-import org.jetbrains.annotations.NotNull;
+import net.impactdev.impactor.api.events.ImpactorEvent;
+import net.impactdev.impactor.api.platform.sources.PlatformPlayer;
+import net.impactdev.impactor.api.platform.sources.PlatformSource;
 
-import java.util.UUID;
+public interface ClientConnectionEvent extends ImpactorEvent {
 
-/**
- * A platform player represents a mirror to a player instance registered by the game platform. While
- * the game object represents an entity that in some implementations can be altered based on respawns,
- * this instance acts purely as a data accessor to the target player object. As such, this detail
- * is capable of being stored as it'll not actually hold the player instance behind.
- * <p>
- * As a general note, this interface design works primarily for online players only. If the target player
- * is not online at the time of invoking these accessor calls, these calls are expected to be provided
- * dummy results, or fail exceptionally.
- */
-public interface PlatformPlayer extends PlatformSource {
+    interface Login extends ClientConnectionEvent {
 
-    static PlatformPlayer getOrCreate(@NotNull final UUID uuid) {
-        return Impactor.instance().factories().provide(PlatformSource.Factory.class).player(uuid);
+        PlatformSource profile();
+
+    }
+
+    interface Join extends ClientConnectionEvent {
+
+        PlatformPlayer player();
+
+    }
+
+    interface Disconnect extends ClientConnectionEvent {
+
+        PlatformPlayer player();
+
     }
 
 }

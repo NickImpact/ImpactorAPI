@@ -25,7 +25,6 @@
 
 package net.impactdev.impactor.api.commands;
 
-import net.impactdev.impactor.api.platform.sources.PlatformPlayer;
 import net.impactdev.impactor.api.platform.sources.PlatformSource;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
@@ -39,8 +38,6 @@ public interface CommandSource extends Audience {
     Component name();
 
     PlatformSource source();
-
-    PlatformPlayer player();
 
     SourceMetadata metadata();
 

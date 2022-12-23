@@ -26,9 +26,8 @@
 package net.impactdev.impactor.api.items.platform;
 
 import net.impactdev.impactor.api.items.ImpactorItemStack;
-import net.impactdev.impactor.api.platform.sources.PlatformPlayer;
 
-public interface ItemCarrier extends PlatformPlayer {
+public interface ItemCarrier {
 
     /**
      * Attempts to offer the given stack to the target player. In return, a receipt will specify
