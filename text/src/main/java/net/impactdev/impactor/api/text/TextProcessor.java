@@ -26,9 +26,11 @@
 package net.impactdev.impactor.api.text;
 
 import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.platform.sources.PlatformSource;
 import net.impactdev.impactor.api.utility.Context;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,7 +56,7 @@ public interface TextProcessor {
      * Provides a text processor which is based around the
      * {@link net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer} from
      * Adventure. This processor focuses on the normal format we are all familiar with,
-     * for example, strings like "&aHello World!". With this method, you can choose the exact
+     * for example, strings like "{@literal &}aHello World!". With this method, you can choose the exact
      * character you wish for the processor to handle.
      *
      * @param character The character indicating text styling
@@ -73,7 +75,19 @@ public interface TextProcessor {
      * @return A {@link Component} representing the result
      */
     default @NotNull Component parse(String raw) {
-        return this.parse(raw, Context.empty());
+        return this.parse(null, raw, Context.empty());
+    }
+
+    /**
+     * Translates a raw string into a renderable {@link Component}. This
+     * attempts to resolve placeholders with an empty context set, so placeholders that require
+     * additional context may produce empty results.
+     *
+     * @param raw The raw string
+     * @return A {@link Component} representing the result
+     */
+    default @NotNull Component parse(@Nullable PlatformSource viewer, String raw) {
+        return this.parse(viewer, raw, Context.empty());
     }
 
     /**
@@ -85,7 +99,24 @@ public interface TextProcessor {
      * @param context Context used to aid in placeholder parsing
      * @return A {@link Component} representing the result
      */
-    @NotNull Component parse(String raw, Context context);
+    default @NotNull Component parse(String raw, Context context) {
+        return this.parse(null, raw, context);
+    }
+
+    /**
+     * Translates a raw string given a set of context into a renderable {@link Component}. This
+     * method accepts context built by the caller that can be used in an effort to help placeholders
+     * parse relative content.
+     *
+     * @param raw The raw string
+     * @param context Context used to aid in placeholder parsing
+     * @return A {@link Component} representing the result
+     */
+    @NotNull Component parse(@Nullable PlatformSource viewer, String raw, Context context);
+
+    default List<@NotNull Component> parse(List<String> raw) {
+        return this.parse(null, raw, Context.empty());
+    }
 
     /**
      * Translates a set of raw strings into a renderable list of {@link Component Components}. This
@@ -95,8 +126,8 @@ public interface TextProcessor {
      * @param raw The list of raw strings to translate
      * @return A transformed list of parsed and renderable {@link Component Components}
      */
-    default List<@NotNull Component> parse(List<String> raw) {
-        return this.parse(raw, Context.empty());
+    default List<@NotNull Component> parse(@Nullable PlatformSource viewer, List<String> raw) {
+        return this.parse(viewer, raw, Context.empty());
     }
 
     /**
@@ -109,7 +140,20 @@ public interface TextProcessor {
      * @return A transformed list of parsed and renderable {@link Component Components}
      */
     default List<@NotNull Component> parse(List<String> raw, Context context) {
-        return raw.stream().map(input -> this.parse(input, context)).collect(Collectors.toList());
+        return this.parse(null, raw, context);
+    }
+
+    /**
+     * Translates a set of raw strings into a renderable list of {@link Component Components}. This
+     * method accepts context built by the caller that can be used in an effort to help placeholders
+     * parse relative content.
+     *
+     * @param raw The list of raw strings to translate
+     * @param context A set of context relative to placeholder parsing
+     * @return A transformed list of parsed and renderable {@link Component Components}
+     */
+    default List<@NotNull Component> parse(@Nullable PlatformSource viewer, List<String> raw, Context context) {
+        return raw.stream().map(input -> this.parse(viewer, input, context)).collect(Collectors.toList());
     }
 
     /**
@@ -137,7 +181,7 @@ public interface TextProcessor {
          * Provides a text processor which is based around the
          * {@link net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer} from
          * Adventure. This processor focuses on the normal format we are all familiar with,
-         * for example, strings like "&aHello World!". With this method, you can choose the exact
+         * for example, strings like "{@literal &}aHello World!". With this method, you can choose the exact
          * character you wish for the processor to handle.
          *
          * @param character The character indicating text styling

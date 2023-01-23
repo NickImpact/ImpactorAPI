@@ -23,36 +23,35 @@
  *
  */
 
-package net.impactdev.impactor.api.configuration;
+package net.impactdev.impactor.api.configuration.adapter;
 
-public final class ConfigPath {
+import org.spongepowered.configurate.ConfigurationNode;
 
-    private final String path;
-    private final boolean split;
+import java.util.List;
+import java.util.Map;
 
-    private ConfigPath(String path, boolean split) {
-        this.path = path;
-        this.split = split;
-    }
+public interface ConfigurationAdapter {
 
-    public static ConfigPath path(String path) {
-        return path(path, true);
-    }
+    void reload();
 
-    public static ConfigPath path(String path, boolean split) {
-        return new ConfigPath(path, split);
-    }
+    String getString(String path, String def);
 
-    public String target() {
-        return this.path;
-    }
+    int getInteger(String path, int def);
 
-    public boolean split() {
-        return this.split;
-    }
+    long getLong(String path, long def);
 
-    public ConfigPath resolve(String key) {
-        return new ConfigPath(this.path + "." + key, this.split);
-    }
+    double getDouble(String path, double def);
+
+    boolean getBoolean(String path, boolean def);
+
+    List<String> getStringList(String path, List<String> def);
+
+    List<String> getKeys(String path, List<String> def);
+
+    Map<String, String> getStringMap(String path, Map<String, String> def);
+
+    ConfigurationNode getNode(String path);
+
+    List<? extends ConfigurationNode> getNodeList(String path);
 
 }

@@ -23,30 +23,39 @@
  *
  */
 
-package net.impactdev.impactor.api.platform;
+package net.impactdev.impactor.api.platform.plugins;
 
+import com.google.common.collect.Lists;
 import net.impactdev.impactor.api.utility.builders.Builder;
+import org.apache.maven.artifact.versioning.ArtifactVersion;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public final class PluginMetadata {
 
 	private final String id;
 	private final String name;
-	private final String version;
+	private final ArtifactVersion version;
 	private final String description;
 
-	PluginMetadata(String id, String name, String version, String description) {
-		this.id = id;
-		this.name = name;
-		this.version = version;
-		this.description = description;
+	private final List<PluginDependency> dependencies;
+
+	private PluginMetadata(PluginMetadataBuilder builder) {
+		this.id = builder.id;
+		this.name = builder.name;
+		this.version = builder.version;
+		this.description = builder.description;
+		this.dependencies = builder.dependencies;
 	}
 
 	public String id() {
 		return this.id;
 	}
 
-	public String version() {
+	public ArtifactVersion version() {
 		return this.version;
 	}
 
@@ -58,6 +67,10 @@ public final class PluginMetadata {
 		return Optional.ofNullable(this.description);
 	}
 
+	public List<PluginDependency> dependencies() {
+		return this.dependencies;
+	}
+
 	public static PluginMetadataBuilder builder() {
 		return new PluginMetadataBuilder();
 	}
@@ -65,8 +78,9 @@ public final class PluginMetadata {
 	public static class PluginMetadataBuilder implements Builder<PluginMetadata> {
 		private String id;
 		private String name;
-		private String version;
+		private ArtifactVersion version;
 		private String description;
+		private final List<PluginDependency> dependencies = Lists.newArrayList();
 
 		public PluginMetadataBuilder id(String id) {
 			this.id = id;
@@ -79,6 +93,11 @@ public final class PluginMetadata {
 		}
 
 		public PluginMetadataBuilder version(String version) {
+			this.version = new DefaultArtifactVersion(version);
+			return this;
+		}
+
+		public PluginMetadataBuilder version(ArtifactVersion version) {
 			this.version = version;
 			return this;
 		}
@@ -88,8 +107,13 @@ public final class PluginMetadata {
 			return this;
 		}
 
+		public PluginMetadataBuilder dependencies(PluginDependency... dependencies) {
+			this.dependencies.addAll(Arrays.asList(dependencies));
+			return this;
+		}
+
 		public PluginMetadata build() {
-			return new PluginMetadata(id, name, version, description);
+			return new PluginMetadata(this);
 		}
 
 	}

@@ -31,6 +31,7 @@ import net.impactdev.impactor.api.providers.BuilderProvider;
 import net.impactdev.impactor.api.providers.FactoryProvider;
 import net.impactdev.impactor.api.providers.ServiceProvider;
 import net.impactdev.impactor.api.scheduler.SchedulerAdapter;
+import net.impactdev.impactor.api.utility.builders.Builder;
 import net.kyori.event.EventBus;
 
 public interface Impactor {
@@ -53,7 +54,7 @@ public interface Impactor {
 
     /**
      * Provides access to a set of builders responsible for creating a particular object.
-     * These builders are expected to extend from the {@link net.impactdev.impactor.api.builders.Builder}
+     * These builders are expected to extend from the {@link Builder}
      * interface, and can both be registered and located from this particular provider.
      *
      * @return A provider of builders, allowing registration and location of particular

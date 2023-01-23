@@ -26,7 +26,8 @@
 package net.impactdev.impactor.api.platform.sources;
 
 import net.impactdev.impactor.api.Impactor;
-import net.impactdev.impactor.api.items.platform.ItemCarrier;
+import net.impactdev.impactor.api.items.ImpactorItemStack;
+import net.impactdev.impactor.api.items.platform.ItemTransaction;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -41,7 +42,7 @@ import java.util.UUID;
  * is not online at the time of invoking these accessor calls, these calls are expected to be provided
  * dummy results, or fail exceptionally.
  */
-public interface PlatformPlayer extends PlatformSource, ItemCarrier {
+public interface PlatformPlayer extends PlatformSource {
 
     /**
      * Fetches or creates a PlatformPlayer representing a player identified by the given UUID.
@@ -52,6 +53,18 @@ public interface PlatformPlayer extends PlatformSource, ItemCarrier {
     static PlatformPlayer getOrCreate(@NotNull final UUID uuid) {
         return Impactor.instance().factories().provide(Factory.class).player(uuid);
     }
+
+    /**
+     * Attempts to offer the given stack to the target player. In return, a receipt will specify
+     * the result of the transaction, stating its success and, if applicable, the size of the stack
+     * successfully given to the target.
+     *
+     * @param stack The stack being offered to a player
+     * @return A receipt indicating the result of the transaction
+     */
+    ItemTransaction offer(ImpactorItemStack stack);
+
+    ItemTransaction take(ImpactorItemStack stack);
 
     interface Factory {
 

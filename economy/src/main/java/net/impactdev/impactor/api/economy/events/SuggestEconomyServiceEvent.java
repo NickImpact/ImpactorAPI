@@ -27,7 +27,7 @@ package net.impactdev.impactor.api.economy.events;
 
 import net.impactdev.impactor.api.economy.EconomyService;
 import net.impactdev.impactor.api.events.ImpactorEvent;
-import net.impactdev.impactor.api.platform.PluginMetadata;
+import net.impactdev.impactor.api.platform.plugins.PluginMetadata;
 import org.jetbrains.annotations.Range;
 
 import java.util.function.Supplier;

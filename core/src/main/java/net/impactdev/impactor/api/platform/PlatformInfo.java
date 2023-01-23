@@ -25,6 +25,7 @@
 
 package net.impactdev.impactor.api.platform;
 
+import net.impactdev.impactor.api.platform.plugins.PluginMetadata;
 import net.impactdev.impactor.api.utility.printing.PrettyPrinter;
 import org.intellij.lang.annotations.Pattern;
 

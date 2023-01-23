@@ -23,13 +23,35 @@
  *
  */
 
-package net.impactdev.impactor.api.configuration.loader;
+package net.impactdev.impactor.api.platform.plugins;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.apache.maven.artifact.versioning.VersionRange;
 
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface KeyProvider {}
+public final class PluginDependency {
+
+    private final String id;
+    private final VersionRange range;
+    private final boolean optional;
+
+    private PluginDependency(String id, VersionRange range, boolean optional) {
+        this.id = id;
+        this.range = range;
+        this.optional = optional;
+    }
+
+    public static PluginDependency create(String id, String range, boolean optional) throws Exception {
+        return new PluginDependency(id, VersionRange.createFromVersionSpec(range), optional);
+    }
+
+    public String id() {
+        return this.id;
+    }
+
+    public VersionRange versions() {
+        return this.range;
+    }
+
+    public boolean optional() {
+        return this.optional;
+    }
+}

@@ -25,6 +25,7 @@
 
 package net.impactdev.impactor.api.commands;
 
+import net.impactdev.impactor.api.platform.sources.PlatformPlayer;
 import net.impactdev.impactor.api.platform.sources.PlatformSource;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
@@ -39,14 +40,14 @@ public interface CommandSource extends Audience {
 
     PlatformSource source();
 
-    SourceMetadata metadata();
+    PlatformPlayer player();
 
-    interface SourceMetadata {
+    boolean communicates(Communicator communicator);
 
-        boolean acceptsSuccess();
-
-        boolean acceptsFailure();
-
+    enum Communicator {
+        SUCCESS,
+        FAILURE,
+        INFORM_ADMINS,
     }
 
 }

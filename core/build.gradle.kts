@@ -39,4 +39,5 @@ dependencies {
     api("io.leangen.geantyref:geantyref:1.3.11")
     api(group = "org.spongepowered", name = "math", version = "2.0.1")
     api("org.apache.logging.log4j:log4j-api:2.17.1")
+    api("org.apache.maven:maven-artifact:3.8.7")
 }

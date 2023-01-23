@@ -25,9 +25,11 @@
 
 package net.impactdev.impactor.api.text.placeholders;
 
+import net.impactdev.impactor.api.platform.sources.PlatformSource;
 import net.impactdev.impactor.api.utility.Context;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @FunctionalInterface
 public interface PlaceholderParser {
@@ -38,10 +40,13 @@ public interface PlaceholderParser {
      * Returning null here will invoke a runtime exception warning the server of the invalid
      * parsing result.
      *
+     * @param viewer The source receiving the message. A viewing source need not be
+     *               provided to resolve a placeholder, but can be required by particular
+     *               parsers.
      * @param context A set of context to aid in placeholder resolution
      * @return A non-null component, where {@link Component#empty()} would represent the null case
      * for an invalid parse result.
      */
-    @NotNull Component parse(Context context);
+    @NotNull Component parse(@Nullable PlatformSource viewer, @NotNull Context context);
 
 }

@@ -44,18 +44,6 @@ import java.util.List;
 public interface SectionedPagination extends View {
 
     /**
-     * Opens the view for the configured viewer, closing any currently opened view the player
-     * might be viewing.
-     */
-    void open();
-
-    /**
-     * Closes the view for the configured viewer, only if the view they have open, if one at all,
-     * is this view. Otherwise, this call will result in a no-op.
-     */
-    void close();
-
-    /**
      * Specifies the layout used to create this view.
      *
      * @return The layout of the view

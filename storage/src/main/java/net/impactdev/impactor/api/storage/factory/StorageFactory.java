@@ -25,7 +25,7 @@
 
 package net.impactdev.impactor.api.storage.factory;
 
-import net.impactdev.impactor.api.platform.PluginMetadata;
+import net.impactdev.impactor.api.platform.plugins.PluginMetadata;
 import net.impactdev.impactor.api.storage.StorageCredentials;
 import net.impactdev.impactor.api.storage.connection.configurate.ConfigurateConnection;
 import net.impactdev.impactor.api.storage.connection.sql.SQLConnection;

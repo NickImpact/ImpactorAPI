@@ -23,10 +23,7 @@
  *
  */
 
-package net.impactdev.impactor.api.configuration;
-
-import net.impactdev.impactor.api.configuration.keys.BaseConfigKey;
-import net.impactdev.impactor.api.configuration.keys.FunctionalKey;
+package net.impactdev.impactor.api.configuration.key;
 
 /*
  * This file is part of LuckPerms, licensed under the MIT License.
@@ -53,12 +50,45 @@ import net.impactdev.impactor.api.configuration.keys.FunctionalKey;
  *  SOFTWARE.
  */
 
-@FunctionalInterface
-public interface KeyFactory<T> {
+import net.impactdev.impactor.api.configuration.adapter.ConfigurationAdapter;
 
-	T getValue(ConfigurationAdapter adapter, ConfigPath path, T def);
+import java.util.function.Function;
 
-	default BaseConfigKey<T> createKey(ConfigPath path, T def) {
-		return new FunctionalKey<>(this, path, def);
-	}
+/**
+ * Basic {@link ConfigKey} implementation.
+ *
+ * @param <T> the value type
+ */
+public class SimpleConfigKey<T> implements ConfigKey<T> {
+    private final Function<? super ConfigurationAdapter, ? extends T> function;
+
+    private int ordinal = -1;
+    private boolean reloadable = true;
+
+    SimpleConfigKey(Function<? super ConfigurationAdapter, ? extends T> function) {
+        this.function = function;
+    }
+
+    @Override
+    public T get(ConfigurationAdapter adapter) {
+        return this.function.apply(adapter);
+    }
+
+    @Override
+    public int ordinal() {
+        return this.ordinal;
+    }
+
+    @Override
+    public boolean reloadable() {
+        return this.reloadable;
+    }
+
+    public void setOrdinal(int ordinal) {
+        this.ordinal = ordinal;
+    }
+
+    public void setReloadable(boolean reloadable) {
+        this.reloadable = reloadable;
+    }
 }

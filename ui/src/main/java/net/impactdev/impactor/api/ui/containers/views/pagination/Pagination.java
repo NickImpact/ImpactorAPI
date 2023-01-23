@@ -50,17 +50,6 @@ public interface Pagination extends View {
     ChestLayout layout();
 
     /**
-     * Opens the view for the specified player.
-     */
-    void open();
-
-    /**
-     * Closes the view of the inventory, only if the viewer's open inventory is this inventory.
-     * If the view they currently have open is not this view, then this call is ignored
-     */
-    void close();
-
-    /**
      * A set of rules that apply to the pagination with the goal of focusing on an icon's
      * context. These rules would be used to filter the pagination results, as well as
      * sort them per respective rules.

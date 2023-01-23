@@ -23,22 +23,46 @@
  *
  */
 
-package net.impactdev.impactor.api.items.platform;
+package net.impactdev.impactor.api.text.placeholders;
 
-import net.impactdev.impactor.api.items.ImpactorItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public interface ItemCarrier {
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
-    /**
-     * Attempts to offer the given stack to the target player. In return, a receipt will specify
-     * the result of the transaction, stating its success and, if applicable, the size of the stack
-     * successfully given to the target.
-     *
-     * @param stack The stack being offered to a player
-     * @return A receipt indicating the result of the transaction
-     */
-    ItemTransaction offer(ImpactorItemStack stack);
+public final class PlaceholderArguments {
 
-    boolean take(ImpactorItemStack stack);
+    private final List<String> arguments = new LinkedList<>();
+    private int index;
+
+    public PlaceholderArguments(String[] arguments) {
+        this.arguments.addAll(Arrays.asList(arguments));
+    }
+
+    public @NotNull String pop() {
+        if(this.index >= this.arguments.size()) {
+            throw new IllegalStateException("No available element in argument list");
+        }
+
+        return this.arguments.get(this.index++);
+    }
+
+    public @Nullable String peek() {
+        if(this.index >= this.arguments.size()) {
+            return null;
+        }
+
+        return this.arguments.get(this.index);
+    }
+
+    public boolean hasNext() {
+        return this.arguments.size() > this.index;
+    }
+
+    public void reset() {
+        this.index = 0;
+    }
 
 }

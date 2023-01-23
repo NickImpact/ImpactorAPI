@@ -23,37 +23,15 @@
  *
  */
 
-package net.impactdev.impactor.api.plugin.registry;
+package net.impactdev.impactor.api.ui.metadata;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
-import net.impactdev.impactor.api.plugin.ImpactorPlugin;
+import net.impactdev.impactor.api.platform.sources.metadata.MetadataKey;
+import net.impactdev.impactor.api.ui.containers.View;
 
-import java.util.Map;
-import java.util.Optional;
+import static net.impactdev.impactor.api.utility.KeyGenerator.impactor;
 
-/**
- *
- */
-public final class PluginRegistry {
+public final class UIMetadataKeys {
 
-    /** A mapping of a plugins ID to its actual implementation */
-    private static final Map<String, ImpactorPlugin> plugins = Maps.newHashMap();
-
-    public static void register(ImpactorPlugin plugin) {
-        plugins.put(plugin.metadata().id(), plugin);
-    }
-
-    public static Optional<ImpactorPlugin> get(String id) {
-        return Optional.ofNullable(plugins.get(id));
-    }
-
-    public static ImmutableList<ImpactorPlugin> getAll() {
-        return ImmutableList.copyOf(plugins.values());
-    }
-
-    public static boolean isRegistered(String id) {
-        return plugins.containsKey(id);
-    }
+    public static final MetadataKey<View> OPENED_VIEW = MetadataKey.create(impactor("opened_view"));
 
 }

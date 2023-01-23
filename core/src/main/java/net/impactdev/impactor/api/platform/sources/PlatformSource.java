@@ -99,7 +99,7 @@ public interface PlatformSource extends LocalizedAudience {
      * where it would otherwise not exist within another.
      *
      * @param key The metadata key to bind the instance value to
-     * @param instance The supplier responsible for providing the data
+     * @param instance The supplier responsible for providing the data, or null to remove metadata if it exists
      * @param <T> The type being bound as metadata
      */
     <T> void offer(MetadataKey<T> key, Supplier<T> instance);

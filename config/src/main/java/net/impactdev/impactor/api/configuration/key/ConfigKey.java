@@ -23,7 +23,7 @@
  *
  */
 
-package net.impactdev.impactor.api.configuration;
+package net.impactdev.impactor.api.configuration.key;
 
 /*
  * This file is part of LuckPerms, licensed under the MIT License.
@@ -50,6 +50,8 @@ package net.impactdev.impactor.api.configuration;
  *  SOFTWARE.
  */
 
+import net.impactdev.impactor.api.configuration.adapter.ConfigurationAdapter;
+
 /**
  * Represents a key in the configuration.
  *
@@ -57,45 +59,26 @@ package net.impactdev.impactor.api.configuration;
  */
 public interface ConfigKey<T> {
 
-	/**
-	 * Provides context regarding the key. This is the ordinal position of the key in the config,
-	 * as well as the config it actually belongs to.
-	 *
-	 * @return The context regarding the key
-	 */
-	ParentContext context();
+    /**
+     * Gets the position of this key within the keys enum.
+     *
+     * @return the position
+     */
+    int ordinal();
 
-	/**
-	 * Resolves and returns the value mapped to this key using the given config instance.
-	 *
-	 * <p>The {@link Config#get(ConfigKey)} method should be used to
-	 * retrieve the value, as opposed to calling this directly.</p>
-	 *
-	 * @param adapter the config adapter instance
-	 * @return the value mapped to this key
-	 */
-	T get(ConfigurationAdapter adapter);
+    /**
+     * Gets if the config key can be reloaded.
+     *
+     * @return the if the key can be reloaded
+     */
+    boolean reloadable();
 
-	default T parse() {
-		return this.context().parent().get(this);
-	}
-
-	interface ParentContext {
-
-		/**
-		 * Indicates the config that maintains this key.
-		 *
-		 * @return The parent of the key
-		 */
-		Config parent();
-
-		/**
-		 * Gets the ordinal position of the key as it's declared
-		 *
-		 * @return the position
-		 */
-		int ordinal();
-
-	}
+    /**
+     * Resolves and returns the value mapped to this key using the given config instance.
+     *
+     * @param adapter the config adapter instance
+     * @return the value mapped to this key
+     */
+    T get(ConfigurationAdapter adapter);
 
 }

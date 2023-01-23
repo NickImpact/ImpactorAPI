@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     api(project(":api:core"))
+    api(project(":api:players"))
 
     // Cloud Command Framework
     api("cloud.commandframework:cloud-core:1.6.0")

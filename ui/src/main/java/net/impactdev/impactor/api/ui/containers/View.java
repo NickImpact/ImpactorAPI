@@ -25,6 +25,7 @@
 
 package net.impactdev.impactor.api.ui.containers;
 
+import net.impactdev.impactor.api.platform.sources.PlatformPlayer;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.checkerframework.common.value.qual.IntRange;
@@ -75,6 +76,10 @@ public interface View {
      * @return <code>true</code> if in a read only state, <code>false</code> otherwise
      */
     boolean readonly();
+
+    void open(PlatformPlayer viewer);
+
+    void close(PlatformPlayer viewer);
 
     /**
      * Allows for dynamic setting of UI contents after UI construction. To clear a slot, the provided slot

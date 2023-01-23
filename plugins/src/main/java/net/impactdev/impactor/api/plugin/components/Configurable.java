@@ -26,14 +26,29 @@
 package net.impactdev.impactor.api.plugin.components;
 
 import net.impactdev.impactor.api.configuration.Config;
-import net.impactdev.impactor.api.plugin.ImpactorPlugin;
 
 import java.nio.file.Path;
 
-public interface Configurable extends ImpactorPlugin {
+/**
+ * A marker interface which labels a given plugin as a configurable plugin. This is meant to expand the
+ * capabilities of a base plugin such that accessing configuration data is made easier.
+ */
+public interface Configurable {
 
-	Path getConfigDir();
+	/**
+	 * Represents the path to the configuration directory of the plugin.
+	 *
+	 * @return A {@link Path} representing the target configuration directory
+	 */
+	Path configurationDirectory();
 
-	Config getConfiguration();
+	/**
+	 * Specifies the configuration used by a plugin in the most general of terms. In projects
+	 * with multiple types of configs, this should effectively map to your main configuration
+	 * settings.
+	 *
+	 * @return The config representing controllable functions of a plugin
+	 */
+	Config configuration();
 
 }
