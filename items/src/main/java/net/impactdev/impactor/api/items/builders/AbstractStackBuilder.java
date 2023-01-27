@@ -87,14 +87,20 @@ public abstract class AbstractStackBuilder<I extends ImpactorItemStack, B extend
     }
 
     @Override
-    public B unbreakable() {
-        this.unbreakable = true;
+    public B unbreakable(boolean state) {
+        this.unbreakable = state;
         return (B) this;
     }
 
     @Override
     public B hide(MetaFlag... flags) {
         this.flags.addAll(Arrays.asList(flags));
+        return (B) this;
+    }
+
+    @Override
+    public B hide(Collection<MetaFlag> flags) {
+        this.flags.addAll(flags);
         return (B) this;
     }
 

@@ -45,5 +45,15 @@ public interface Storage {
 	 */
 	void shutdown() throws Exception;
 
-	CompletableFuture<PrettyPrinter.IPrettyPrintable> meta();
+	/**
+	 * Provides metadata information regarding the storage provider in use. The given printer
+	 * will be setup for additional information at time of request, so special formatting is
+	 * undesired. This method should simply fill the printer with basic information as deemed
+	 * fit.
+	 *
+	 * @param printer The printer that'll be used to write the metadata of the storage provider
+	 * @return A future with no return value, simply indicating the result of the print
+	 * operation as it completes.
+	 */
+	CompletableFuture<Void> meta(PrettyPrinter printer);
 }

@@ -36,6 +36,7 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.Collection;
 
+@SuppressWarnings({"UnusedReturnValue", "unused"})
 public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends ImpactorItemStackBuilder<I, B>>
         extends Builder<I> {
 
@@ -97,6 +98,27 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
     @Contract("_ -> this")
     B enchantment(final Enchantment enchantment);
 
+    @SuppressWarnings("unchecked")
+    @Contract("_,_ -> this")
+    default B enchantments(final Enchantment primary, final Enchantment... enchantments) {
+        this.enchantment(primary);
+        for(Enchantment enchantment : enchantments) {
+            this.enchantment(enchantment);
+        }
+
+        return (B) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Contract("_ -> this")
+    default B enchantments(final Collection<Enchantment> enchantments) {
+        for(Enchantment enchantment : enchantments) {
+            this.enchantment(enchantment);
+        }
+
+        return (B) this;
+    }
+
     /**
      * Specifies the durability of an item. In the case of tools, this is the amount of uses
      * remaining before the tool would break.
@@ -119,7 +141,19 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
      * @return This builder
      */
     @Contract("-> this")
-    B unbreakable();
+    default B unbreakable() {
+        return this.unbreakable(true);
+    }
+
+    /**
+     * Marks the resulting item stack with the unbreaking capability if given a true state.
+     * See {@link #unbreakable()} for additional details on an item being unbreakable.
+     *
+     * @return This builder
+     * @see #unbreakable()
+     */
+    @Contract("_ -> this")
+    B unbreakable(boolean state);
 
     /**
      * Applies a flag to the item stack which is capable of hiding specific data points that would
@@ -132,6 +166,9 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
      */
     @Contract("_ -> this")
     B hide(final MetaFlag... flags);
+
+    @Contract("_ -> this")
+    B hide(final Collection<MetaFlag> flags);
 
     /**
      * Applies the unbreaking enchantment as well as the {@link MetaFlag#ENCHANTMENTS} flag to

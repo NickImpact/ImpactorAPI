@@ -35,6 +35,6 @@ public interface StorageConnection {
 
     void shutdown() throws Exception;
 
-    PrettyPrinter.IPrettyPrintable meta();
+    void meta(PrettyPrinter printer) throws Exception;
 
 }
