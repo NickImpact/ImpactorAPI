@@ -25,13 +25,14 @@
 
 package net.impactdev.impactor.api.economy;
 
+import com.google.common.collect.Multimap;
 import net.impactdev.impactor.api.services.Service;
 import net.impactdev.impactor.api.economy.accounts.Account;
-import net.impactdev.impactor.api.economy.accounts.AccountAccessor;
 import net.impactdev.impactor.api.economy.currency.Currency;
 import net.impactdev.impactor.api.economy.currency.CurrencyProvider;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -51,24 +52,46 @@ public interface EconomyService extends Service {
     CurrencyProvider currencies();
 
     /**
-     * Obtains the account held by an account holder. In the event an account does not
-     * exist for this particular holder for the given currency, one will instead be
-     * created and bound to the account holder for later access.
+     * Fetches or creates an account bound to the specified currency using the given UUID.
+     * This will first attempt to locate a cached account, delegating to a load attempt if
+     * no account can be found under the specified criteria. If no account is found, this will
+     * instead create a new account for the given criteria instead.
      *
-     * @param accessor The account accessor used to find an account
-     * @param currency The currency the returned account should reflect
+     * @param currency The currency this account will be bound to
+     * @param uuid The UUID of the owner of the account.
      * @return The stored account, or a new account reflecting the request
      */
-    CompletableFuture<Account> account(AccountAccessor accessor, Currency currency);
+    CompletableFuture<Account> account(Currency currency, UUID uuid);
 
     /**
-     * Provides the known account holders for each and every account holder registered
-     * with the economy service. Rather than the holders themselves, this creates references instead
-     * to model and conform to account holders which may not be contextually available, and must be
-     * loaded to obtain their information.
+     * Like {@link #account(Currency, UUID)}, this method will either fetch or create an
+     * account using the given currency and uuid. In the event a creation effort is required
+     * for the request, requests can make use of the given builder to apply additional properties
+     * that might be necessary for an account.
      *
-     * @return A list of all references to each account holder registered with the economy service
+     * @param currency The currency this account should represent
+     * @param uuid The uuid of the account owner
+     * @param builder A builder pre-composed of the given currency and uuid
+     * @return The stored account, or a new account reflecting the request
      */
-    CompletableFuture<List<AccountAccessor>> accessors();
+    CompletableFuture<Account> account(Currency currency, UUID uuid, Account.AccountBuilder builder);
+
+    /**
+     * Provides an immutable Multimap of currencies to all accounts accessible via the economy provider.
+     *
+     * @return A map of all currencies to accounts
+     */
+    CompletableFuture<Multimap<Currency, Account>> accounts();
+
+    /**
+     * Provides an immutable collection of accounts in regard to a particular currency.
+     *
+     * @param currency The currency to filter on
+     * @return An immutable collection of accounts
+     * @see #accounts()
+     */
+    default CompletableFuture<Collection<Account>> accounts(Currency currency) {
+        return this.accounts().thenApply(map -> map.get(currency));
+    }
 
 }

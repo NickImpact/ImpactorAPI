@@ -14,6 +14,7 @@ dependencies {
     api("net.kyori:adventure-text-serializer-legacy:4.11.0")
     api("net.kyori:adventure-text-serializer-gson:4.11.0")
     api("net.kyori:adventure-text-minimessage:4.11.0")
+    api("net.kyori:adventure-text-logger-slf4j:4.11.0")
 
     // Google
     api("com.google.guava:guava:31.1-jre")

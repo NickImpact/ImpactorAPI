@@ -25,25 +25,81 @@
 
 package net.impactdev.impactor.api.economy.accounts;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import net.impactdev.impactor.api.economy.currency.Currency;
 import net.impactdev.impactor.api.economy.transactions.EconomyTransaction;
+import net.impactdev.impactor.api.utility.builders.Builder;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
+/**
+ * <h2>Account Definition</h2>
+ * Represents an economic based account which is bound to a particular currency and owner.
+ * Upon creation, an account will feature a starting balance, either defined by a currency's
+ * default balance, or by being created from an {@link AccountBuilder} via {@link AccountBuilder#balance(BigDecimal)}.
+ *
+ * <br><br>
+ * <h2>Account Ownership</h2>
+ * An account is capable of being owned by any source which is identifiable from a {@link UUID}.
+ * As such, this means an account need not be owned by a player, but perhaps the server or
+ * a plugin implementation. Additionally, this opens up the option for banks that can be accessed
+ * by a group or even a singular person.
+ */
 public interface Account {
 
+    /**
+     * The currency this account represents.
+     *
+     * @return
+     */
+    @NotNull
     Currency currency();
 
+    /**
+     * The owner of the account, which need not be a player.
+     * @return
+     */
+    @NotNull
+    UUID owner();
+
+    @NotNull
     BigDecimal balance();
 
+    @NotNull
     EconomyTransaction set(BigDecimal amount);
 
+    @NotNull
     EconomyTransaction withdraw(BigDecimal amount);
 
+    @NotNull
     EconomyTransaction deposit(BigDecimal amount);
 
+    @NotNull
     EconomyTransaction transfer(Account to, BigDecimal amount);
 
+    @NotNull
     EconomyTransaction reset();
+
+    interface AccountBuilder extends Builder<Account> {
+
+        @NotNull
+        @Contract("_ -> this")
+        @CanIgnoreReturnValue
+        AccountBuilder currency(final @NotNull Currency currency);
+
+        @NotNull
+        @Contract("_ -> this")
+        @CanIgnoreReturnValue
+        AccountBuilder owner(final @NotNull UUID uuid);
+
+        @NotNull
+        @Contract("_ -> this")
+        @CanIgnoreReturnValue
+        AccountBuilder balance(final @NotNull BigDecimal balance);
+
+    }
 
 }

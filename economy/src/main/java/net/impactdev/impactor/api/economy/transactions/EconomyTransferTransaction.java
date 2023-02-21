@@ -23,17 +23,50 @@
  *
  */
 
-package net.impactdev.impactor.api.economy.accounts;
+package net.impactdev.impactor.api.economy.transactions;
 
+import net.impactdev.impactor.api.economy.accounts.Account;
 import net.impactdev.impactor.api.economy.currency.Currency;
+import net.impactdev.impactor.api.economy.transactions.EconomyResultType;
 
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import java.math.BigDecimal;
 
-public interface AccountAccessor {
+public interface EconomyTransferTransaction {
 
-    CompletableFuture<Account> account(Currency currency);
+    /**
+     * The currency used within the transaction.
+     *
+     * @return The currency for the transaction
+     */
+    Currency currency();
 
-    CompletableFuture<Map<Currency, Account>> accounts();
+    /**
+     * Indicates the {@link Account} from which currency is being withdrawn.
+     *
+     * @return The account being withdrawn from
+     */
+    Account from();
+
+    /**
+     * Indicates the {@link Account} to which currency is being deposited.
+     *
+     * @return The target being deposited to
+     */
+    Account to();
+
+    /**
+     * The amount of currency involved within this transaction.
+     *
+     * @return The total amount processed by a transaction
+     */
+    BigDecimal amount();
+
+    /**
+     * The result of the transaction, indicating either success or some indication of failure
+     * for why a transaction failed to be processed.
+     *
+     * @return The result of the transaction
+     */
+    EconomyResultType result();
 
 }

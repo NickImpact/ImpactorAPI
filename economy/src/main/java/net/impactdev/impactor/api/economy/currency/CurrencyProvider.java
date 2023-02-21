@@ -70,6 +70,6 @@ public interface CurrencyProvider {
      * @return <code>true</code> if the currency was registered, otherwise <code>false</code>
      * for any other situation.
      */
-    CompletableFuture<Boolean> registerCurrency(Currency currency);
+    CompletableFuture<Boolean> register(Currency currency);
 
 }
