@@ -28,6 +28,7 @@ package net.impactdev.impactor.api.economy.accounts;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import net.impactdev.impactor.api.economy.currency.Currency;
 import net.impactdev.impactor.api.economy.transactions.EconomyTransaction;
+import net.impactdev.impactor.api.economy.transactions.EconomyTransferTransaction;
 import net.impactdev.impactor.api.utility.builders.Builder;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -78,7 +79,7 @@ public interface Account {
     EconomyTransaction deposit(BigDecimal amount);
 
     @NotNull
-    EconomyTransaction transfer(Account to, BigDecimal amount);
+    EconomyTransferTransaction transfer(Account to, BigDecimal amount);
 
     @NotNull
     EconomyTransaction reset();
@@ -99,6 +100,13 @@ public interface Account {
         @Contract("_ -> this")
         @CanIgnoreReturnValue
         AccountBuilder balance(final @NotNull BigDecimal balance);
+
+    }
+
+    @FunctionalInterface
+    interface AccountModifier {
+
+        AccountBuilder modify(AccountBuilder builder);
 
     }
 

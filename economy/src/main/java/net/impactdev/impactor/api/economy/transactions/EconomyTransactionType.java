@@ -31,5 +31,6 @@ public enum EconomyTransactionType {
     WITHDRAW,
     SET,
     RESET,
+    TRANSFER,
 
 }

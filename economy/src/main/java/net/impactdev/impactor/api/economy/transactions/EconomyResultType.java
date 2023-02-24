@@ -38,6 +38,11 @@ public enum EconomyResultType {
     FAILED,
 
     /**
+     * Represents that a transaction failed due to it being cancelled by a third party plugin
+     */
+    CANCELLED,
+
+    /**
      * The account did not have enough funds to process the transaction
      */
     NOT_ENOUGH_FUNDS,

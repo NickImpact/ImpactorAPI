@@ -26,13 +26,16 @@
 package net.impactdev.impactor.api.economy.currency;
 
 import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.economy.accounts.Account;
 import net.impactdev.impactor.api.platform.audience.LocalizedAudience;
 import net.impactdev.impactor.api.utility.builders.Builder;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.Locale;
+import java.util.function.BiFunction;
 
 /**
  *
@@ -64,14 +67,30 @@ public interface Currency {
     Component plural();
 
     /**
-     * Specifies details regarding the symbol used to format this currency and how it should
-     * be formatted. This symbol metadata is composed of a {@link Component} representing
-     * the actual symbol, and a {@link Symbol.Direction direction} indicating where in the
-     * formatted component the symbol should lie.
+     * Specifies the symbol that should be used to represent the currency when formatting
+     * in condensed mode.
      *
      * @return A symbol for this currency
      */
-    Currency.Symbol symbol();
+    Component symbol();
+
+    /**
+     *
+     * @return
+     */
+    SymbolFormatting formatting();
+
+    /**
+     * The amount of money an account using this balance should start with, whether the
+     * account has just been created or has processed a {@link Account#reset() reset} request.
+     *
+     * @return The standard starting balance for an account bound to this currency
+     */
+    BigDecimal defaultAccountBalance();
+
+    int decimals();
+
+    boolean primary();
 
     /**
      * Given a {@link BigDecimal}, formats the value into a component using the condensed pattern.
@@ -84,8 +103,23 @@ public interface Currency {
      * @param amount A {@link BigDecimal} representing some form of monetary value
      * @return A component representing the amount formatted into this currency's locale scheme
      */
-    default Component format(final BigDecimal amount) {
+    default Component format(final @NotNull BigDecimal amount) {
         return this.format(amount, true);
+    }
+
+    /**
+     * Given a {@link BigDecimal}, formats the value into a component using the condensed pattern.
+     * This condensed pattern simply uses the {@link #symbol()} versus the contextual names
+     * of the currency to write the component.
+     *
+     * <p>In terms of formatting this amount, the given locale will be used for translating
+     * the given number into the locale's method of displaying currencies.
+     *
+     * @param amount A {@link BigDecimal} representing some form of monetary value
+     * @return A component representing the amount formatted into this currency's locale scheme
+     */
+    default Component format(final @NotNull BigDecimal amount, final @NotNull Locale locale) {
+        return this.format(amount, true, locale);
     }
 
     /**
@@ -101,7 +135,7 @@ public interface Currency {
      *                  to the contextual names
      * @return A component representing the amount formatted into this currency's locale scheme
      */
-    default Component format(final BigDecimal amount, boolean condensed) {
+    default Component format(final @NotNull BigDecimal amount, final boolean condensed) {
         return this.format(amount, condensed, Locale.ROOT);
     }
 
@@ -121,50 +155,54 @@ public interface Currency {
      * @param locale The locale that should be used to format the given amount
      * @return A component representing the amount formatted into this currency's locale scheme
      */
-    Component format(final BigDecimal amount, boolean condensed, Locale locale);
-
-    /**
-     *
-     * @return
-     */
-    BigDecimal starting();
-
-    /**
-     *
-     * @return
-     */
-    int decimals();
-
-    interface Symbol {
-
-        Component symbol();
-
-        Direction direction();
-
-        enum Direction {
-            LEFT,
-            RIGHT
-        }
-    }
+    Component format(final @NotNull BigDecimal amount, final boolean condensed, final @NotNull Locale locale);
 
     static CurrencyBuilder builder() {
         return Impactor.instance().builders().provide(CurrencyBuilder.class);
     }
 
+    enum SymbolFormatting {
+        BEFORE((currency, in) -> currency.symbol().append(in)),
+        AFTER((currency, in) -> in.append(currency.symbol()));
+
+        private final BiFunction<Currency, Component, Component> modifier;
+
+        SymbolFormatting(BiFunction<Currency, Component, Component> modifier) {
+            this.modifier = modifier;
+        }
+
+        public static SymbolFormatting fromIdentifier(final @NotNull String identifier) {
+            for(SymbolFormatting type : values()) {
+                if(identifier.equalsIgnoreCase(type.name())) {
+                    return type;
+                }
+            }
+
+            throw new IllegalArgumentException("Invalid formatting spec");
+        }
+
+        public Component modify(Currency currency, Component in) {
+            return this.modifier.apply(currency, in);
+        }
+    }
+
     interface CurrencyBuilder extends Builder<Currency> {
 
-        CurrencyBuilder key(final Key key);
+        CurrencyBuilder key(final @NotNull Key key);
 
-        CurrencyBuilder name(final Component name);
+        CurrencyBuilder name(final @NotNull Component name);
 
-        CurrencyBuilder plural(final Component plural);
+        CurrencyBuilder plural(final @NotNull Component plural);
 
-        CurrencyBuilder symbol(final Component symbol, Symbol.Direction direction);
+        CurrencyBuilder symbol(final @NotNull Component symbol);
 
-        CurrencyBuilder starting(final BigDecimal amount);
+        CurrencyBuilder formatting(final @NotNull SymbolFormatting format);
+
+        CurrencyBuilder starting(final @NotNull BigDecimal amount);
 
         CurrencyBuilder decimals(final int decimals);
 
+        CurrencyBuilder primary();
     }
 
 }

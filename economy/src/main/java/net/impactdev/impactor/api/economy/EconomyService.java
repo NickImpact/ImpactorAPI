@@ -71,10 +71,10 @@ public interface EconomyService extends Service {
      *
      * @param currency The currency this account should represent
      * @param uuid The uuid of the account owner
-     * @param builder A builder pre-composed of the given currency and uuid
+     * @param modifier A property which supplies an account builder for further modification
      * @return The stored account, or a new account reflecting the request
      */
-    CompletableFuture<Account> account(Currency currency, UUID uuid, Account.AccountBuilder builder);
+    CompletableFuture<Account> account(Currency currency, UUID uuid, Account.AccountModifier modifier);
 
     /**
      * Provides an immutable Multimap of currencies to all accounts accessible via the economy provider.
