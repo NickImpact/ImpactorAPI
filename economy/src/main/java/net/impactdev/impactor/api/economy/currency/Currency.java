@@ -25,6 +25,7 @@
 
 package net.impactdev.impactor.api.economy.currency;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.economy.accounts.Account;
 import net.impactdev.impactor.api.platform.audience.LocalizedAudience;
@@ -75,8 +76,11 @@ public interface Currency {
     Component symbol();
 
     /**
+     * Represents the placement position of the character, or component, declared by {@link #symbol()}.
+     * In other words, this enum value indicates calls to any of the formatting requests to place
+     * the symbol on the left or the right of the {@link BigDecimal} amount.
      *
-     * @return
+     * @return An enum value indicating symbol placement
      */
     SymbolFormatting formatting();
 
@@ -88,8 +92,23 @@ public interface Currency {
      */
     BigDecimal defaultAccountBalance();
 
+    /**
+     * Indicates how many decimal places should be used when formatting the number for this
+     * currency. These decimal places will always be present, whether needed or unneeded.
+     * For instance, for US currency, we would have a value of 2 to indicate a value
+     * such as $0.00.
+     *
+     * @return The number of decimal places used to format a number
+     */
     int decimals();
 
+    /**
+     * Indicates if this given currency should act as the primary currency for the economy service.
+     * While multiple currencies can be declared as a primary currency, only one can truly act as
+     * such. Ideally, this is user determined versus plugin determined.
+     *
+     * @return If the given currency is considered the primary or fallback currency
+     */
     boolean primary();
 
     /**
@@ -202,6 +221,7 @@ public interface Currency {
 
         CurrencyBuilder decimals(final int decimals);
 
+        @CanIgnoreReturnValue
         CurrencyBuilder primary();
     }
 

@@ -29,15 +29,10 @@ import net.impactdev.impactor.api.logging.PluginLogger;
 import net.impactdev.impactor.api.platform.plugins.PluginMetadata;
 
 /**
- * Represents a plugin which will be loaded and initialized by Impactor. Due to the nature
- * of mod loading, the Impactor API may not be available during certain lifecycle events
- * for a subset or all plugins/mods. This is due to the parallel mod loading schema which
- * doesn't necessarily maintain dependency load order.
- *
- * <p>For Impactor to acknowledge an inheriting plugin, you will want to register your plugin
- * with the {@link PluginRegistry} via {@link PluginRegistry#register(PluginMetadata, ImpactorPlugin)}.
- * From there, Impactor will post load calls to your plugins, ensuring vital Impactor API
- * components are made available for its plugins.
+ * Represents a plugin which features the common bootstrapping functions alongside
+ * a set of metadata detailing information on a plugin as well as a logger. In addition,
+ * implementations can make use of the given components, such as
+ * {@link net.impactdev.impactor.api.plugin.components.Configurable}.
  */
 public interface ImpactorPlugin {
 
