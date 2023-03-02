@@ -26,7 +26,7 @@
 package net.impactdev.impactor.api.ui.signs;
 
 import net.impactdev.impactor.api.Impactor;
-import net.impactdev.impactor.api.platform.sources.PlatformPlayer;
+import net.impactdev.impactor.api.platform.players.PlatformPlayer;
 import net.impactdev.impactor.api.utility.builders.Builder;
 import net.kyori.adventure.text.Component;
 import org.spongepowered.math.vector.Vector3i;

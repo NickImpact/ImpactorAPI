@@ -28,6 +28,7 @@ package net.impactdev.impactor.api.platform.sources;
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.platform.audience.LocalizedAudience;
 import net.impactdev.impactor.api.platform.sources.metadata.MetadataKey;
+import net.impactdev.impactor.api.platform.sources.metadata.MetadataKeys;
 import net.kyori.adventure.text.Component;
 
 import java.util.Optional;
@@ -83,7 +84,7 @@ public interface PlatformSource extends LocalizedAudience {
 
     /**
      * Attempts to find and return a value bound to this source based on a given metadata key. Typical API keys
-     * can be found using {@link net.impactdev.impactor.api.platform.sources.metadata.MetadataKeys}, but more
+     * can be found using {@link MetadataKeys}, but more
      * can be created via the {@link MetadataKey.Factory} provider.
      *
      * @param key The key to use for metadata lookup

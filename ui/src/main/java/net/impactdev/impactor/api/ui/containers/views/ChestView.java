@@ -26,7 +26,7 @@
 package net.impactdev.impactor.api.ui.containers.views;
 
 import net.impactdev.impactor.api.Impactor;
-import net.impactdev.impactor.api.platform.sources.PlatformPlayer;
+import net.impactdev.impactor.api.platform.players.PlatformPlayer;
 import net.impactdev.impactor.api.ui.containers.View;
 import net.impactdev.impactor.api.ui.containers.layouts.ChestLayout;
 import net.impactdev.impactor.api.utility.builders.Builder;

@@ -28,8 +28,6 @@ package net.impactdev.impactor.api.platform.sources.metadata;
 import net.impactdev.impactor.api.platform.sources.PlatformSource;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
-import org.intellij.lang.annotations.Pattern;
-import org.intellij.lang.annotations.Subst;
 import org.spongepowered.math.vector.Vector2d;
 import org.spongepowered.math.vector.Vector3d;
 

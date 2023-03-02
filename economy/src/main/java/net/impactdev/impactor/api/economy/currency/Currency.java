@@ -29,6 +29,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.economy.accounts.Account;
 import net.impactdev.impactor.api.platform.audience.LocalizedAudience;
+import net.impactdev.impactor.api.platform.sources.PlatformSource;
 import net.impactdev.impactor.api.utility.builders.Builder;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
@@ -165,7 +166,7 @@ public interface Currency {
      *
      * <p>When formatting the amount specified, this will use the given locale to ensure
      * the formatted value meets the locale's rules. For instance, this will replace dots
-     * with commas where necessary. If you have an instance of a {@link net.impactdev.impactor.api.platform.sources.PlatformSource},
+     * with commas where necessary. If you have an instance of a {@link PlatformSource},
      * you can find the locale through {@link LocalizedAudience#locale()}.
      *
      * @param amount A {@link BigDecimal} representing some form of monetary value

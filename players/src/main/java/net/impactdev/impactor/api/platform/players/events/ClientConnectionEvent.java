@@ -23,10 +23,10 @@
  *
  */
 
-package net.impactdev.impactor.api.platform.sources.events;
+package net.impactdev.impactor.api.platform.players.events;
 
 import net.impactdev.impactor.api.events.ImpactorEvent;
-import net.impactdev.impactor.api.platform.sources.PlatformPlayer;
+import net.impactdev.impactor.api.platform.players.PlatformPlayer;
 import net.impactdev.impactor.api.platform.sources.PlatformSource;
 
 public interface ClientConnectionEvent extends ImpactorEvent {

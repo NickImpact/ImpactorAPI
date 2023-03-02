@@ -23,11 +23,12 @@
  *
  */
 
-package net.impactdev.impactor.api.platform.sources;
+package net.impactdev.impactor.api.platform.players;
 
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.items.ImpactorItemStack;
 import net.impactdev.impactor.api.items.platform.ItemTransaction;
+import net.impactdev.impactor.api.platform.sources.PlatformSource;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;

@@ -25,7 +25,7 @@
 
 package net.impactdev.impactor.api.ui.containers;
 
-import net.impactdev.impactor.api.platform.sources.PlatformPlayer;
+import net.impactdev.impactor.api.platform.players.PlatformPlayer;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.checkerframework.common.value.qual.IntRange;

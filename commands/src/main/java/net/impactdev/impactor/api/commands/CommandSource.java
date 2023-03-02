@@ -25,7 +25,7 @@
 
 package net.impactdev.impactor.api.commands;
 
-import net.impactdev.impactor.api.platform.sources.PlatformPlayer;
+import net.impactdev.impactor.api.platform.players.PlatformPlayer;
 import net.impactdev.impactor.api.platform.sources.PlatformSource;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;

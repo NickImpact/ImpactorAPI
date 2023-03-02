@@ -23,7 +23,7 @@
  *
  */
 
-package net.impactdev.impactor.api.platform.sources;
+package net.impactdev.impactor.api.platform.players;
 
 import net.impactdev.impactor.api.services.Service;
 import org.jetbrains.annotations.NotNull;
