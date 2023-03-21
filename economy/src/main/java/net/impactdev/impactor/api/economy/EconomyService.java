@@ -52,10 +52,65 @@ public interface EconomyService extends Service {
     CurrencyProvider currencies();
 
     /**
+     * Checks via the service account cache, delegating to system I/O if not available, to validate
+     * whether an account exists for the primary currency, as specified by {@link CurrencyProvider#primary()}.
+     *
+     * @param uuid The uuid of the account to query for
+     * @return A future result indicating if an account was found
+     */
+    default CompletableFuture<Boolean> hasAccount(UUID uuid) {
+        return this.hasAccount(this.currencies().primary(), uuid);
+    }
+
+    /**
+     * Checks via the service account cache, delegating to system I/O if not available, to validate
+     * whether an account exists for the given currency.
+     *
+     * @param currency The currency to query against
+     * @param uuid The uuid of the account to query for
+     * @return A future result indicating if an account was found
+     */
+    CompletableFuture<Boolean> hasAccount(Currency currency, UUID uuid);
+
+    /**
+     * Fetches or creates an account bound to the primary currency, as specified by
+     * {@link CurrencyProvider#primary()} using the given UUID. This will first attempt
+     * to locate a cached account, delegating to a load attempt if no account can be found
+     * under the specified criteria. If no account is found, a new account will be generated
+     * instead.
+     *
+     * @param uuid The UUID of the owner of the account.
+     * @return The stored account, or a new account reflecting the request
+     */
+    default CompletableFuture<Account> account(UUID uuid) {
+        return this.account(this.currencies().primary(), uuid);
+    }
+
+    /**
+     * Fetches or creates an account bound to the primary currency, as specified by
+     * {@link CurrencyProvider#primary()} using the given UUID. This will first attempt
+     * to locate a cached account, delegating to a load attempt if no account can be found
+     * under the specified criteria.
+     *
+     * <p>If no account can be located after exhausting both look up options, a new account
+     * will be generated instead, making use of the given <code>modifier</code> to apply
+     * changes to the account. For instance, this modifier allows you to mark an account
+     * as virtual, which can be a key indicator for bank accounts or any account not
+     * owned by a player.
+     *
+     * @param uuid The uuid of the account owner
+     * @param modifier A property which supplies an account builder for further modification
+     * @return The stored account, or a new account reflecting the request
+     */
+    default CompletableFuture<Account> account(UUID uuid, Account.AccountModifier modifier) {
+        return this.account(this.currencies().primary(), uuid, modifier);
+    }
+
+    /**
      * Fetches or creates an account bound to the specified currency using the given UUID.
      * This will first attempt to locate a cached account, delegating to a load attempt if
-     * no account can be found under the specified criteria. If no account is found, this will
-     * instead create a new account for the given criteria instead.
+     * no account can be found under the specified criteria. If no account is found, a new
+     * account will be generated instead.
      *
      * @param currency The currency this account will be bound to
      * @param uuid The UUID of the owner of the account.
@@ -93,5 +148,27 @@ public interface EconomyService extends Service {
     default CompletableFuture<Collection<Account>> accounts(Currency currency) {
         return this.accounts().thenApply(map -> map.get(currency));
     }
+
+    /**
+     * Using the given UUID, attempts to delete an account owned by the given UUID for the primary currency.
+     * If you wish to delete an account bound to another currency, use {@link #deleteAccount(Currency, UUID)}
+     * instead.
+     *
+     * @param uuid The target account owner's {@link UUID}
+     * @return A future useful for indicating task completion
+     */
+    default CompletableFuture<Void> deleteAccount(UUID uuid) {
+        return this.deleteAccount(this.currencies().primary(), uuid);
+    }
+
+    /**
+     * Using the given currency and UUID, attempts to delete a matching account that satisfies the currency binding
+     * and is owned by the given UUID.
+     *
+     * @param currency The specific currency an account should be deleted from
+     * @param uuid The target account owner's {@link UUID}
+     * @return A future useful for indicating task completion
+     */
+    CompletableFuture<Void> deleteAccount(Currency currency, UUID uuid);
 
 }

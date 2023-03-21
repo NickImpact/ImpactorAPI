@@ -28,7 +28,7 @@ package net.impactdev.impactor.api.economy.events;
 import net.impactdev.impactor.api.economy.accounts.Account;
 import net.impactdev.impactor.api.economy.currency.Currency;
 import net.impactdev.impactor.api.economy.transactions.EconomyTransaction;
-import net.impactdev.impactor.api.economy.transactions.EconomyTransactionType;
+import net.impactdev.impactor.api.economy.transactions.details.EconomyTransactionType;
 import net.impactdev.impactor.api.events.ImpactorEvent;
 import net.kyori.event.Cancellable;
 

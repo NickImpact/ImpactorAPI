@@ -25,19 +25,35 @@
 
 package net.impactdev.impactor.api.economy.transactions;
 
+import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.economy.accounts.Account;
 import net.impactdev.impactor.api.economy.currency.Currency;
+import net.impactdev.impactor.api.economy.transactions.composer.TransactionComposer;
+import net.impactdev.impactor.api.economy.transactions.details.EconomyResultType;
+import net.impactdev.impactor.api.economy.transactions.details.EconomyTransactionType;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 
 public interface EconomyTransaction {
 
     /**
-     * Indicates the {@link Account} targeted by a transaction.
+     * Creates a new composer action which allows a third party to execute transactions against the economy service
+     * without directly working within an account. The main usage for this type of transaction is meant to allow
+     * a caller to feed the transaction custom success/error messages for any possible result from the transaction.
      *
-     * @return The target account for a transaction
+     * <p>
+     * For instance, you can use the composer to register a {@link Component} bound to {@link EconomyResultType#SUCCESS}.
+     * If the transaction completes with a successful result type, the message can then be accessed via {@link #message()}
+     * or even directly sent to an audience via {@link #inform(Audience)}.
+     *
+     * @return A new composer capable of firing off a transaction
      */
-    Account account();
+    static TransactionComposer compose() {
+        return Impactor.instance().builders().provide(TransactionComposer.class);
+    }
 
     /**
      * The currency used within the transaction.
@@ -45,6 +61,13 @@ public interface EconomyTransaction {
      * @return The currency for the transaction
      */
     Currency currency();
+
+    /**
+     * Indicates the {@link Account} targeted by a transaction.
+     *
+     * @return The target account for a transaction
+     */
+    Account account();
 
     /**
      * The amount of currency involved within this transaction.
@@ -68,5 +91,38 @@ public interface EconomyTransaction {
      * @return The result of the transaction
      */
     EconomyResultType result();
+
+    /**
+     * Specifies if the given transaction has completed successfully, as indicated by the result of
+     * {@link #result()}. Should a transaction complete with any status outside of {@link EconomyResultType#SUCCESS},
+     * this call will result in a <code>false</code> return value.
+     *
+     * @return <code>true</code> when the transaction completed successfully, <code>false</code> otherwise
+     */
+    default boolean successful() {
+        return this.result() == EconomyResultType.SUCCESS;
+    }
+
+    /**
+     * Specifies a message that is used to help indicate the result status of a transaction. This message will
+     * not necessarily always be available, and is really ever only populated when a transaction is proposed via
+     * a {@link TransactionComposer}.
+     *
+     * @return A component indicating a human-readable result status, or null if not bound
+     */
+    @Nullable Component message();
+
+    /**
+     * If a message representing the transaction's result status is bound and populated, this will inform
+     * a specified audience with the specific message.
+     *
+     * @param audience The audience to send the transaction status to
+     */
+    default void inform(Audience audience) {
+        Component message = this.message();
+        if(message != null) {
+            audience.sendMessage(message);
+        }
+    }
 
 }

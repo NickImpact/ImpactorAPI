@@ -27,7 +27,7 @@ package net.impactdev.impactor.api.economy.accounts;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import net.impactdev.impactor.api.economy.currency.Currency;
-import net.impactdev.impactor.api.economy.transactions.EconomyResultType;
+import net.impactdev.impactor.api.economy.transactions.details.EconomyResultType;
 import net.impactdev.impactor.api.economy.transactions.EconomyTransaction;
 import net.impactdev.impactor.api.economy.transactions.EconomyTransferTransaction;
 import net.impactdev.impactor.api.utility.builders.Builder;
@@ -69,6 +69,22 @@ public interface Account {
      */
     @NotNull
     UUID owner();
+
+    /**
+     * When <code>true</code>, indicates that this account is not tied to a particular user.
+     *
+     * <p>Examples of virtual accounts include:
+     *  <ul>
+     *      <li>A global server account</li>
+     *      <li>A 'bank account', shared among multiple users</li>
+     *      <li>An account for a non-player entity</li>
+     *  </ul>
+     * </p>
+     *
+     * @return <code>true</code> if this account represents a virtual entity, <code>false</code>
+     * otherwise
+     */
+    boolean virtual();
 
     /**
      * Indicates the current outstanding balance of an account. When updating an account's
@@ -162,6 +178,18 @@ public interface Account {
         @Contract("_ -> this")
         @CanIgnoreReturnValue
         AccountBuilder balance(final @NotNull BigDecimal balance);
+
+        /**
+         * Marks an account as virtual, if it can be marked as such. If an existing account that has the same
+         * UUID as this account is available, this functionality will be overwritten to match that of the already
+         * available account's.
+         *
+         * @return This builder
+         */
+        @NotNull
+        @Contract("-> this")
+        @CanIgnoreReturnValue
+        AccountBuilder virtual();
 
     }
 
