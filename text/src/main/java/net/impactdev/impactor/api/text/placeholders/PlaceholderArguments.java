@@ -62,6 +62,14 @@ public final class PlaceholderArguments {
         return this.arguments.get(this.index++);
     }
 
+    public @Nullable String popOrDefault() {
+        if(this.index >= this.arguments.size()) {
+            return null;
+        }
+
+        return this.arguments.get(this.index++);
+    }
+
     public @Nullable String peek() {
         if(this.index >= this.arguments.size()) {
             return null;
