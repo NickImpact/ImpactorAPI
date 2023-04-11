@@ -26,6 +26,7 @@
 package net.impactdev.impactor.api.economy;
 
 import com.google.common.collect.Multimap;
+import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.services.Service;
 import net.impactdev.impactor.api.economy.accounts.Account;
 import net.impactdev.impactor.api.economy.currency.Currency;
@@ -41,6 +42,10 @@ import java.util.concurrent.CompletableFuture;
  * IO, Impactor provides this service with typical functionality with this expectation.
  */
 public interface EconomyService extends Service {
+
+    static EconomyService instance() {
+        return Impactor.instance().services().provide(EconomyService.class);
+    }
 
     /**
      * Specifies the default currency supplied by this service. This will typically be

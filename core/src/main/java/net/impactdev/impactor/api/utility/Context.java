@@ -143,14 +143,7 @@ public final class Context implements PrettyPrinter.IPrettyPrintable {
      * @throws NoSuchElementException If no value actually exists for the required typing.
      */
     public <T> T require(TypeToken<T> type) throws NoSuchElementException {
-        return this.request(type).orElseThrow(() -> {
-            PrettyPrinter debugger = new PrettyPrinter(80);
-            debugger.title("Context Mapping").hr();
-            debugger.add(this.context);
-            debugger.print(System.out);
-
-            return new NoSuchElementException("Missing Type: " + type.getType().getTypeName());
-        });
+        return this.request(type).orElseThrow(() -> new NoSuchElementException("Missing Type: " + type.getType().getTypeName()));
     }
 
     public int size() {

@@ -23,29 +23,28 @@
  *
  */
 
-package net.impactdev.impactor.api.commands.events;
+package net.impactdev.impactor.api.translations;
 
-import cloud.commandframework.captions.Caption;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import net.impactdev.impactor.api.events.ImpactorEvent;
-import org.jetbrains.annotations.Contract;
+import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.utility.Context;
+import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 
-public interface CaptionRegistrationEvent extends ImpactorEvent {
+import java.util.Locale;
 
-    /**
-     * Registers a caption used for argument parsing. A caption for the cloud command framework is
-     * simply a registration key unique to the given format. The format should ideally contain
-     * variables your argument parsers would fill in, using the given format: {variable}. For
-     * example, on an invalid input of any kind, we could have our format be: "{input} is invalid",
-     * where "{input}" would be supplied by the parser.
-     *
-     * @param key The caption to use for the particular format
-     * @param format The format of the message to be sent to the command source
-     * @return This event for registration chaining
-     */
-    @Contract("_,_ -> this")
-    @CanIgnoreReturnValue
-    CaptionRegistrationEvent register(final @NotNull Caption key, final @NotNull String format);
+public interface TranslationProvider<T> {
 
+    static <T> TranslationProvider<T> create(final @NotNull TranslationManager manager, final @NotNull String key) {
+        return Impactor.instance().factories().provide(Factory.class).create(manager, key);
+    }
+
+    T resolve(final @NotNull Locale locale, final @NotNull Context context);
+
+    void send(final @NotNull Audience audience, final @NotNull Context context);
+
+    interface Factory {
+
+        <T> TranslationProvider<T> create(final @NotNull TranslationManager manager, final @NotNull String key);
+
+    }
 }

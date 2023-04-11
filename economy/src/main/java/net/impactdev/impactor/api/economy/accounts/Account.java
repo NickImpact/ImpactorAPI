@@ -74,12 +74,12 @@ public interface Account {
      * When <code>true</code>, indicates that this account is not tied to a particular user.
      *
      * <p>Examples of virtual accounts include:
-     *  <ul>
-     *      <li>A global server account</li>
-     *      <li>A 'bank account', shared among multiple users</li>
-     *      <li>An account for a non-player entity</li>
-     *  </ul>
-     * </p>
+     * <ul>
+     *     <li>A global server account</li>
+     *     <li>A 'bank account', shared among multiple users</li>
+     *     <li>An account for a non-player entity</li>
+     * </ul>
+     *
      *
      * @return <code>true</code> if this account represents a virtual entity, <code>false</code>
      * otherwise

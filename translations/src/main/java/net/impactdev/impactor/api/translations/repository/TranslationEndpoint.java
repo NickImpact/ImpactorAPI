@@ -23,28 +23,11 @@
  *
  */
 
-package net.impactdev.impactor.api.commands.events;
+package net.impactdev.impactor.api.translations.repository;
 
-import cloud.commandframework.arguments.parser.ArgumentParser;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import io.leangen.geantyref.TypeToken;
-import net.impactdev.impactor.api.commands.CommandSource;
-import net.impactdev.impactor.api.events.ImpactorEvent;
-import org.jetbrains.annotations.Contract;
+public enum TranslationEndpoint {
 
-public interface ArgumentRegistrationEvent extends ImpactorEvent {
-
-    /**
-     * Registers a particular argument parser for an argument to the cloud command framework, using the
-     * given type token for identification.
-     *
-     * @param type A type token used to map the parser to a target value
-     * @param parser A parser responsible for providing the resulting argument value
-     * @return This event for registration chaining
-     * @param <T> The type of object parsed by the given parser
-     */
-    @Contract("_,_ -> this")
-    @CanIgnoreReturnValue
-    <T> ArgumentRegistrationEvent register(TypeToken<T> type, ArgumentParser<CommandSource, T> parser);
+    LANGUAGE_SET,
+    DOWNLOADABLE_LANGUAGE,
 
 }

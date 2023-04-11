@@ -25,12 +25,14 @@
 
 package net.impactdev.impactor.api.text.placeholders;
 
+import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public final class PlaceholderArguments {
 
@@ -39,6 +41,17 @@ public final class PlaceholderArguments {
 
     public PlaceholderArguments(String[] arguments) {
         this.arguments.addAll(Arrays.asList(arguments));
+    }
+
+    private PlaceholderArguments() {}
+
+    public static PlaceholderArguments create(ArgumentQueue queue) {
+        PlaceholderArguments result = new PlaceholderArguments();
+        while(queue.hasNext()) {
+            result.arguments.add(queue.pop().value());
+        }
+
+        return result;
     }
 
     public @NotNull String pop() {
@@ -65,4 +78,16 @@ public final class PlaceholderArguments {
         this.index = 0;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlaceholderArguments that = (PlaceholderArguments) o;
+        return Objects.equals(arguments, that.arguments);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(arguments);
+    }
 }

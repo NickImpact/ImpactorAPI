@@ -41,7 +41,7 @@ import org.jetbrains.annotations.Contract;
 public interface ChestView extends View {
 
 	@Override
-    ChestLayout layout();
+	ChestLayout layout();
 
 	/**
 	 * Opens the view for the specified player.
