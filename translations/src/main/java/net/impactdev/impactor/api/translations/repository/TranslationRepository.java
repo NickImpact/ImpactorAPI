@@ -93,7 +93,7 @@ public interface TranslationRepository {
 
         RepositoryBuilder endpoint(final @NotNull TranslationEndpoint endpoint, final @NotNull String baseURL);
 
-        RepositoryBuilder refreshRule(final @NotNull Supplier<Boolean> rule);
+        RepositoryBuilder refreshWhen(final @NotNull Supplier<Boolean> rule);
 
         RepositoryBuilder maxBundleSize(final long size);
 

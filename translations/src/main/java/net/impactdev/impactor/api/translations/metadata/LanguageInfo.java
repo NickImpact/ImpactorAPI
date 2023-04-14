@@ -53,6 +53,18 @@ public final class LanguageInfo {
         }
     }
 
+    private LanguageInfo(String id, String name, Locale locale, int progress, List<String> contributors) {
+        this.id = id;
+        this.name = name;
+        this.locale = locale;
+        this.progress = progress;
+        this.contributors = contributors;
+    }
+
+    public static LanguageInfo create(String id, String name, Locale locale, int progress, List<String> contributors) {
+        return new LanguageInfo(id, name, locale, progress, contributors);
+    }
+
     public String id() {
         return this.id;
     }

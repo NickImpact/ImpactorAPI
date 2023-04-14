@@ -25,12 +25,25 @@
 
 package net.impactdev.impactor.api.economy.transactions.details;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Arrays;
+
 public enum EconomyTransactionType {
 
     DEPOSIT,
     WITHDRAW,
     SET,
     RESET,
-    TRANSFER,
+    TRANSFER;
+
+    @Nullable
+    public static EconomyTransactionType from(final @NotNull String input) {
+        return Arrays.stream(values())
+                .filter(type -> type.name().equalsIgnoreCase(input))
+                .findFirst()
+                .orElse(null);
+    }
 
 }

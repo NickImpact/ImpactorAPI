@@ -52,6 +52,8 @@ public interface TranslationManager {
 
     void reload();
 
+    void refresh();
+
     TextProcessor processor();
 
     Locale defaultLocale();
@@ -72,7 +74,7 @@ public interface TranslationManager {
 
         @Contract("_ -> this")
         @CanIgnoreReturnValue
-        TranslationManagerBuilder defaultLocale(final @NotNull Locale locale);
+        TranslationManagerBuilder fallback(final @NotNull Locale locale);
 
         @Contract("_ -> this")
         @CanIgnoreReturnValue
