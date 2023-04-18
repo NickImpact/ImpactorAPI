@@ -43,15 +43,15 @@ import java.util.function.Supplier;
 public interface PlatformSource extends LocalizedAudience {
 
     /** A default UUID of all 0's, used to represent the console */
-    UUID CONSOLE_UUID = new UUID(0, 0);
+    UUID SERVER_UUID = new UUID(0, 0);
 
     /**
      * Creates a source which represents the server console for the running server instance.
      *
      * @return A source representing the server console
      */
-    static PlatformSource console() {
-        return Impactor.instance().factories().provide(Factory.class).console();
+    static PlatformSource server() {
+        return Impactor.instance().factories().provide(Factory.class).server();
     }
 
     static Factory factory() {
@@ -113,7 +113,7 @@ public interface PlatformSource extends LocalizedAudience {
          *
          * @return A platform source representing the game console
          */
-        PlatformSource console();
+        PlatformSource server();
 
         /**
          * Creates a source linked to an entity within the world, bound by a particular ID. If the given

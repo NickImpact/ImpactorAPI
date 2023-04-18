@@ -38,6 +38,7 @@ public interface TranslationProvider<T> {
         return Impactor.instance().factories().provide(Factory.class).create(manager, key);
     }
 
+    @NotNull
     T resolve(final @NotNull Locale locale, final @NotNull Context context);
 
     void send(final @NotNull Audience audience, final @NotNull Context context);

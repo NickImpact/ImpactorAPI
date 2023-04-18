@@ -28,6 +28,6 @@ package net.impactdev.impactor.api.platform.sources;
 public enum SourceType {
 
     PLAYER,
-    CONSOLE,
+    SERVER,
     ENTITY,
 }
