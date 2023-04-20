@@ -86,6 +86,7 @@ public abstract class AbstractJavaScheduler implements SchedulerAdapter {
         this.scheduler = new ScheduledThreadPoolExecutor(1, r -> {
             Thread thread = Executors.defaultThreadFactory().newThread(r);
             thread.setName(THREAD_NAME);
+            thread.setDaemon(true);
             return thread;
         });
         this.scheduler.setRemoveOnCancelPolicy(true);
@@ -111,15 +112,15 @@ public abstract class AbstractJavaScheduler implements SchedulerAdapter {
     }
 
     @Override
-    public SchedulerTask asyncDelayedAndRepeating(Runnable task, long delay, TimeUnit dUnit, long interval, TimeUnit iUnit) {
-        return null;
+    public SchedulerTask asyncDelayedAndRepeating(Runnable task, long delay, long interval, TimeUnit unit) {
+        ScheduledFuture<?> future = this.scheduler.scheduleAtFixedRate(() -> this.worker.execute(task), interval, interval, unit);
+        return () -> future.cancel(false);
     }
 
-    @Override
     public void shutdownScheduler() {
         this.scheduler.shutdown();
         try {
-            if (!this.scheduler.awaitTermination(1, TimeUnit.MINUTES)) {
+            if (!this.scheduler.awaitTermination(10, TimeUnit.SECONDS)) {
                 this.logger.severe("Timed out waiting for the Impactor scheduler to terminate");
                 reportRunningTasks(thread -> thread.getName().equals(THREAD_NAME));
             }
@@ -128,11 +129,10 @@ public abstract class AbstractJavaScheduler implements SchedulerAdapter {
         }
     }
 
-    @Override
     public void shutdownExecutor() {
         this.worker.shutdown();
         try {
-            if (!this.worker.awaitTermination(1, TimeUnit.MINUTES)) {
+            if (!this.worker.awaitTermination(10, TimeUnit.SECONDS)) {
                 this.logger.severe("Timed out waiting for the Impactor worker thread pool to terminate");
                 reportRunningTasks(thread -> thread.getName().startsWith(WORKER_PREFIX));
             }
