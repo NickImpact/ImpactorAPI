@@ -1,6 +1,5 @@
 plugins {
-    id("impactor.base-conventions")
-    id("impactor.publishing-conventions")
+    id("impactor.api-conventions")
 }
 
 dependencies {
