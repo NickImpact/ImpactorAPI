@@ -35,11 +35,16 @@ import net.impactdev.impactor.api.items.properties.MetaFlag;
 import net.impactdev.impactor.api.items.properties.enchantments.Enchantment;
 import net.impactdev.impactor.api.items.types.ItemType;
 import net.impactdev.impactor.api.items.types.ItemTypes;
+import net.kyori.adventure.nbt.BinaryTag;
+import net.kyori.adventure.nbt.BinaryTagTypes;
 import net.kyori.adventure.nbt.CompoundBinaryTag;
+import net.kyori.adventure.nbt.IntBinaryTag;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -143,6 +148,24 @@ public interface ImpactorItemStack {
      * @return <code>true</code> if the stack is unbreakable, <code>false</code> otherwise
      */
     boolean unbreakable();
+
+    /**
+     * When set, returns a flag indicating the custom model data applied to the ItemStack. This is effectively
+     * a lookup to the nbt of the item, but this method is provided as a convenience for quick and direct
+     * lookups with Impactor based ItemStacks.
+     *
+     * @return An optionally wrapped int indicating the custom model data of an item, if set. Otherwise, an empty
+     * Optional.
+     */
+    @SuppressWarnings("unused")
+    default Optional<Integer> customModelData() {
+        @Nullable BinaryTag tag = this.nbt().get("CustomModelData");
+        if(tag != null && tag.type().test(BinaryTagTypes.INT)) {
+            return Optional.of(((IntBinaryTag) tag).value());
+        }
+
+        return Optional.empty();
+    }
 
     /**
      * Represents additional nbt data specific to the item stack. This data would be mirrored onto

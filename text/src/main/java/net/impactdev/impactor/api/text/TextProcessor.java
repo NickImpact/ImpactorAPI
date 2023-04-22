@@ -29,6 +29,7 @@ import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.platform.sources.PlatformSource;
 import net.impactdev.impactor.api.utility.Context;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,6 +51,19 @@ public interface TextProcessor {
      */
     static TextProcessor mini() {
         return Impactor.instance().factories().provide(Factory.class).mini();
+    }
+
+    /**
+     * Creates a text processor which users mini message to process raw message strings. Following the style
+     * of {@link #mini()}, this processor uses a given mini message instance instead of the default Impactor
+     * system (which internally is effectively the base mini message instance). Make use of this type of processor
+     * if you wish to provide additional context to MiniMessage .
+     *
+     * @param delegate The {@link MiniMessage} backing that should be used for this text processor
+     * @return A text processor based around MiniMessage text processing
+     */
+    static TextProcessor mini(MiniMessage delegate) {
+        return Impactor.instance().factories().provide(Factory.class).mini(delegate);
     }
 
     /**
@@ -171,11 +185,22 @@ public interface TextProcessor {
          *
          * <p>Placeholders under this processor are expected to be in the MiniMessage tag style. When
          * it comes to specifying the tag, the key registration for the placeholder will appear in the
-         * following format: &lt;(namespace)-(value)&gt;
+         * following format: &lt;(namespace):(value)&gt;
          *
          * @return A text processor based around MiniMessage text processing
          */
         TextProcessor mini();
+
+        /**
+         * Creates a text processor which users mini message to process raw message strings. Following the style
+         * of {@link #mini()}, this processor uses a given mini message instance instead of the default Impactor
+         * system (which internally is effectively the base mini message instance). Make use of this type of processor
+         * if you wish to provide additional context to MiniMessage .
+         *
+         * @param delegate The {@link MiniMessage} backing that should be used for this text processor
+         * @return A text processor based around MiniMessage text processing
+         */
+        TextProcessor mini(MiniMessage delegate);
 
         /**
          * Provides a text processor which is based around the

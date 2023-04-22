@@ -32,9 +32,11 @@ import net.impactdev.impactor.api.items.properties.MetaFlag;
 import net.impactdev.impactor.api.items.properties.enchantments.Enchantment;
 import net.impactdev.impactor.api.items.types.ItemType;
 import net.kyori.adventure.nbt.CompoundBinaryTag;
+import net.kyori.adventure.nbt.IntBinaryTag;
 import net.kyori.adventure.text.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public abstract class AbstractedItemStack implements ImpactorItemStack {
@@ -56,7 +58,11 @@ public abstract class AbstractedItemStack implements ImpactorItemStack {
         this.enchantments = ImmutableSet.copyOf(builder.enchantments);
         this.flags = ImmutableSet.copyOf(builder.flags);
         this.unbreakable = builder.unbreakable;
-        this.nbt = builder.nbt;
+        if(builder.customModelData != null) {
+            this.nbt = builder.nbt.put("CustomModelData", IntBinaryTag.of(builder.customModelData));
+        } else {
+            this.nbt = builder.nbt;
+        }
     }
 
     @Override

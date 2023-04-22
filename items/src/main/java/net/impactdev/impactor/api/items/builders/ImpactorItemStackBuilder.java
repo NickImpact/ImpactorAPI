@@ -25,6 +25,7 @@
 
 package net.impactdev.impactor.api.items.builders;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import net.impactdev.impactor.api.items.ImpactorItemStack;
 import net.impactdev.impactor.api.items.properties.MetaFlag;
 import net.impactdev.impactor.api.items.properties.enchantments.Enchantment;
@@ -46,6 +47,7 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
      * @param quantity The size of the item stack
      * @return This builder
      */
+    @CanIgnoreReturnValue
     @Contract("_ -> this")
     B quantity(final int quantity);
 
@@ -57,6 +59,7 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
      * @param title The title for the item stack
      * @return This builder
      */
+    @CanIgnoreReturnValue
     @Contract("_ -> this")
     B title(final Component title);
 
@@ -69,6 +72,7 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
      *             occurrence
      * @return This builder
      */
+    @CanIgnoreReturnValue
     @Contract("_ -> this")
     B lore(final Component... lore);
 
@@ -81,6 +85,7 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
      *             occurrence
      * @return This builder
      */
+    @CanIgnoreReturnValue
     @Contract("_ -> this")
     B lore(final Collection<Component> lore);
 
@@ -95,9 +100,11 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
      * @param enchantment The enchantment to apply to the item stack
      * @return This builder
      */
+    @CanIgnoreReturnValue
     @Contract("_ -> this")
     B enchantment(final Enchantment enchantment);
 
+    @CanIgnoreReturnValue
     @SuppressWarnings("unchecked")
     @Contract("_,_ -> this")
     default B enchantments(final Enchantment primary, final Enchantment... enchantments) {
@@ -109,6 +116,7 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
         return (B) this;
     }
 
+    @CanIgnoreReturnValue
     @SuppressWarnings("unchecked")
     @Contract("_ -> this")
     default B enchantments(final Collection<Enchantment> enchantments) {
@@ -130,6 +138,7 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
      * @param durability The amount of durability remaining on the target item.
      * @return This builder
      */
+    @CanIgnoreReturnValue
     @Contract("_ -> this")
     B durability(@Positive final int durability);
 
@@ -140,6 +149,7 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
      *
      * @return This builder
      */
+    @CanIgnoreReturnValue
     @Contract("-> this")
     default B unbreakable() {
         return this.unbreakable(true);
@@ -152,6 +162,7 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
      * @return This builder
      * @see #unbreakable()
      */
+    @CanIgnoreReturnValue
     @Contract("_ -> this")
     B unbreakable(boolean state);
 
@@ -164,9 +175,11 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
      * @param flags A set of flags to apply
      * @return This builder
      */
+    @CanIgnoreReturnValue
     @Contract("_ -> this")
     B hide(final MetaFlag... flags);
 
+    @CanIgnoreReturnValue
     @Contract("_ -> this")
     B hide(final Collection<MetaFlag> flags);
 
@@ -178,8 +191,13 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
      *
      * @return This builder
      */
+    @CanIgnoreReturnValue
     @Contract("-> this")
     B glow();
+
+    @CanIgnoreReturnValue
+    @Contract("_ -> this")
+    B customModelData(final int value);
 
     /**
      * Applies an additional set of NBT to the resulting item. This field is primarily useful
@@ -188,6 +206,7 @@ public interface ImpactorItemStackBuilder<I extends ImpactorItemStack, B extends
      *
      * @return This builder
      */
+    @CanIgnoreReturnValue
     @Contract("_ -> this")
     B nbt(final CompoundBinaryTag nbt);
 

@@ -33,6 +33,7 @@ import net.impactdev.impactor.api.items.properties.enchantments.Enchantment;
 import net.impactdev.impactor.api.items.properties.enchantments.Enchantments;
 import net.kyori.adventure.nbt.CompoundBinaryTag;
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -48,6 +49,9 @@ public abstract class AbstractStackBuilder<I extends ImpactorItemStack, B extend
     public Set<MetaFlag> flags = Sets.newHashSet();
     public int durability;
     public boolean unbreakable;
+
+    @Nullable
+    public Integer customModelData = null;
     public CompoundBinaryTag nbt;
 
     @Override
@@ -108,6 +112,12 @@ public abstract class AbstractStackBuilder<I extends ImpactorItemStack, B extend
     public B glow() {
         this.enchantment(Enchantment.create(Enchantments.UNBREAKING, 1));
         this.hide(MetaFlag.ENCHANTMENTS);
+        return (B) this;
+    }
+
+    @Override
+    public B customModelData(int value) {
+        this.customModelData = value;
         return (B) this;
     }
 
