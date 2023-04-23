@@ -77,10 +77,15 @@ public interface Config {
         ConfigBuilder path(Path path);
 
         /**
+         * If the configuration file cannot be located (should this be a first run), you can
+         * provide a supplier to an input stream such that a default config will be generated
+         * at time of initialization.
          *
+         * <p>This call will additionally take care of closing the resource, so you don't
+         * need to worry about resource management.</p>
          *
-         * @param supplier
-         * @return
+         * @param supplier A supplier which provides the input stream
+         * @return This builder
          */
         ConfigBuilder provideIfMissing(Supplier<InputStream> supplier);
 

@@ -27,6 +27,9 @@ package net.impactdev.impactor.api.platform;
 
 import net.impactdev.impactor.api.utility.printing.PrettyPrinter;
 
+/**
+ * A platform component represents details on the current system.
+ */
 public interface PlatformComponent extends PrettyPrinter.IPrettyPrintable {
 
     String name();
