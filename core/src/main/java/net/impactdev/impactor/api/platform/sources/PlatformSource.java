@@ -121,9 +121,8 @@ public interface PlatformSource extends LocalizedAudience {
          *
          * @param uuid The UUID of the target entity
          * @return A platform source representing an entity existing within the world
-         * @throws IllegalArgumentException If the given UUID is bound to a player
          */
-        PlatformSource entity(UUID uuid);
+        PlatformSource fromID(UUID uuid);
 
     }
 
