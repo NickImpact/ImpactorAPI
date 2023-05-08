@@ -33,6 +33,7 @@ import net.impactdev.impactor.api.platform.sources.PlatformSource;
 import net.impactdev.impactor.api.utility.builders.Builder;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.util.TriState;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
@@ -111,6 +112,20 @@ public interface Currency {
      * @return If the given currency is considered the primary or fallback currency
      */
     boolean primary();
+
+    /**
+     * Specifies that a currency is allowed to be transferred from one Account to another. This is primarily
+     * useful for cases with commands such as /pay.
+     *
+     * <p>Note that with some implementations, this method won't be able to determine if a currency should
+     * be allowed to be transferred (such as via direct access to the Vault API). As such, implementations
+     * should return {@link TriState#NOT_SET} to indicate this status, and are allowed to determine how this
+     * state functions.
+     *
+     * @return A TriState indicating if transfers are allowed for a currency.
+     * @since 5.0.1
+     */
+    TriState transferable();
 
     /**
      * Given a {@link BigDecimal}, formats the value into a component using the condensed pattern.
@@ -224,6 +239,8 @@ public interface Currency {
 
         @CanIgnoreReturnValue
         CurrencyBuilder primary();
+
+        CurrencyBuilder transferable(final boolean state);
     }
 
 }
