@@ -95,7 +95,7 @@ public interface TransferComposer extends Builder<EconomyTransferTransaction> {
      * @return The transaction response detailing how the transaction applied
      */
     @Override
-    @Deprecated(since = "5.1.0", forRemoval = true)
+    @Deprecated
     @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
     default EconomyTransferTransaction build() {
         return this.send().join();
