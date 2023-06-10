@@ -26,16 +26,19 @@
 package net.impactdev.impactor.api.economy.accounts;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import kotlin.ReplaceWith;
 import net.impactdev.impactor.api.economy.currency.Currency;
 import net.impactdev.impactor.api.economy.transactions.details.EconomyResultType;
 import net.impactdev.impactor.api.economy.transactions.EconomyTransaction;
 import net.impactdev.impactor.api.economy.transactions.EconomyTransferTransaction;
 import net.impactdev.impactor.api.utility.builders.Builder;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * <h2>Account Definition</h2>
@@ -91,9 +94,27 @@ public interface Account {
      * balance, you'll want to make use of the below methods to achieve this task.
      *
      * @return The current balance of this account.
+     * @deprecated This call might require data look up in the event an account cannot be cached
+     * by an implementation. As such, this method will attempt to await the async variant before
+     * computing a result.
+     * @see #balanceAsync()
      */
     @NotNull
-    BigDecimal balance();
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
+    default BigDecimal balance() {
+        return this.balanceAsync().join();
+    }
+
+    /**
+     * Asynchronously fetches the current balance on an account. This method properly considers the possibility
+     * that an account's finer details will need to be computed from a non-cacheable data store.
+     *
+     * @return A completable future which computes the balance of this account
+     * @since 5.1.0
+     */
+    @NotNull
+    CompletableFuture<BigDecimal> balanceAsync();
 
     /**
      * Sets this account's balance to the given amount specified. This value should conform
@@ -104,10 +125,35 @@ public interface Account {
      *
      * @param amount The amount to set the account's balance to
      * @return A transaction report indicating the result of the operation
+     * @deprecated This call might require data look up in the event an account cannot be cached
+     * by an implementation. As such, this method will attempt to await the async variant before
+     * computing a result. This is scheduled for removal with 6.0.0.
+     * @see #setAsync(BigDecimal)
      */
     @NotNull
     @CanIgnoreReturnValue
-    EconomyTransaction set(BigDecimal amount);
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
+    default EconomyTransaction set(BigDecimal amount) {
+        return this.setAsync(amount).join();
+    }
+
+    /**
+     * Asynchronously sets this account's balance to the given amount specified. This value should conform
+     * to the specified limits denoted by the implementation. Any value outside the implementation's
+     * allowed constraints, if any, will result in a failed transaction, denoted by
+     * {@link EconomyTransaction#result()} with a return value of {@link EconomyResultType#FAILED}
+     * or {@link EconomyResultType#CANCELLED}.
+     *
+     * <p>Unlike {@link #set(BigDecimal)}, this method properly adheres to implementations which might
+     * require stateful transactions to ensure data safety.</p>
+     *
+     * @return A completable future which reports an {@link EconomyTransaction} describing the result
+     * of the operation
+     * @since 5.1.0
+     */
+    @NotNull
+    CompletableFuture<@NotNull EconomyTransaction> setAsync(BigDecimal amount);
 
     /**
      * Withdraws from the account's balance by the specified amount. This value should
@@ -118,10 +164,35 @@ public interface Account {
      *
      * @param amount The amount to withdraw from the account
      * @return A transaction report indicating the result of the operation
+     * @deprecated This call might require data look up in the event an account cannot be cached
+     * by an implementation. As such, this method will attempt to await the async variant before
+     * computing a result. This is scheduled for removal with 6.0.0.
+     * @see #withdrawAsync(BigDecimal)
      */
     @NotNull
     @CanIgnoreReturnValue
-    EconomyTransaction withdraw(BigDecimal amount);
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
+    default EconomyTransaction withdraw(BigDecimal amount) {
+        return this.withdrawAsync(amount).join();
+    }
+
+    /**
+     * Asynchronously withdraws from the account's balance by the specified amount. This value should
+     * conform to the specified limits denoted by the implementation. For instance, an account
+     * may not be allowed to go beyond 0 and into the negatives, in which case, the implementation
+     * should report a result of {@link EconomyResultType#NOT_ENOUGH_FUNDS}. Should any other
+     * failure occur, {@link EconomyResultType#FAILED} or {@link EconomyResultType#CANCELLED}.
+     *
+     * <p>Unlike {@link #withdraw(BigDecimal)}, this method properly adheres to implementations which might
+     * require stateful transactions to ensure data safety.</p>
+     *
+     * @return A completable future which reports an {@link EconomyTransaction} describing the result
+     * of the operation
+     * @since 5.1.0
+     */
+    @NotNull
+    CompletableFuture<@NotNull EconomyTransaction> withdrawAsync(BigDecimal amount);
 
     /**
      * Deposits the amount specified into the account. This value should conform to the
@@ -134,10 +205,37 @@ public interface Account {
      *
      * @param amount The amount to deposit into the account
      * @return A transaction report indicating the result of the operation
+     * @deprecated This call might require data look up in the event an account cannot be cached
+     * by an implementation. As such, this method will attempt to await the async variant before
+     * computing a result. This is scheduled for removal with 6.0.0.
+     * @see #depositAsync(BigDecimal)
      */
     @NotNull
     @CanIgnoreReturnValue
-    EconomyTransaction deposit(BigDecimal amount);
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
+    default EconomyTransaction deposit(BigDecimal amount) {
+        return this.depositAsync(amount).join();
+    }
+
+    /**
+     * Asynchronously deposits the amount specified into the account. This value should conform to the
+     * specified limits denoted by the implementation. For instance, an implementation might
+     * impose max balance limits on an account. In the event such a restriction is imposed,
+     * any use of this operation that would cause the account to push beyond that limit
+     * will fail and be marked with a result of {@link EconomyResultType#NO_REMAINING_SPACE}.
+     * Any other sort of failures will result in {@link EconomyResultType#FAILED} or
+     * {@link EconomyResultType#CANCELLED}.
+     *
+     * <p>Unlike {@link #deposit(BigDecimal)}, this method properly adheres to implementations which might
+     * require stateful transactions to ensure data safety.</p>
+     *
+     * @return A completable future which reports an {@link EconomyTransaction} describing the result
+     * of the operation
+     * @since 5.1.0
+     */
+    @NotNull
+    CompletableFuture<@NotNull EconomyTransaction> depositAsync(BigDecimal amount);
 
     /**
      * Performs a bank transfer of the specified amount from this account to the target
@@ -147,33 +245,100 @@ public interface Account {
      * @param to The account money is being transferred to
      * @param amount The amount to transfer
      * @return A transaction report indicating the result of the operation
+     * @deprecated This call might require data look up in the event an account cannot be cached
+     * by an implementation. As such, this method will attempt to await the async variant before
+     * computing a result. This is scheduled for removal with 6.0.0.
+     * @see #transferAsync(Account, BigDecimal)
      */
     @NotNull
     @CanIgnoreReturnValue
-    EconomyTransferTransaction transfer(Account to, BigDecimal amount);
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
+    default EconomyTransferTransaction transfer(Account to, BigDecimal amount) {
+        return this.transferAsync(to, amount).join();
+    }
+
+    /**
+     * Asynchronously performs a bank transfer of the specified amount from this account to the target
+     * account supplied as <code>to</code>. This effectively mirrors a withdrawal and deposit
+     * interaction, validating both requirements before proceeding with the transfer.
+     *
+     * <p>Unlike {@link #transfer(Account, BigDecimal)}, this method properly adheres to implementations which might
+     * require stateful transactions to ensure data safety.</p>
+     *
+     * @return A completable future which reports an {@link EconomyTransferTransaction} describing the result
+     * of the operation
+     * @since 5.1.0
+     */
+    @NotNull
+    CompletableFuture<@NotNull EconomyTransferTransaction> transferAsync(Account to, BigDecimal amount);
 
     /**
      * Resets an account's balance to the defined starting balance of the currency,
      * or a config's given override, if set.
      *
      * @return A transaction report indicating the result of the operation
+     * @deprecated This call might require data look up in the event an account cannot be cached
+     * by an implementation. As such, this method will attempt to await the async variant before
+     * computing a result. This is scheduled for removal with 6.0.0.
+     * @see #resetAsync()
      */
     @NotNull
     @CanIgnoreReturnValue
-    EconomyTransaction reset();
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
+    default EconomyTransaction reset() {
+        return this.resetAsync().join();
+    }
+
+    /**
+     * Asynchronously resets an account's balance to the defined starting balance of the currency,
+     * or a config's given override, if set.
+     *
+     * <p>Unlike {@link #transfer(Account, BigDecimal)}, this method properly adheres to implementations which might
+     * require stateful transactions to ensure data safety.</p>
+     *
+     * @return A completable future which reports an {@link EconomyTransferTransaction} describing the result
+     * of the operation
+     * @since 5.1.0
+     */
+    @NotNull
+    CompletableFuture<@NotNull EconomyTransaction> resetAsync();
 
     interface AccountBuilder extends Builder<Account> {
 
+        /**
+         * Specifies the currency this account should reflect. This option is optional and if
+         * not specified, will default to the primary currency as specified by the economy service.
+         *
+         * @param currency The currency this account will be based on
+         * @return This builder
+         */
         @NotNull
         @Contract("_ -> this")
         @CanIgnoreReturnValue
         AccountBuilder currency(final @NotNull Currency currency);
 
+        /**
+         * Specifies the owner of the account. This need not be a player, but rather any identifiable
+         * instance identified by a UUID. If the uuid does not link to a player, it should be marked
+         * with {@link #virtual()}.
+         *
+         * @param uuid The UUID of the account owner
+         * @return This builder
+         */
         @NotNull
         @Contract("_ -> this")
         @CanIgnoreReturnValue
         AccountBuilder owner(final @NotNull UUID uuid);
 
+        /**
+         * Sets the balance of this account. This field is optional and if not specified, reflects the starting
+         * balance specified by the account's currency backing.
+         *
+         * @param balance The balance to set for the account
+         * @return This builder
+         */
         @NotNull
         @Contract("_ -> this")
         @CanIgnoreReturnValue
@@ -196,6 +361,12 @@ public interface Account {
     @FunctionalInterface
     interface AccountModifier {
 
+        /**
+         * Given an account builder, allows further modification that was not originally specified.
+         *
+         * @param builder The original builder before
+         * @return The modified builder
+         */
         AccountBuilder modify(AccountBuilder builder);
 
     }

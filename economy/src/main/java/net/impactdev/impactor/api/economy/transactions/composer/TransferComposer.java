@@ -32,10 +32,12 @@ import net.impactdev.impactor.api.economy.transactions.details.EconomyResultType
 import net.impactdev.impactor.api.utility.builders.Builder;
 import net.impactdev.impactor.api.utility.builders.Required;
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
+import java.util.concurrent.CompletableFuture;
 
 /**
  *
@@ -93,6 +95,13 @@ public interface TransferComposer extends Builder<EconomyTransferTransaction> {
      * @return The transaction response detailing how the transaction applied
      */
     @Override
-    EconomyTransferTransaction build();
+    @Deprecated(since = "5.1.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
+    default EconomyTransferTransaction build() {
+        return this.send().join();
+    }
+
+    @NotNull
+    CompletableFuture<@NotNull EconomyTransferTransaction> send();
 
 }

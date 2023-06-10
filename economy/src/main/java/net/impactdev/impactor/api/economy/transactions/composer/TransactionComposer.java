@@ -33,10 +33,12 @@ import net.impactdev.impactor.api.economy.transactions.details.EconomyTransactio
 import net.impactdev.impactor.api.utility.builders.Builder;
 import net.impactdev.impactor.api.utility.builders.Required;
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
+import java.util.concurrent.CompletableFuture;
 
 public interface TransactionComposer extends Builder<EconomyTransaction> {
 
@@ -93,6 +95,19 @@ public interface TransactionComposer extends Builder<EconomyTransaction> {
      * @return The transaction response detailing how the transaction applied
      */
     @Override
-    EconomyTransaction build();
+    @Deprecated(since = "5.1.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
+    default EconomyTransaction build() {
+        return this.send().join();
+    }
+
+    /**
+     * Using the provided transaction details, executes the composed transaction asynchronously against
+     * the economy service.
+     *
+     * @return The transaction response detailing how the transaction applied
+     */
+    @NotNull
+    CompletableFuture<@NotNull EconomyTransaction> send();
 
 }

@@ -34,6 +34,7 @@ import net.impactdev.impactor.api.utility.builders.Builder;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.util.TriState;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
@@ -223,23 +224,40 @@ public interface Currency {
 
     interface CurrencyBuilder extends Builder<Currency> {
 
+        @CanIgnoreReturnValue
+        @Contract("_ -> this")
         CurrencyBuilder key(final @NotNull Key key);
 
+        @CanIgnoreReturnValue
+        @Contract("_ -> this")
         CurrencyBuilder name(final @NotNull Component name);
 
+        @CanIgnoreReturnValue
+        @Contract("_ -> this")
         CurrencyBuilder plural(final @NotNull Component plural);
 
+        @CanIgnoreReturnValue
+        @Contract("_ -> this")
         CurrencyBuilder symbol(final @NotNull Component symbol);
 
+        @CanIgnoreReturnValue
+        @Contract("_ -> this")
         CurrencyBuilder formatting(final @NotNull SymbolFormatting format);
 
+        @CanIgnoreReturnValue
+        @Contract("_ -> this")
         CurrencyBuilder starting(final @NotNull BigDecimal amount);
 
+        @CanIgnoreReturnValue
+        @Contract("_ -> this")
         CurrencyBuilder decimals(final int decimals);
 
         @CanIgnoreReturnValue
+        @Contract("-> this")
         CurrencyBuilder primary();
 
+        @CanIgnoreReturnValue
+        @Contract("_ -> this")
         CurrencyBuilder transferable(final boolean state);
     }
 
