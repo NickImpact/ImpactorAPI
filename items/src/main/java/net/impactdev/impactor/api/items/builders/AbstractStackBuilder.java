@@ -40,6 +40,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("unchecked")
 public abstract class AbstractStackBuilder<I extends ImpactorItemStack, B extends ImpactorItemStackBuilder<I, B>> implements ImpactorItemStackBuilder<I, B> {
 
     public Component title;

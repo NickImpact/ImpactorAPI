@@ -59,7 +59,7 @@ public abstract class AbstractedItemStack implements ImpactorItemStack {
         this.flags = ImmutableSet.copyOf(builder.flags);
         this.unbreakable = builder.unbreakable;
         if(builder.customModelData != null) {
-            this.nbt = builder.nbt.put("CustomModelData", IntBinaryTag.of(builder.customModelData));
+            this.nbt = builder.nbt.put("CustomModelData", IntBinaryTag.intBinaryTag(builder.customModelData));
         } else {
             this.nbt = builder.nbt;
         }
