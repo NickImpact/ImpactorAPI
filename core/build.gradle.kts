@@ -14,6 +14,7 @@ dependencies {
     api("net.kyori:adventure-text-serializer-gson:4.14.0")
     api("net.kyori:adventure-text-minimessage:4.14.0")
     api("net.kyori:adventure-text-logger-slf4j:4.14.0")
+    api("net.kyori:adventure-platform-api:4.2.0")
 
     // Google
     api("com.google.guava:guava:31.1-jre")
@@ -40,4 +41,15 @@ dependencies {
     api(group = "org.spongepowered", name = "math", version = "2.0.1")
     api("org.apache.logging.log4j:log4j-api:2.17.1")
     api("org.apache.maven:maven-artifact:3.8.7")
+
+    testImplementation("net.kyori:adventure-text-serializer-ansi:4.14.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
+
+    testImplementation("org.mockito:mockito-core:4.7.0")
+    testRuntimeOnly("org.apache.logging.log4j:log4j-core:2.19.0")
+}
+
+tasks.withType(Test::class) {
+    useJUnitPlatform()
 }
