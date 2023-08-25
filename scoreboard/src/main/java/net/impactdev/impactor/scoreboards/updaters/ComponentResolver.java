@@ -23,18 +23,15 @@
  *
  */
 
-package net.impactdev.impactor.scoreboards.objectives;
+package net.impactdev.impactor.scoreboards.updaters;
 
-import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.scoreboards.ScoreboardDisplayable;
 import net.kyori.adventure.text.Component;
 
-public interface ScoreboardObjective extends ScoreboardDisplayable {
+public interface ComponentResolver {
 
-    static ObjectiveBuilder builder() {
-        return Impactor.instance().builders().provide(ObjectiveBuilder.class);
-    }
+    Component resolve(ScoreboardDisplayable parent);
 
-    Component text();
+    void shutdown();
 
 }

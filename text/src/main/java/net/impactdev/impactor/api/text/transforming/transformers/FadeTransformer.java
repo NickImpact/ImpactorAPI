@@ -23,42 +23,46 @@
  *
  */
 
-package net.impactdev.impactor.scoreboards.updaters;
+package net.impactdev.impactor.api.text.transforming.transformers;
 
-import net.impactdev.impactor.api.utility.builders.Builder;
-import net.impactdev.impactor.scoreboards.effects.TextEffect;
-import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.util.HSVLike;
 
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
+public final class FadeTransformer extends ColorAlteringTransformer {
 
-/**
- * Represents a component updater which refreshes the resolved component on after a scheduled amount of time.
- * This type of updater is capable of running async where possible.
- */
-public interface ScheduledUpdater extends ComponentUpdater {
-
-    Duration interval();
-
-    boolean async();
-
-    interface ScheduledUpdaterBuilder extends Builder<ScheduledUpdater> {
-
-        ScheduledUpdaterBuilder component(ComponentLike component);
-
-        ScheduledUpdaterBuilder interval(long time, TimeUnit unit);
-
-        ScheduledUpdaterBuilder async();
-
-        ScheduledUpdaterBuilder effect(TextEffect effect);
-
+    public static FadeTransformer create(int steps, int gap, int start) {
+        return new FadeTransformer(steps, gap, start);
     }
 
-    @FunctionalInterface
-    interface ScheduledConfiguration {
+    private final int steps;
+    private final int gap;
+    private int start;
 
-        ScheduledUpdater configure(ScheduledUpdaterBuilder builder);
+    private int phase;
 
+    private FadeTransformer(int steps, int gap, int start) {
+        this.steps = steps;
+        this.gap = gap;
+        this.phase = start;
     }
 
+    @Override
+    protected void advance() {
+        this.phase = (this.phase + this.gap) % 360;
+    }
+
+    @Override
+    protected TextColor color() {
+        int hue = this.phase % 360;
+        int spacer = 360 / this.steps;
+
+        HSVLike hsv = HSVLike.hsvLike((hue + (this.phase * spacer)) % 360.0F / 360.0F, 1.0F, 1.0F);
+        return TextColor.color(hsv);
+    }
+
+    @Override
+    public void step() {
+        this.start += this.gap;
+        this.phase = this.start;
+    }
 }

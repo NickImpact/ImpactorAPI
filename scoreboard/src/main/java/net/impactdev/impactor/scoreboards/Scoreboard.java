@@ -27,10 +27,10 @@ package net.impactdev.impactor.scoreboards;
 
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.platform.players.PlatformPlayer;
-import net.impactdev.impactor.api.text.TextProcessor;
 import net.impactdev.impactor.api.utility.builders.Builder;
 import net.impactdev.impactor.scoreboards.lines.ScoreboardLine;
-import net.impactdev.impactor.scoreboards.objectives.ScoreboardObjective;
+import net.impactdev.impactor.scoreboards.objectives.Objective;
+import net.impactdev.impactor.scoreboards.viewed.ViewedScoreboard;
 
 import java.util.List;
 
@@ -62,25 +62,22 @@ public interface Scoreboard {
 
     /**
      * Represents the objective of a scoreboard, or otherwise the "title" element.
-     * This is limited to a max size of 1024 characters
      *
      * @return
      */
-    ScoreboardObjective objective();
+    Objective objective();
 
     List<ScoreboardLine> lines();
 
-    void show(PlatformPlayer player);
-
-    void hide(PlatformPlayer player);
+    default ViewedScoreboard createFor(PlatformPlayer viewer) {
+        return ViewedScoreboard.create(this, viewer);
+    }
 
     interface ScoreboardBuilder extends Builder<Scoreboard> {
 
-        ScoreboardBuilder processor(TextProcessor processor);
-
         ScoreboardBuilder implementation(ScoreboardImplementation implementation);
 
-        ScoreboardBuilder objective(ScoreboardObjective objective);
+        ScoreboardBuilder objective(Objective objective);
 
         ScoreboardBuilder line(ScoreboardLine line);
 

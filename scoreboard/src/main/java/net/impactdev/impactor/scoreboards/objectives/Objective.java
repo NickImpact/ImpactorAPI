@@ -23,19 +23,35 @@
  *
  */
 
-package net.impactdev.impactor.scoreboards.frames;
+package net.impactdev.impactor.scoreboards.objectives;
 
 import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.scoreboards.ScoreboardDisplayable;
+import net.impactdev.impactor.scoreboards.updaters.constant.ConstantResolver;
+import net.impactdev.impactor.scoreboards.updaters.listener.ListenerConfiguration;
+import net.impactdev.impactor.scoreboards.updaters.listener.ListenerResolver;
+import net.impactdev.impactor.scoreboards.updaters.scheduled.ScheduledResolver;
+import net.impactdev.impactor.scoreboards.updaters.scheduled.SchedulerConfiguration;
 import net.kyori.adventure.text.Component;
 
-public interface Frame {
+import java.util.function.Supplier;
 
-    static FrameBuilder builder() {
-        return Impactor.instance().builders().provide(FrameBuilder.class);
+public interface Objective extends ScoreboardDisplayable {
+
+    static ObjectiveBuilder builder() {
+        return Impactor.instance().builders().provide(ObjectiveBuilder.class);
     }
 
-    Component resolve();
+    static Objective constant(Supplier<Component> supplier) {
+        return builder().resolver(supplier).updater(ConstantResolver.create()).build();
+    }
 
-    void update();
+    static Objective scheduled(Supplier<Component> supplier, SchedulerConfiguration config) {
+        return builder().resolver(supplier).updater(ScheduledResolver.create(config)).build();
+    }
+
+    static Objective listening(Supplier<Component> supplier, ListenerConfiguration config) {
+        return builder().resolver(supplier).updater(ListenerResolver.create(config)).build();
+    }
 
 }

@@ -23,32 +23,33 @@
  *
  */
 
-package net.impactdev.impactor.scoreboards.updaters;
+package net.impactdev.impactor.scoreboards.updaters.constant;
 
-import net.impactdev.impactor.api.platform.players.PlatformPlayer;
-import net.impactdev.impactor.api.text.TextProcessor;
-import net.impactdev.impactor.api.utility.Context;
+import net.impactdev.impactor.scoreboards.ScoreboardDisplayable;
+import net.impactdev.impactor.scoreboards.updaters.ComponentResolver;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentLike;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 
-public final class ConstantUpdater implements ComponentUpdater {
+public final class ConstantResolver implements ComponentResolver {
 
-    private final ComponentLike component;
+    @MonotonicNonNull
+    private Component result;
 
-    private ConstantUpdater(ComponentLike component) {
-        this.component = component;
+    private ConstantResolver() {}
+
+    public static ConstantResolver create() {
+        return new ConstantResolver();
     }
 
-    public static ConstantUpdater create(final ComponentLike component) {
-        return new ConstantUpdater(component);
-    }
-
-    /**
-     * Overridden to indicate that a constant updater should make no attempts to update the
-     * component, and use the cached resolution instead.
-     */
     @Override
-    public Component resolve(TextProcessor processor, PlatformPlayer viewer, Context context) {
-        return this.component.asComponent();
+    public Component resolve(ScoreboardDisplayable displayable) {
+        if(this.result == null) {
+            return this.result = displayable.provider().get();
+        }
+
+        return this.result;
     }
+
+    @Override
+    public void shutdown() {}
 }

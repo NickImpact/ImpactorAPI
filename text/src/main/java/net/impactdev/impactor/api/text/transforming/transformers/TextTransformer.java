@@ -23,13 +23,15 @@
  *
  */
 
-package net.impactdev.impactor.scoreboards.frames;
+package net.impactdev.impactor.api.text.transforming.transformers;
 
-import net.impactdev.impactor.api.utility.builders.Builder;
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.NotNull;
 
-public interface FrameBuilder extends Builder<Frame> {
+public interface TextTransformer {
 
-    FrameBuilder append(String template, TagResolver... resolvers);
+    Component transform(final @NotNull Component input);
+
+    void step();
 
 }

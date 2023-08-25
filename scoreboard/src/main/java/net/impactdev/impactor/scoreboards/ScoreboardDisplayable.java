@@ -1,9 +1,14 @@
 package net.impactdev.impactor.scoreboards;
 
-import net.impactdev.impactor.scoreboards.updaters.ComponentUpdater;
+import net.impactdev.impactor.scoreboards.updaters.ComponentResolver;
+import net.kyori.adventure.text.Component;
+
+import java.util.function.Supplier;
 
 public interface ScoreboardDisplayable {
 
-    ComponentUpdater updater();
+    Supplier<Component> provider();
+
+    ComponentResolver resolver();
 
 }

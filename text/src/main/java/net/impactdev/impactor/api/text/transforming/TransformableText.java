@@ -23,14 +23,33 @@
  *
  */
 
-package net.impactdev.impactor.scoreboards.lines;
+package net.impactdev.impactor.api.text.transforming;
 
-import net.impactdev.impactor.scoreboards.ScoreboardDisplayable;
+import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.text.transforming.transformers.TextTransformer;
+import net.impactdev.impactor.api.utility.builders.Builder;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentBuilderApplicable;
+import net.kyori.adventure.text.ComponentLike;
 
-public interface ScoreboardLine extends ScoreboardDisplayable {
+import java.util.function.Supplier;
 
-    int score();
+public interface TransformableText extends ComponentLike {
 
-    void score(int score);
+    Supplier<Component> supplier();
+
+    TextTransformer transformer();
+
+    static TransformableTextBuilder builder() {
+        return Impactor.instance().builders().provide(TransformableTextBuilder.class);
+    }
+
+    interface TransformableTextBuilder extends Builder<TransformableText> {
+
+        TransformableTextBuilder supplier(Supplier<Component> supplier);
+
+        TransformableTextBuilder transformer(TextTransformer transformer);
+
+    }
 
 }

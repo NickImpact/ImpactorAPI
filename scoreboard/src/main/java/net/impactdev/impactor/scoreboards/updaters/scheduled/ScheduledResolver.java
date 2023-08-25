@@ -23,15 +23,38 @@
  *
  */
 
-package net.impactdev.impactor.scoreboards.updaters;
+package net.impactdev.impactor.scoreboards.updaters.scheduled;
 
-import net.impactdev.impactor.api.platform.players.PlatformPlayer;
-import net.impactdev.impactor.api.text.TextProcessor;
-import net.impactdev.impactor.api.utility.Context;
-import net.kyori.adventure.text.Component;
+import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.utility.builders.Builder;
+import net.impactdev.impactor.api.text.transforming.transformers.TextTransformer;
+import net.impactdev.impactor.scoreboards.updaters.ComponentResolver;
 
-public interface ComponentUpdater {
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
-    Component resolve(TextProcessor processor, PlatformPlayer viewer, Context context);
+/**
+ * Represents a component updater which refreshes the resolved component on after a scheduled amount of time.
+ * This type of updater is capable of running async where possible.
+ */
+public interface ScheduledResolver extends ComponentResolver {
+
+    Duration interval();
+
+    boolean async();
+
+    static ScheduledResolver create(SchedulerConfiguration config) {
+        return config.configure(Impactor.instance().builders().provide(ScheduledUpdaterBuilder.class));
+    }
+
+    interface ScheduledUpdaterBuilder extends Builder<ScheduledResolver> {
+
+        ScheduledUpdaterBuilder interval(long time, TimeUnit unit);
+
+        ScheduledUpdaterBuilder async();
+
+        ScheduledUpdaterBuilder effect(TextTransformer effect);
+
+    }
 
 }
