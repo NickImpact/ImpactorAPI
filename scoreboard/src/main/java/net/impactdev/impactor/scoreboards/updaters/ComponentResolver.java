@@ -25,12 +25,11 @@
 
 package net.impactdev.impactor.scoreboards.updaters;
 
-import net.impactdev.impactor.scoreboards.ScoreboardDisplayable;
 import net.kyori.adventure.text.Component;
 
 public interface ComponentResolver {
 
-    Component resolve(ScoreboardDisplayable parent);
+    Component resolve();
 
     void shutdown();
 

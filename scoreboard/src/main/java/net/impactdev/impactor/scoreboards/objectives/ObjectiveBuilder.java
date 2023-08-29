@@ -8,8 +8,6 @@ import java.util.function.Supplier;
 
 public interface ObjectiveBuilder extends Builder<Objective> {
 
-    ObjectiveBuilder resolver(Supplier<Component> supplier);
-
     ObjectiveBuilder updater(ComponentResolver updater);
 
 }

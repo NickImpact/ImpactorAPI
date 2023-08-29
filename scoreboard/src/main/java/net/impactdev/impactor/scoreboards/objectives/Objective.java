@@ -43,15 +43,15 @@ public interface Objective extends ScoreboardDisplayable {
     }
 
     static Objective constant(Supplier<Component> supplier) {
-        return builder().resolver(supplier).updater(ConstantResolver.create()).build();
+        return builder().updater(ConstantResolver.create(supplier)).build();
     }
 
-    static Objective scheduled(Supplier<Component> supplier, SchedulerConfiguration config) {
-        return builder().resolver(supplier).updater(ScheduledResolver.create(config)).build();
+    static Objective scheduled(SchedulerConfiguration config) {
+        return builder().updater(ScheduledResolver.create(config)).build();
     }
 
-    static Objective listening(Supplier<Component> supplier, ListenerConfiguration config) {
-        return builder().resolver(supplier).updater(ListenerResolver.create(config)).build();
+    static Objective listening(ListenerConfiguration config) {
+        return builder().updater(ListenerResolver.create(config)).build();
     }
 
 }

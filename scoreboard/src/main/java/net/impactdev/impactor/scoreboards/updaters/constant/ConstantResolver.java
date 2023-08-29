@@ -25,28 +25,27 @@
 
 package net.impactdev.impactor.scoreboards.updaters.constant;
 
-import net.impactdev.impactor.scoreboards.ScoreboardDisplayable;
 import net.impactdev.impactor.scoreboards.updaters.ComponentResolver;
 import net.kyori.adventure.text.Component;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 
+import java.util.function.Supplier;
+
 public final class ConstantResolver implements ComponentResolver {
 
     @MonotonicNonNull
-    private Component result;
+    private final Component result;
 
-    private ConstantResolver() {}
+    private ConstantResolver(Component result) {
+        this.result = result;
+    }
 
-    public static ConstantResolver create() {
-        return new ConstantResolver();
+    public static ConstantResolver create(Supplier<Component> provider) {
+        return new ConstantResolver(provider.get());
     }
 
     @Override
-    public Component resolve(ScoreboardDisplayable displayable) {
-        if(this.result == null) {
-            return this.result = displayable.provider().get();
-        }
-
+    public Component resolve() {
         return this.result;
     }
 

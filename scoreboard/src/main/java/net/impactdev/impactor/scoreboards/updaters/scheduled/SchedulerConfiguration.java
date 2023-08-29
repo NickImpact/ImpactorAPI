@@ -3,6 +3,6 @@ package net.impactdev.impactor.scoreboards.updaters.scheduled;
 @FunctionalInterface
 public interface SchedulerConfiguration {
 
-    ScheduledResolver configure(ScheduledResolver.ScheduledUpdaterBuilder builder);
+    ScheduledResolver configure(ScheduledResolver.ScheduledResolverBuilder builder);
 
 }
