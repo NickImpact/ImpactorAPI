@@ -23,33 +23,43 @@
  *
  */
 
-package net.impactdev.impactor.scoreboards;
+package net.impactdev.impactor.api.scheduler.v2;
 
-import net.impactdev.impactor.api.Impactor;
-import net.impactdev.impactor.api.platform.players.PlatformPlayer;
-import net.impactdev.impactor.scoreboards.lines.ScoreboardLine;
-import net.impactdev.impactor.scoreboards.objectives.Objective;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
+import net.impactdev.impactor.api.logging.PluginLogger;
+import net.kyori.adventure.key.Key;
+import org.jetbrains.annotations.NotNull;
 
-public interface ScoreboardImplementation {
+import java.util.Map;
+import java.util.Optional;
 
-    void objective(PlatformPlayer viewer, Objective objective);
+/**
+ *
+ * @since 5.2.0
+ */
+public final class Schedulers {
 
-    void line(PlatformPlayer viewer, ScoreboardLine line);
+    private static final Map<Key, Scheduler> schedulers = Maps.newHashMap();
 
-    void show(PlatformPlayer viewer, Scoreboard scoreboard);
-
-    void hide(PlatformPlayer viewer, Scoreboard scoreboard);
-
-    void registerTeam(PlatformPlayer viewer);
-
-    static ScoreboardImplementation packets() {
-        return Impactor.instance().factories().provide(Factory.class).packets();
+    public static void register(final @NotNull Key key, final @NotNull Scheduler scheduler) {
+        schedulers.put(key, scheduler);
     }
 
-    interface Factory {
-
-        ScoreboardImplementation packets();
-
+    public static Optional<Scheduler> request(final @NotNull Key key) {
+        Preconditions.checkNotNull(key);
+        return Optional.ofNullable(schedulers.get(key));
     }
 
+    public static Scheduler require(final @NotNull Key key) {
+        Preconditions.checkNotNull(key);
+        return Preconditions.checkNotNull(schedulers.get(key));
+    }
+
+    public static void shutdown(PluginLogger logger) {
+        schedulers.forEach((key, scheduler) -> {
+            logger.info("Shutting down scheduler: " + key);
+            scheduler.shutdown();
+        });
+    }
 }
