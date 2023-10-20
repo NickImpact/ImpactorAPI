@@ -95,11 +95,7 @@ public interface TransactionComposer extends Builder<EconomyTransaction> {
      * @return The transaction response detailing how the transaction applied
      */
     @Override
-    @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
-    default EconomyTransaction build() {
-        return this.send().join();
-    }
+    EconomyTransaction build();
 
     /**
      * Using the provided transaction details, executes the composed transaction asynchronously against
@@ -108,6 +104,10 @@ public interface TransactionComposer extends Builder<EconomyTransaction> {
      * @return The transaction response detailing how the transaction applied
      */
     @NotNull
-    CompletableFuture<@NotNull EconomyTransaction> send();
+    @Deprecated(forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
+    default CompletableFuture<@NotNull EconomyTransaction> send() {
+        return CompletableFuture.completedFuture(this.build());
+    }
 
 }

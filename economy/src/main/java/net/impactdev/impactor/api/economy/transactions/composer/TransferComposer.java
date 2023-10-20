@@ -95,13 +95,13 @@ public interface TransferComposer extends Builder<EconomyTransferTransaction> {
      * @return The transaction response detailing how the transaction applied
      */
     @Override
-    @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
-    default EconomyTransferTransaction build() {
-        return this.send().join();
-    }
+    EconomyTransferTransaction build();
 
     @NotNull
-    CompletableFuture<@NotNull EconomyTransferTransaction> send();
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
+    default CompletableFuture<@NotNull EconomyTransferTransaction> send() {
+        return CompletableFuture.completedFuture(this.build());
+    }
 
 }
