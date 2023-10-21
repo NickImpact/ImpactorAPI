@@ -29,14 +29,20 @@ import com.google.common.collect.Maps;
 import io.leangen.geantyref.TypeToken;
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.utility.printing.PrettyPrinter;
+import net.kyori.adventure.pointer.Pointer;
+import net.kyori.adventure.pointer.Pointered;
+import net.kyori.adventure.pointer.Pointers;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.Supplier;
 
-public final class Context implements PrettyPrinter.IPrettyPrintable {
+public final class Context implements PrettyPrinter.IPrettyPrintable, Pointered {
 
     private final Map<TypeToken<?>, Object> context = Maps.newHashMap();
+    private Pointers pointers = Pointers.empty();
 
     public static Context empty() {
         return new Context();
@@ -75,6 +81,46 @@ public final class Context implements PrettyPrinter.IPrettyPrintable {
     }
 
     /**
+     * Registers a pointered value to the context using the given pointer as its key. Existing mappings
+     * using the same key will be overridden.
+     *
+     * <p>Unlike {@link #pointer(Pointer, Supplier)}, this method uses static instances. If you wish for the data
+     * represented by this pointer to be dynamic, use that method instead!</p>
+     *
+     * @param pointer The pointer to serve as the key to locating the data
+     * @param value A static instance that will otherwise remain constant.
+     * @return The updated context
+     * @param <T> The type represented by the pointer
+     */
+    public <T> Context pointer(Pointer<T> pointer, T value) {
+        this.pointers = this.pointers.toBuilder()
+                .withStatic(pointer, value)
+                .build();
+
+        return this;
+    }
+
+    /**
+     * Registers a pointered value to the context using the given pointer as its key. Existing mappings
+     * using the same key will be overridden.
+     *
+     * <p>Values registered in this way will always be fetched dynamically, and can differ from one instance
+     * to the other based on access time.</p>
+     *
+     * @param pointer The pointer to serve as the key to locating the data
+     * @param supplier A supplier to create the data when accessed
+     * @return The updated context
+     * @param <T> The type represented by the pointer
+     */
+    public <T> Context pointer(Pointer<T> pointer, Supplier<T> supplier) {
+        this.pointers = this.pointers.toBuilder()
+                .withDynamic(pointer, supplier)
+                .build();
+
+        return this;
+    }
+
+    /**
      * Checks to see if the context carries a particular typing. This is mostly used for data querying, and can
      * be used to avoid a possible {@link NoSuchElementException} from use of invoking {@link #require(Class)}.
      *
@@ -94,6 +140,16 @@ public final class Context implements PrettyPrinter.IPrettyPrintable {
      */
     public boolean has(TypeToken<?> type) {
         return this.context.containsKey(type);
+    }
+
+    /**
+     * Indicates whether the given pointer currently maps to any value within the context map.
+     *
+     * @param pointer The pointer pointing to data within the context
+     * @return <code>true</code> if the value is available in this context, <code>false</code> otherwise
+     */
+    public boolean has(Pointer<?> pointer) {
+        return this.pointers.supports(pointer);
     }
 
     /**
@@ -118,6 +174,17 @@ public final class Context implements PrettyPrinter.IPrettyPrintable {
      */
     public <T> Optional<T> request(TypeToken<T> type) {
         return Optional.ofNullable(this.context.get(type)).map(value -> (T) value);
+    }
+
+    /**
+     * Requests for an element from the context mapped under the given pointer.
+     *
+     * @param pointer The pointer pointing to data within the context
+     * @return An optionally wrapped instance representing the provided type, or empty if not available
+     * @param <T> The type represented by the pointer
+     */
+    public <T> Optional<T> request(Pointer<T> pointer) {
+        return this.pointers.get(pointer);
     }
 
     /**
@@ -146,6 +213,19 @@ public final class Context implements PrettyPrinter.IPrettyPrintable {
         return this.request(type).orElseThrow(() -> new NoSuchElementException("Missing Type: " + type.getType().getTypeName()));
     }
 
+    /**
+     * Require a pointered value from the context. If the requested value is not found, this will
+     * a {@link NoSuchElementException}.
+     *
+     * @param pointer The pointer pointing to data within the context
+     * @return The value represented by the given pointer
+     * @param <T> The type represented by the pointer
+     * @throws NoSuchElementException If no value actually exists for the pointer
+     */
+    public <T> T require(Pointer<T> pointer) throws NoSuchElementException {
+        return this.request(pointer).orElseThrow(() -> new NoSuchElementException("Missing pointer: " + pointer.key()));
+    }
+
     public int size() {
         return this.context.size();
     }
@@ -161,4 +241,8 @@ public final class Context implements PrettyPrinter.IPrettyPrintable {
         }
     }
 
+    @Override
+    public @NotNull Pointers pointers() {
+        return this.pointers;
+    }
 }
