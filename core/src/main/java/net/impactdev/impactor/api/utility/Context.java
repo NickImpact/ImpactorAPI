@@ -91,6 +91,7 @@ public final class Context implements PrettyPrinter.IPrettyPrintable, Pointered 
      * @param value A static instance that will otherwise remain constant.
      * @return The updated context
      * @param <T> The type represented by the pointer
+     * @since 5.1.1
      */
     public <T> Context pointer(Pointer<T> pointer, T value) {
         this.pointers = this.pointers.toBuilder()
@@ -111,6 +112,7 @@ public final class Context implements PrettyPrinter.IPrettyPrintable, Pointered 
      * @param supplier A supplier to create the data when accessed
      * @return The updated context
      * @param <T> The type represented by the pointer
+     * @since 5.1.1
      */
     public <T> Context pointer(Pointer<T> pointer, Supplier<T> supplier) {
         this.pointers = this.pointers.toBuilder()
@@ -147,6 +149,7 @@ public final class Context implements PrettyPrinter.IPrettyPrintable, Pointered 
      *
      * @param pointer The pointer pointing to data within the context
      * @return <code>true</code> if the value is available in this context, <code>false</code> otherwise
+     * @since 5.1.1
      */
     public boolean has(Pointer<?> pointer) {
         return this.pointers.supports(pointer);
@@ -182,6 +185,7 @@ public final class Context implements PrettyPrinter.IPrettyPrintable, Pointered 
      * @param pointer The pointer pointing to data within the context
      * @return An optionally wrapped instance representing the provided type, or empty if not available
      * @param <T> The type represented by the pointer
+     * @since 5.1.1
      */
     public <T> Optional<T> request(Pointer<T> pointer) {
         return this.pointers.get(pointer);
@@ -221,6 +225,7 @@ public final class Context implements PrettyPrinter.IPrettyPrintable, Pointered 
      * @return The value represented by the given pointer
      * @param <T> The type represented by the pointer
      * @throws NoSuchElementException If no value actually exists for the pointer
+     * @since 5.1.1
      */
     public <T> T require(Pointer<T> pointer) throws NoSuchElementException {
         return this.request(pointer).orElseThrow(() -> new NoSuchElementException("Missing pointer: " + pointer.key()));
