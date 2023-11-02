@@ -78,7 +78,7 @@ public interface Scheduler {
      * @param ticks The amount of ticks to wait before executing
      * @return A wrapper capable of cancelling the action before execution, if not yet executed
      */
-    SchedulerTask delayed(@NotNull Consumer<Task> action, @NotNull Ticks ticks);
+    SchedulerTask delayed(@NotNull Runnable action, @NotNull Ticks ticks);
 
     /**
      * Submits a task for execution after waiting for the specified delay time. In the case of the
