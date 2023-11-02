@@ -27,6 +27,7 @@ package net.impactdev.impactor.api.economy.accounts;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import kotlin.ReplaceWith;
+import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.economy.currency.Currency;
 import net.impactdev.impactor.api.economy.transactions.details.EconomyResultType;
 import net.impactdev.impactor.api.economy.transactions.EconomyTransaction;
@@ -297,6 +298,16 @@ public interface Account {
     @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
     default CompletableFuture<@NotNull EconomyTransaction> resetAsync() {
         return CompletableFuture.completedFuture(this.reset());
+    }
+
+    /**
+     * Most implementations should not really make use of this,
+     *
+     * @return A builder for accounts
+     * @since 5.1.1
+     */
+    static AccountBuilder builder() {
+        return Impactor.instance().builders().provide(AccountBuilder.class);
     }
 
     interface AccountBuilder extends Builder<Account> {

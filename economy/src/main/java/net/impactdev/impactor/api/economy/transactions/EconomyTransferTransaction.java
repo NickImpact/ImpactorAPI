@@ -35,6 +35,7 @@ import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
+import java.util.function.Supplier;
 
 public interface EconomyTransferTransaction {
 
@@ -108,7 +109,7 @@ public interface EconomyTransferTransaction {
      *
      * @return A component indicating a human-readable result status, or null if not bound
      */
-    @Nullable Component message();
+    @Nullable Supplier<Component> message();
 
     /**
      * If a message representing the transaction's result status is bound and populated, this will inform
@@ -117,9 +118,9 @@ public interface EconomyTransferTransaction {
      * @param audience The audience to send the transaction status to
      */
     default void inform(Audience audience) {
-        Component message = this.message();
+        Supplier<Component> message = this.message();
         if(message != null) {
-            audience.sendMessage(message);
+            audience.sendMessage(message.get());
         }
     }
 
