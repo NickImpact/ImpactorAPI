@@ -23,19 +23,33 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.updaters.scheduled;
+package net.impactdev.impactor.api.scoreboards;
 
-import net.impactdev.impactor.api.scheduler.SchedulerTask;
-import net.impactdev.impactor.api.scoreboards.updaters.ComponentResolver;
+import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.platform.players.PlatformPlayer;
+import net.impactdev.impactor.api.scoreboards.lines.ScoreboardLine;
+import net.impactdev.impactor.api.scoreboards.objectives.Objective;
 
-import java.time.Duration;
+public interface ScoreboardRenderer {
 
-/**
- * Represents a component updater which refreshes the resolved component on after a scheduled amount of time.
- * This type of updater is capable of running async where possible.
- */
-public interface ScheduledResolver extends ComponentResolver {
+    void objective(Objective objective);
 
-    SchedulerTask task();
+    void line(ScoreboardLine line);
+
+    void show(AssignedScoreboard scoreboard);
+
+    void hide(AssignedScoreboard scoreboard);
+
+    void registerTeam(PlatformPlayer viewer);
+
+    static ScoreboardRenderer packets() {
+        return Impactor.instance().factories().provide(Factory.class).packets();
+    }
+
+    interface Factory {
+
+        ScoreboardRenderer packets();
+
+    }
 
 }

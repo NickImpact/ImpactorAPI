@@ -23,15 +23,14 @@
  *
  */
 
-package net.impactdev.impactor.api.animations.resolvers.scheduled;
+package net.impactdev.impactor.api.scoreboards.resolvers.updaters;
 
-import net.impactdev.impactor.api.animations.resolvers.Animatable;
-import net.impactdev.impactor.api.scheduler.SchedulerTask;
-import net.impactdev.impactor.api.scheduler.v2.Scheduler;
+import net.impactdev.impactor.api.utility.Context;
+import net.kyori.adventure.text.Component;
 
 @FunctionalInterface
-public interface TaskProvider {
+public interface ComponentProvider {
 
-    SchedulerTask schedule(Scheduler scheduler, Animatable animatable);
+    Component resolve(Context context);
 
 }

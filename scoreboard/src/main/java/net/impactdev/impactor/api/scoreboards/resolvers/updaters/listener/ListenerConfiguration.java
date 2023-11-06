@@ -23,16 +23,40 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.relative;
+package net.impactdev.impactor.api.scoreboards.resolvers.updaters.listener;
 
-import net.impactdev.impactor.api.components.animated.AnimatedComponent;
-import net.impactdev.impactor.api.platform.players.PlatformPlayer;
-import net.impactdev.impactor.api.scoreboards.updaters.ComponentResolver;
+import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.scoreboards.resolvers.updaters.ResolverConfiguration;
+import net.impactdev.impactor.api.scoreboards.players.RelativeAnimatable;
+import net.impactdev.impactor.api.utility.builders.Builder;
+import net.kyori.event.EventSubscription;
 
-public interface RelativeAnimatable extends AnimatedComponent {
+public interface ListenerConfiguration extends ResolverConfiguration.Transformable {
 
-    PlatformPlayer viewer();
+    Subscriber subscriber();
 
-    ComponentResolver resolver();
+    @FunctionalInterface
+    interface Subscriber {
+
+        EventSubscription subscribe(RelativeAnimatable displayable);
+
+    }
+
+    @FunctionalInterface
+    interface Provider {
+
+        ListenerConfiguration configure(ListenerConfiguration.ConfigBuilder builder);
+
+    }
+
+    static ConfigBuilder builder() {
+        return Impactor.instance().builders().provide(ConfigBuilder.class);
+    }
+
+    interface ConfigBuilder extends Builder<ListenerConfiguration>, Transforming<ConfigBuilder> {
+
+        ConfigBuilder subscriber(Subscriber subscriber);
+
+    }
 
 }

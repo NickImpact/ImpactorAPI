@@ -23,16 +23,33 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.relative;
+package net.impactdev.impactor.api.scoreboards;
 
-import net.impactdev.impactor.api.scoreboards.objectives.Objective;
-import net.impactdev.impactor.api.scoreboards.updaters.ComponentResolver;
-import net.kyori.adventure.text.Component;
+import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.platform.players.PlatformPlayer;
+import net.impactdev.impactor.api.scoreboards.resolvers.Updatable;
+import org.jetbrains.annotations.NotNull;
 
-public interface RelativeObjective extends RelativeAnimatable {
+public interface AssignedScoreboard extends Updatable {
 
-    Objective delegate();
+    static AssignedScoreboard create(final @NotNull Scoreboard parent, final @NotNull PlatformPlayer viewer) {
+        return Impactor.instance().factories().provide(Factory.class).create(parent, viewer);
+    }
 
-    Component text();
+    Scoreboard configuration();
+
+    PlatformPlayer viewer();
+
+    void open();
+
+    void hide();
+
+    void destroy();
+
+    interface Factory {
+
+        AssignedScoreboard create(final @NotNull Scoreboard parent, final @NotNull PlatformPlayer viewer);
+
+    }
 
 }

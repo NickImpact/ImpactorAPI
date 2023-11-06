@@ -23,39 +23,21 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.relative;
+package net.impactdev.impactor.api.scoreboards.resolvers.updaters.resolver;
 
-import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.platform.players.PlatformPlayer;
-import net.impactdev.impactor.api.scoreboards.Scoreboard;
-import org.jetbrains.annotations.NotNull;
+import net.kyori.adventure.text.Component;
 
-import java.util.List;
+public interface ComponentResolver {
 
-public interface PlayerScoreboard {
+    Component update(PlatformPlayer viewer);
 
-    static PlayerScoreboard create(final @NotNull Scoreboard parent, final @NotNull PlatformPlayer viewer) {
-        return Impactor.instance().factories().provide(Factory.class).create(parent, viewer);
-    }
+    void init();
 
-    Scoreboard configuration();
+    void start();
 
-    PlatformPlayer viewer();
+    void pause();
 
-    RelativeObjective objective();
-
-    List<RelativeScoreboardLine> lines();
-
-    void open();
-
-    void hide();
-
-    void destroy();
-
-    interface Factory {
-
-        PlayerScoreboard create(final @NotNull Scoreboard parent, final @NotNull PlatformPlayer viewer);
-
-    }
+    void shutdown();
 
 }

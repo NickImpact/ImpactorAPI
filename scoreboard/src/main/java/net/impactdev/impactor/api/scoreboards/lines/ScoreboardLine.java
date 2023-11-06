@@ -25,9 +25,9 @@
 
 package net.impactdev.impactor.api.scoreboards.lines;
 
-import net.impactdev.impactor.api.scoreboards.ConfigurableScoreboardComponent;
+import net.impactdev.impactor.api.scoreboards.resolvers.Updatable;
 
-public interface ScoreboardLine extends ConfigurableScoreboardComponent {
+public interface ScoreboardLine extends Updatable {
 
     int score();
 

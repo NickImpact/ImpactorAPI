@@ -23,15 +23,10 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards;
+package net.impactdev.impactor.api.scoreboards.resolvers;
 
-import net.impactdev.impactor.api.scoreboards.updaters.ComponentProvider;
-import net.impactdev.impactor.api.scoreboards.updaters.ResolverConfiguration;
+public interface Updatable {
 
-public interface ConfigurableScoreboardComponent {
-
-    ComponentProvider provider();
-
-    ResolverConfiguration resolver();
+    void update();
 
 }

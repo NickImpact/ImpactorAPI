@@ -23,15 +23,44 @@
  *
  */
 
-package net.impactdev.impactor.scoreboards.viewed;
+package net.impactdev.impactor.api.scoreboards.resolvers.scheduled;
 
-import net.impactdev.impactor.scoreboards.lines.ScoreboardLine;
-import net.kyori.adventure.text.Component;
+import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.scheduler.SchedulerTask;
+import net.impactdev.impactor.api.scheduler.v2.Scheduler;
+import net.impactdev.impactor.api.scoreboards.AssignedScoreboard;
+import net.impactdev.impactor.api.scoreboards.resolvers.ResolverConfiguration;
 
-public interface ViewedLine {
+public interface SchedulerConfiguration extends ResolverConfiguration {
 
-    ScoreboardLine delegate();
+    Scheduler scheduler();
 
-    Component text();
+    TaskProvider task();
+
+    static ConfigBuilder builder() {
+        return Impactor.instance().builders().provide(ConfigBuilder.class);
+    }
+
+    interface ConfigBuilder extends ConfigurationBuilder<SchedulerConfiguration, ConfigBuilder> {
+
+        ConfigBuilder scheduler(Scheduler scheduler);
+
+        ConfigBuilder task(TaskProvider provider);
+
+    }
+
+    @FunctionalInterface
+    interface TaskProvider {
+
+        SchedulerTask schedule(Scheduler scheduler, AssignedScoreboard scoreboard);
+
+    }
+
+    @FunctionalInterface
+    interface Creator {
+
+        SchedulerConfiguration configure(ConfigBuilder builder);
+
+    }
 
 }

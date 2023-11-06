@@ -25,11 +25,14 @@
 
 package net.impactdev.impactor.api.scoreboards.objectives;
 
-import net.impactdev.impactor.api.components.animated.relative.RelativeComponentResolver;
+import net.impactdev.impactor.api.scoreboards.resolvers.ResolverConfiguration;
+import net.impactdev.impactor.api.scoreboards.resolvers.updaters.ComponentProvider;
 import net.impactdev.impactor.api.utility.builders.Builder;
 
-public interface ObjectiveBuilder extends Builder<Objective> {
+public interface ObjectiveConfig extends Builder<Objective> {
 
-    ObjectiveBuilder updater(RelativeComponentResolver.Configuration config);
+    ObjectiveConfig provider(ComponentProvider provider);
+
+    ObjectiveConfig resolver(ResolverConfiguration resolver);
 
 }

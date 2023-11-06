@@ -26,28 +26,27 @@
 package net.impactdev.impactor.api.scoreboards.objectives;
 
 import net.impactdev.impactor.api.Impactor;
-import net.impactdev.impactor.api.animations.resolvers.InitOnlyConfig;
-import net.impactdev.impactor.api.components.animated.relative.RelativeComponentResolver;
-import net.impactdev.impactor.api.scoreboards.ConfigurableScoreboardComponent;
-import net.impactdev.impactor.api.scoreboards.updaters.listener.ListenerConfiguration;
-import net.impactdev.impactor.api.scoreboards.updaters.scheduled.SchedulerConfiguration;
+import net.impactdev.impactor.api.scoreboards.resolvers.Updatable;
+import net.impactdev.impactor.api.scoreboards.resolvers.updaters.ComponentProvider;
+import net.impactdev.impactor.api.scoreboards.resolvers.updaters.listener.ListenerConfiguration;
+import net.impactdev.impactor.api.scoreboards.resolvers.scheduled.SchedulerConfiguration;
 
-public interface Objective extends ConfigurableScoreboardComponent {
+public interface Objective extends Updatable {
 
-    static ObjectiveBuilder builder() {
-        return Impactor.instance().builders().provide(ObjectiveBuilder.class);
+    static ObjectiveConfig builder() {
+        return Impactor.instance().builders().provide(ObjectiveConfig.class);
     }
 
-    static Objective constant(RelativeComponentResolver.Parser parser) {
-        return builder().updater(InitOnlyConfig.create(parser)).build();
+    static Objective constant(ComponentProvider provider) {
+        return builder().provider(provider).build();
     }
 
-    static Objective scheduled(SchedulerConfiguration.Provider config) {
-        return builder().updater(config.configure(SchedulerConfiguration.builder())).build();
+    static Objective scheduled(SchedulerConfiguration.Creator config) {
+        return builder().resolver(config.configure(SchedulerConfiguration.builder())).build();
     }
 
-    static Objective listening(ListenerConfiguration.Provider config) {
-        return builder().updater(config.configure(ListenerConfiguration.builder())).build();
-    }
+//    static Objective listening(ListenerConfiguration.Provider config) {
+//        return builder().updater(config.configure(ListenerConfiguration.builder())).build();
+//    }
 
 }

@@ -23,35 +23,33 @@
  *
  */
 
-package net.impactdev.impactor.scoreboards.objectives;
+package net.impactdev.impactor.api.scoreboards.resolvers.updaters.listener;
 
 import net.impactdev.impactor.api.Impactor;
-import net.impactdev.impactor.scoreboards.ScoreboardDisplayable;
-import net.impactdev.impactor.scoreboards.updaters.constant.ConstantResolver;
-import net.impactdev.impactor.scoreboards.updaters.listener.ListenerConfiguration;
-import net.impactdev.impactor.scoreboards.updaters.listener.ListenerResolver;
-import net.impactdev.impactor.scoreboards.updaters.scheduled.ScheduledResolver;
-import net.impactdev.impactor.scoreboards.updaters.scheduled.SchedulerConfiguration;
+import net.impactdev.impactor.api.scoreboards.resolvers.updaters.resolver.ComponentResolver;
+import net.impactdev.impactor.api.text.transformers.TextTransformer;
+import net.impactdev.impactor.api.utility.builders.Builder;
 import net.kyori.adventure.text.Component;
+import net.kyori.event.EventSubscription;
 
 import java.util.function.Supplier;
 
-public interface Objective extends ScoreboardDisplayable {
+public interface ListenerResolver extends ComponentResolver {
 
-    static ObjectiveBuilder builder() {
-        return Impactor.instance().builders().provide(ObjectiveBuilder.class);
+    EventSubscription subscription();
+
+    static ListenerResolver create(ListenerConfiguration config) {
+        return config.build(Impactor.instance().builders().provide(ListeningUpdaterBuilder.class));
     }
 
-    static Objective constant(Supplier<Component> supplier) {
-        return builder().updater(ConstantResolver.create(supplier)).build();
-    }
+    interface ListeningUpdaterBuilder extends Builder<ListenerResolver> {
 
-    static Objective scheduled(SchedulerConfiguration config) {
-        return builder().updater(ScheduledResolver.create(config)).build();
-    }
+        ListeningUpdaterBuilder text(Supplier<Component> provider);
 
-    static Objective listening(ListenerConfiguration config) {
-        return builder().updater(ListenerResolver.create(config)).build();
+        ListeningUpdaterBuilder subscription(Subscription subscription);
+
+        ListeningUpdaterBuilder transformer(TextTransformer transformer);
+
     }
 
 }

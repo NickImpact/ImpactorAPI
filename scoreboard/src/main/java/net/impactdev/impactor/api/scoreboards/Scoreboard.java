@@ -30,7 +30,6 @@ import net.impactdev.impactor.api.platform.players.PlatformPlayer;
 import net.impactdev.impactor.api.utility.builders.Builder;
 import net.impactdev.impactor.api.scoreboards.lines.ScoreboardLine;
 import net.impactdev.impactor.api.scoreboards.objectives.Objective;
-import net.impactdev.impactor.api.scoreboards.relative.PlayerScoreboard;
 
 import java.util.List;
 
@@ -58,24 +57,51 @@ public interface Scoreboard {
         return Impactor.instance().builders().provide(ScoreboardBuilder.class);
     }
 
-    ScoreboardImplementation implementation();
+    /**
+     * Represents the renderer responsible for displaying the scoreboard to the client. This should query
+     * the respective elements of the scoreboard to get the currently available text, in the correct state
+     * specified by the component resolver.
+     *
+     * @return The renderer used to display the scoreboard to the target client.
+     * @since 5.2.0
+     */
+    ScoreboardRenderer implementation();
 
     /**
      * Represents the objective of a scoreboard, or otherwise the "title" element.
      *
-     * @return
+     * @return The objective of the viewed scoreboard.
+     * @since 5.2.0
      */
     Objective objective();
 
+    /**
+     * Represents the list of lines that would populate this scoreboard. Note that a scoreboard can only hold
+     * up to 15 lines, excluding the objective (making the total count 16). When rendered to the client, only
+     * the lines with the highest score will be capable of being displayed.
+     *
+     * @return An immutable list of lines that would be displayed on the scoreboard, sorted by score.
+     * @since 5.2.0
+     */
     List<ScoreboardLine> lines();
 
-    default PlayerScoreboard createFor(PlatformPlayer viewer) {
-        return PlayerScoreboard.create(this, viewer);
+    /**
+     * Creates a render-able version of this scoreboard for the target viewer. This will initialize all components
+     * of the scoreboard in preparation to be viewed by the client, but will hold them in a state that is not yet
+     * receiving updates. This also does not yet show the scoreboard to the client. To do so, consult
+     * {@link AssignedScoreboard#open()}.
+     *
+     * @param viewer The player that will be viewing this particular scoreboard
+     * @return A version of the scoreboard relative to the player.
+     * @since 5.2.0
+     */
+    default AssignedScoreboard createFor(PlatformPlayer viewer) {
+        return AssignedScoreboard.create(this, viewer);
     }
 
     interface ScoreboardBuilder extends Builder<Scoreboard> {
 
-        ScoreboardBuilder implementation(ScoreboardImplementation implementation);
+        ScoreboardBuilder implementation(ScoreboardRenderer implementation);
 
         ScoreboardBuilder objective(Objective objective);
 
