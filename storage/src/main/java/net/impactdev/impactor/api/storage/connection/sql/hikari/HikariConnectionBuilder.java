@@ -25,11 +25,12 @@
 
 package net.impactdev.impactor.api.storage.connection.sql.hikari;
 
+import net.impactdev.impactor.api.storage.StorageCredentials;
 import net.impactdev.impactor.api.storage.connection.sql.SQLConnection;
 import net.impactdev.impactor.api.utility.builders.Builder;
 
 public interface HikariConnectionBuilder<T extends SQLConnection, B extends HikariConnectionBuilder<T, B>> extends Builder<T> {
 
-    B credentials();
+    B credentials(StorageCredentials credentials);
 
 }
