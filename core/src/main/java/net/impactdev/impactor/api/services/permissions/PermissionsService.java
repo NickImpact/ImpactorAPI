@@ -29,11 +29,23 @@ import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.platform.sources.PlatformSource;
 import net.impactdev.impactor.api.services.Service;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.function.Predicate;
 
 public interface PermissionsService extends Service {
 
-    boolean hasPermission(PlatformSource stack, String permission);
+    /**
+     * Validates if a particular target has the specific permission. This would typically be checked when
+     * operating commands or interacting with elements in the world.
+     *
+     * @param source The source being queried against
+     * @param permission The permission to validate against the source
+     * @return <code>true</code> if the source has the specified permission, <code>false</code> otherwise
+     */
+    boolean hasPermission(PlatformSource source, String permission);
 
     /**
      * Creates a {@link Predicate} responsible for verifying whether the source of an executed command
@@ -49,6 +61,12 @@ public interface PermissionsService extends Service {
      */
     static Predicate<PlatformSource> validate(String permission) {
         return stack -> Impactor.instance().services().provide(PermissionsService.class).hasPermission(stack, permission);
+    }
+
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface Priority {
+        int value() default 0;
     }
 
 }

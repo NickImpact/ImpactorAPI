@@ -23,14 +23,23 @@
  *
  */
 
-package net.impactdev.impactor.api.storage.connection.sql.hikari;
+package net.impactdev.impactor.api.services.permissions;
 
-import net.impactdev.impactor.api.storage.StorageCredentials;
-import net.impactdev.impactor.api.storage.connection.sql.SQLConnection;
-import net.impactdev.impactor.api.utility.builders.Builder;
+import net.impactdev.impactor.api.events.ImpactorEvent;
+import net.impactdev.impactor.api.platform.PlatformInfo;
+import net.impactdev.impactor.api.platform.plugins.PluginMetadata;
+import org.jetbrains.annotations.Range;
 
-public interface HikariConnectionBuilder<T extends SQLConnection, B extends HikariConnectionBuilder<T, B>> extends Builder<T> {
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
-    B credentials(StorageCredentials credentials);
+public interface SuggestPermissionServiceEvent extends ImpactorEvent {
+
+    void suggest(
+            final PluginMetadata suggestor,
+            final Predicate<PlatformInfo> filter,
+            final Supplier<PermissionsService> service,
+            final @Range(from = 0, to = Integer.MAX_VALUE) int priority
+    );
 
 }
