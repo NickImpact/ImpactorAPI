@@ -26,11 +26,10 @@
 package net.impactdev.impactor.api.scoreboards.lines;
 
 import net.impactdev.impactor.api.scoreboards.resolvers.Updatable;
+import net.impactdev.impactor.api.scoreboards.score.Score;
 
 public interface ScoreboardLine extends Updatable {
 
-    int score();
-
-    void score(int score);
+    Score score();
 
 }

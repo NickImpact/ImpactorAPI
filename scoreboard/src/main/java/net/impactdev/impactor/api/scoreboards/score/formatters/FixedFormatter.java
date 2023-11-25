@@ -23,19 +23,18 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.resolvers;
+package net.impactdev.impactor.api.scoreboards.score.formatters;
 
-import net.impactdev.impactor.api.scoreboards.resolvers.updaters.ComponentProvider;
-import net.impactdev.impactor.api.utility.builders.Builder;
+import net.impactdev.impactor.api.annotations.Minecraft;
+import net.impactdev.impactor.api.scoreboards.score.ScoreFormatter;
+import net.kyori.adventure.text.Component;
 
-public interface ResolverConfiguration {
+@Minecraft("1.20.3")
+public record FixedFormatter(Component component) implements ScoreFormatter {
 
-    ComponentProvider provider();
-
-    interface ConfigurationBuilder<T, B extends ConfigurationBuilder<T, B>> extends Builder<T> {
-
-        B provider(ComponentProvider provider);
-
+    @Override
+    public Component format(int score) {
+        return null;
     }
 
 }

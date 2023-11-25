@@ -23,19 +23,18 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.resolvers;
+package net.impactdev.impactor.api.scoreboards.display;
 
-import net.impactdev.impactor.api.scoreboards.resolvers.updaters.ComponentProvider;
-import net.impactdev.impactor.api.utility.builders.Builder;
+import net.impactdev.impactor.api.utility.Context;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.pointer.Pointer;
+import net.kyori.adventure.text.Component;
 
-public interface ResolverConfiguration {
+public interface DisplayFormatter {
 
-    ComponentProvider provider();
+    Pointer<Component> INPUT = Pointer.pointer(Component.class, Key.key("scoreboards", "input"));
+    Pointer<Integer> INPUT_SIZE = Pointer.pointer(Integer.class, Key.key("scoreboards", "component_length"));
 
-    interface ConfigurationBuilder<T, B extends ConfigurationBuilder<T, B>> extends Builder<T> {
-
-        B provider(ComponentProvider provider);
-
-    }
+    Component format(Context context);
 
 }

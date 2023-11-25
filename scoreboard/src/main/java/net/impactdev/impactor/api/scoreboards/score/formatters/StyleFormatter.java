@@ -23,19 +23,24 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.resolvers;
+package net.impactdev.impactor.api.scoreboards.score.formatters;
 
-import net.impactdev.impactor.api.scoreboards.resolvers.updaters.ComponentProvider;
-import net.impactdev.impactor.api.utility.builders.Builder;
+import net.impactdev.impactor.api.annotations.Minecraft;
+import net.impactdev.impactor.api.scoreboards.score.ScoreFormatter;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
 
-public interface ResolverConfiguration {
+@Minecraft("1.20.3")
+public record StyleFormatter(Style style) implements ScoreFormatter {
 
-    ComponentProvider provider();
+    public static final StyleFormatter NO_STYLE = new StyleFormatter(Style.empty());
+    public static final StyleFormatter SIDEBAR_DEFAULT = new StyleFormatter(Style.style(NamedTextColor.RED));
+    public static final StyleFormatter PLAYER_LIST_DEFAULT = new StyleFormatter(Style.style(NamedTextColor.YELLOW));
 
-    interface ConfigurationBuilder<T, B extends ConfigurationBuilder<T, B>> extends Builder<T> {
-
-        B provider(ComponentProvider provider);
-
+    @Override
+    public Component format(int score) {
+        return Component.text(score).style(style);
     }
 
 }

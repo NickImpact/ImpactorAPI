@@ -23,19 +23,32 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.resolvers;
+package net.impactdev.impactor.api.scoreboards.display.formatters;
 
-import net.impactdev.impactor.api.scoreboards.resolvers.updaters.ComponentProvider;
-import net.impactdev.impactor.api.utility.builders.Builder;
+import net.impactdev.impactor.api.scoreboards.display.DisplayFormatter;
+import net.impactdev.impactor.api.utility.Context;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 
-public interface ResolverConfiguration {
+public abstract class AbstractFormatter implements DisplayFormatter {
 
-    ComponentProvider provider();
+    protected void calculateLength(Context context) {
+        Component source = context.require(DisplayFormatter.INPUT);
+        context.pointer(DisplayFormatter.INPUT_SIZE, this.length(source));
+    }
 
-    interface ConfigurationBuilder<T, B extends ConfigurationBuilder<T, B>> extends Builder<T> {
+    private int length(Component root) {
+        int result = 0;
 
-        B provider(ComponentProvider provider);
+        if(root instanceof TextComponent) {
+            result += ((TextComponent) root).content().length();
+        }
 
+        for(Component child : root.children()) {
+            result += this.length(child);
+        }
+
+        return result;
     }
 
 }

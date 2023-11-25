@@ -23,19 +23,11 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.resolvers;
+package net.impactdev.impactor.api.scoreboards.display.formatters.rgb;
 
-import net.impactdev.impactor.api.scoreboards.resolvers.updaters.ComponentProvider;
-import net.impactdev.impactor.api.utility.builders.Builder;
+public final class DynamicRGBFormatter extends RainbowFormatter {
 
-public interface ResolverConfiguration {
-
-    ComponentProvider provider();
-
-    interface ConfigurationBuilder<T, B extends ConfigurationBuilder<T, B>> extends Builder<T> {
-
-        B provider(ComponentProvider provider);
-
+    public DynamicRGBFormatter(int phase, boolean reversed) {
+        super(phase, reversed);
     }
-
 }

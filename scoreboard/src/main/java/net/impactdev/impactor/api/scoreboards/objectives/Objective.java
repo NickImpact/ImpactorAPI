@@ -26,12 +26,28 @@
 package net.impactdev.impactor.api.scoreboards.objectives;
 
 import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.annotations.Minecraft;
 import net.impactdev.impactor.api.scoreboards.resolvers.Updatable;
 import net.impactdev.impactor.api.scoreboards.resolvers.updaters.ComponentProvider;
 import net.impactdev.impactor.api.scoreboards.resolvers.updaters.listener.ListenerConfiguration;
 import net.impactdev.impactor.api.scoreboards.resolvers.scheduled.SchedulerConfiguration;
+import net.impactdev.impactor.api.scoreboards.score.ScoreFormatter;
+import org.jetbrains.annotations.Nullable;
 
 public interface Objective extends Updatable {
+
+    /**
+     * Represents a parent formatter that will be used to decorate scores for any score, within the objective,
+     * that does not have its own formatter set.
+     *
+     * <p>This particular feature requires Minecraft 1.20.3. It serves no functionality otherwise.</p>
+     *
+     * @return A formatter for scores, or null
+     * @since 5.2.0
+     */
+    @Nullable
+    @Minecraft("1.20.3")
+    ScoreFormatter formatter();
 
     static ObjectiveConfig builder() {
         return Impactor.instance().builders().provide(ObjectiveConfig.class);
