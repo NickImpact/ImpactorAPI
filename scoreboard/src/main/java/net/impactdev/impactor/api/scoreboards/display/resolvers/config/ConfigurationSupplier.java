@@ -23,14 +23,13 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.resolvers.updaters;
+package net.impactdev.impactor.api.scoreboards.display.resolvers.config;
 
-import net.impactdev.impactor.api.utility.Context;
-import net.kyori.adventure.text.Component;
+import net.impactdev.impactor.api.utility.builders.Builder;
 
 @FunctionalInterface
-public interface ComponentProvider {
+public interface ConfigurationSupplier<T, B extends Builder<T>> {
 
-    Component resolve(Context context);
+    T create(B builder);
 
 }

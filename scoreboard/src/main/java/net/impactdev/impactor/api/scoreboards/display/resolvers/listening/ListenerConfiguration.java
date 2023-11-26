@@ -23,13 +23,50 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.objectives;
+package net.impactdev.impactor.api.scoreboards.display.resolvers.listening;
 
+import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverBuilder;
 import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
-import net.impactdev.impactor.api.utility.builders.Builder;
+import net.kyori.event.EventSubscription;
 
-public interface ObjectiveConfig extends Builder<Objective> {
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
-    ObjectiveConfig resolver(ResolverConfiguration resolver);
+public interface ListenerConfiguration extends ResolverConfiguration {
 
+    static Configuration builder() {
+        return Impactor.instance().builders().provide(Configuration.class);
+    }
+
+
+    interface Configuration extends ResolverBuilder<ListenerConfiguration, Configuration> {
+
+        <T> Subscribe<T> listenFor(Class<T> event);
+
+        <T> EventConditions<T> listenForWithConditions(Class<T> event);
+
+    }
+
+    interface EventConditions<T> {
+
+        EventConditions<T> condition(Predicate<T> condition);
+
+        Subscribe<T> complete();
+
+    }
+
+    interface Subscribe<T> {
+
+        Configuration subscribe(Subscriber<T> subscriber);
+
+    }
+
+    interface Subscriber<T> {
+
+        void validateEventType(Class<T> event) throws IllegalArgumentException;
+
+        EventSubscription subscribe(Class<T> event, Consumer<T> listener);
+
+    }
 }

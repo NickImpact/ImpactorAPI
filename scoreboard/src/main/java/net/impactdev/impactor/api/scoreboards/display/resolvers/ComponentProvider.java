@@ -23,33 +23,14 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.resolvers.updaters.listener;
+package net.impactdev.impactor.api.scoreboards.display.resolvers;
 
-import net.impactdev.impactor.api.Impactor;
-import net.impactdev.impactor.api.scoreboards.resolvers.updaters.resolver.ComponentResolver;
-import net.impactdev.impactor.api.text.transformers.TextTransformer;
-import net.impactdev.impactor.api.utility.builders.Builder;
+import net.impactdev.impactor.api.utility.Context;
 import net.kyori.adventure.text.Component;
-import net.kyori.event.EventSubscription;
 
-import java.util.function.Supplier;
+@FunctionalInterface
+public interface ComponentProvider {
 
-public interface ListenerResolver extends ComponentResolver {
-
-    EventSubscription subscription();
-
-    static ListenerResolver create(ListenerConfiguration config) {
-        return config.build(Impactor.instance().builders().provide(ListeningUpdaterBuilder.class));
-    }
-
-    interface ListeningUpdaterBuilder extends Builder<ListenerResolver> {
-
-        ListeningUpdaterBuilder text(Supplier<Component> provider);
-
-        ListeningUpdaterBuilder subscription(Subscription subscription);
-
-        ListeningUpdaterBuilder transformer(TextTransformer transformer);
-
-    }
+    Component parse(Context context);
 
 }

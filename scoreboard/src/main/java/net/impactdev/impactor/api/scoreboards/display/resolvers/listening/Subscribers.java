@@ -23,13 +23,33 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.objectives;
+package net.impactdev.impactor.api.scoreboards.display.resolvers.listening;
 
-import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
-import net.impactdev.impactor.api.utility.builders.Builder;
+import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.events.ImpactorEvent;
+import net.impactdev.impactor.api.events.ImpactorEventBus;
+import net.kyori.event.EventSubscription;
 
-public interface ObjectiveConfig extends Builder<Objective> {
+import java.util.function.Consumer;
 
-    ObjectiveConfig resolver(ResolverConfiguration resolver);
+public final class Subscribers {
+
+    public static <T extends ImpactorEvent> ListenerConfiguration.Subscriber<T> impactor() {
+        return new ListenerConfiguration.Subscriber<>() {
+            private final ImpactorEventBus bus = ImpactorEventBus.bus();
+
+            @Override
+            public void validateEventType(Class<T> type) throws IllegalArgumentException {
+                if(!this.bus.type().isAssignableFrom(type)) {
+                    throw new IllegalArgumentException("Invalid event for Impactor Event Bus");
+                }
+            }
+
+            @Override
+            public EventSubscription subscribe(Class<T> event, Consumer<T> listener) {
+                return Impactor.instance().events().subscribe(event, listener::accept);
+            }
+        };
+    }
 
 }

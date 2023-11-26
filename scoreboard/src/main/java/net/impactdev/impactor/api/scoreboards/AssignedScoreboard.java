@@ -27,10 +27,9 @@ package net.impactdev.impactor.api.scoreboards;
 
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.platform.players.PlatformPlayer;
-import net.impactdev.impactor.api.scoreboards.resolvers.Updatable;
 import org.jetbrains.annotations.NotNull;
 
-public interface AssignedScoreboard extends Updatable {
+public interface AssignedScoreboard {
 
     static AssignedScoreboard create(final @NotNull Scoreboard parent, final @NotNull PlatformPlayer viewer) {
         return Impactor.instance().factories().provide(Factory.class).create(parent, viewer);

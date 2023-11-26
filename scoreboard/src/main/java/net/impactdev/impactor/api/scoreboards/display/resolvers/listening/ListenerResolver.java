@@ -23,13 +23,13 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.objectives;
+package net.impactdev.impactor.api.scoreboards.display.resolvers.listening;
 
-import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
-import net.impactdev.impactor.api.utility.builders.Builder;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.ComponentResolver;
+import net.kyori.event.EventSubscription;
 
-public interface ObjectiveConfig extends Builder<Objective> {
+public interface ListenerResolver extends ComponentResolver {
 
-    ObjectiveConfig resolver(ResolverConfiguration resolver);
+    EventSubscription subscription();
 
 }

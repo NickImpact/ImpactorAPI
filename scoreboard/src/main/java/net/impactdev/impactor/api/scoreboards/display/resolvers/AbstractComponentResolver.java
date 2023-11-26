@@ -23,13 +23,16 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.objectives;
+package net.impactdev.impactor.api.scoreboards.display.resolvers;
 
-import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
-import net.impactdev.impactor.api.utility.builders.Builder;
+import net.impactdev.impactor.api.utility.Context;
+import net.kyori.adventure.text.Component;
 
-public interface ObjectiveConfig extends Builder<Objective> {
+public abstract class AbstractComponentResolver implements ComponentResolver {
 
-    ObjectiveConfig resolver(ResolverConfiguration resolver);
+    @Override
+    public Component resolve(Context context) {
+        return null;
+    }
 
 }

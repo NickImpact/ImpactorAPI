@@ -63,6 +63,4 @@ public class RainbowFormatter extends ColorFormatter {
         return TextColor.color(HSVLike.hsvLike(hue, 1f, 1f));
     }
 
-
-
 }

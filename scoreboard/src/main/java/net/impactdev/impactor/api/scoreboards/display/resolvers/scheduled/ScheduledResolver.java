@@ -23,19 +23,33 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.resolvers;
+package net.impactdev.impactor.api.scoreboards.display.resolvers.scheduled;
 
-import net.impactdev.impactor.api.scoreboards.resolvers.updaters.ComponentProvider;
-import net.impactdev.impactor.api.utility.builders.Builder;
+import net.impactdev.impactor.api.scheduler.SchedulerTask;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.AbstractComponentResolver;
 
-public interface ResolverConfiguration {
+/**
+ * Represents a component updater which refreshes the resolved component on after a scheduled amount of time.
+ * This type of updater is capable of running async where possible.
+ */
+public final class ScheduledResolver extends AbstractComponentResolver {
 
-    ComponentProvider provider();
-
-    interface ConfigurationBuilder<T, B extends ConfigurationBuilder<T, B>> extends Builder<T> {
-
-        B provider(ComponentProvider provider);
+    @Override
+    public void initialize() {
 
     }
 
+    @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void shutdown() {
+
+    }
+
+    public SchedulerTask task() {
+        return null;
+    }
 }

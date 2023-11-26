@@ -23,21 +23,13 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.resolvers.updaters.resolver;
+package net.impactdev.impactor.api.scoreboards.display.resolvers.config;
 
-import net.impactdev.impactor.api.platform.players.PlatformPlayer;
-import net.kyori.adventure.text.Component;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.ComponentProvider;
+import net.impactdev.impactor.api.utility.builders.Builder;
 
-public interface ComponentResolver {
+public interface ResolverBuilder<T, B extends Builder<T>> extends Builder<T> {
 
-    Component update(PlatformPlayer viewer);
-
-    void init();
-
-    void start();
-
-    void pause();
-
-    void shutdown();
+    B provider(ComponentProvider provider);
 
 }

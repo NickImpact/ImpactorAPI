@@ -23,43 +23,47 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.resolvers.scheduled;
+package net.impactdev.impactor.api.scoreboards.display.resolvers.scheduled;
 
 import net.impactdev.impactor.api.Impactor;
-import net.impactdev.impactor.api.scheduler.SchedulerTask;
+import net.impactdev.impactor.api.scheduler.Ticks;
 import net.impactdev.impactor.api.scheduler.v2.Scheduler;
-import net.impactdev.impactor.api.scoreboards.AssignedScoreboard;
-import net.impactdev.impactor.api.scoreboards.resolvers.ResolverConfiguration;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverBuilder;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
+
+import java.util.concurrent.TimeUnit;
 
 public interface SchedulerConfiguration extends ResolverConfiguration {
 
     Scheduler scheduler();
 
-    TaskProvider task();
-
-    static ConfigBuilder builder() {
-        return Impactor.instance().builders().provide(ConfigBuilder.class);
+    static Configuration builder() {
+        return Impactor.instance().builders().provide(Configuration.class);
     }
 
-    interface ConfigBuilder extends ConfigurationBuilder<SchedulerConfiguration, ConfigBuilder> {
+    interface Configuration extends ResolverBuilder<SchedulerConfiguration, Configuration> {
 
-        ConfigBuilder scheduler(Scheduler scheduler);
-
-        ConfigBuilder task(TaskProvider provider);
+        TaskProperties scheduler(Scheduler scheduler);
 
     }
 
-    @FunctionalInterface
-    interface TaskProvider {
+    interface TaskProperties {
 
-        SchedulerTask schedule(Scheduler scheduler, AssignedScoreboard scoreboard);
+        default Configuration repeating(long interval, TimeUnit unit) {
+            return this.repeating(0, interval, unit);
+        }
 
-    }
+        Configuration repeating(long delay, long interval, TimeUnit unit);
 
-    @FunctionalInterface
-    interface Creator {
+        default Configuration repeating(Ticks interval) {
+            return this.repeating(Ticks.zero(), interval);
+        }
 
-        SchedulerConfiguration configure(ConfigBuilder builder);
+        Configuration repeating(Ticks delay, Ticks interval);
+
+        Configuration delayed(long delay, TimeUnit unit);
+
+        Configuration delayed(Ticks delay);
 
     }
 

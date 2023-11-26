@@ -23,10 +23,19 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.resolvers;
+package net.impactdev.impactor.api.scoreboards.display.resolvers;
 
-public interface Updatable {
+import net.impactdev.impactor.api.utility.Context;
+import net.kyori.adventure.text.Component;
 
-    void update();
+public interface ComponentResolver {
+
+    Component resolve(Context context);
+
+    void initialize();
+
+    void start();
+
+    void shutdown();
 
 }

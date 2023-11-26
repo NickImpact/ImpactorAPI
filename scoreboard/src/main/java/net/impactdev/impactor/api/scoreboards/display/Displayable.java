@@ -23,17 +23,15 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.resolvers.scheduled;
+package net.impactdev.impactor.api.scoreboards.display;
 
-import net.impactdev.impactor.api.scheduler.SchedulerTask;
-import net.impactdev.impactor.api.scoreboards.resolvers.updaters.resolver.ComponentResolver;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.ComponentResolver;
+import net.kyori.adventure.text.Component;
 
-/**
- * Represents a component updater which refreshes the resolved component on after a scheduled amount of time.
- * This type of updater is capable of running async where possible.
- */
-public interface ScheduledResolver extends ComponentResolver {
+public interface Displayable {
 
-    SchedulerTask task();
+    Component display();
+
+    ComponentResolver resolver();
 
 }

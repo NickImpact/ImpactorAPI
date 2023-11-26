@@ -27,14 +27,14 @@ package net.impactdev.impactor.api.scoreboards.objectives;
 
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.annotations.Minecraft;
-import net.impactdev.impactor.api.scoreboards.resolvers.Updatable;
-import net.impactdev.impactor.api.scoreboards.resolvers.updaters.ComponentProvider;
-import net.impactdev.impactor.api.scoreboards.resolvers.updaters.listener.ListenerConfiguration;
-import net.impactdev.impactor.api.scoreboards.resolvers.scheduled.SchedulerConfiguration;
+import net.impactdev.impactor.api.scoreboards.display.Displayable;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ConfigurationSupplier;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.listening.ListenerConfiguration;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.scheduled.SchedulerConfiguration;
 import net.impactdev.impactor.api.scoreboards.score.ScoreFormatter;
 import org.jetbrains.annotations.Nullable;
 
-public interface Objective extends Updatable {
+public interface Objective extends Displayable {
 
     /**
      * Represents a parent formatter that will be used to decorate scores for any score, within the objective,
@@ -53,16 +53,16 @@ public interface Objective extends Updatable {
         return Impactor.instance().builders().provide(ObjectiveConfig.class);
     }
 
-    static Objective constant(ComponentProvider provider) {
-        return builder().provider(provider).build();
+    static Objective constant() {
+        return builder().build();
     }
 
-    static Objective scheduled(SchedulerConfiguration.Creator config) {
-        return builder().resolver(config.configure(SchedulerConfiguration.builder())).build();
+    static Objective scheduled(ConfigurationSupplier<SchedulerConfiguration, SchedulerConfiguration.Configuration> config) {
+        return builder().resolver(config.create(SchedulerConfiguration.builder())).build();
     }
 
-//    static Objective listening(ListenerConfiguration.Provider config) {
-//        return builder().updater(config.configure(ListenerConfiguration.builder())).build();
-//    }
+    static Objective listening(ConfigurationSupplier<ListenerConfiguration, ListenerConfiguration.Configuration> config) {
+        return builder().resolver(config.create(ListenerConfiguration.builder())).build();
+    }
 
 }
