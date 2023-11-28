@@ -34,7 +34,7 @@ public record FixedFormatter(Component component) implements ScoreFormatter {
 
     @Override
     public Component format(int score) {
-        return null;
+        return this.component;
     }
 
 }

@@ -28,6 +28,7 @@ package net.impactdev.impactor.api.scoreboards.display.resolvers.scheduled;
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.scheduler.Ticks;
 import net.impactdev.impactor.api.scheduler.v2.Scheduler;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ConfigurationSupplier;
 import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverBuilder;
 import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
 
@@ -46,6 +47,9 @@ public interface SchedulerConfiguration extends ResolverConfiguration {
         TaskProperties scheduler(Scheduler scheduler);
 
     }
+
+    @FunctionalInterface
+    interface ConfigSupplier extends ConfigurationSupplier<SchedulerConfiguration, Configuration> {}
 
     interface TaskProperties {
 

@@ -25,7 +25,9 @@
 
 package net.impactdev.impactor.api.scoreboards.score;
 
+import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.annotations.Minecraft;
+import net.impactdev.impactor.api.utility.Lockable;
 import net.impactdev.impactor.api.utility.builders.Builder;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Nullable;
@@ -49,7 +51,7 @@ import java.util.function.IntUnaryOperator;
  * display value of a score, we should still maintain the internal value of the score in order to preserve
  * proper sorting, where necessary.
  */
-public interface Score {
+public interface Score extends Lockable {
 
     /**
      * Represents the actual score as an integer value. This is the default display criteria for a scoreboard
@@ -73,30 +75,6 @@ public interface Score {
     ScoreFormatter formatter();
 
     /**
-     * Specifies if the score is currently locked from being updated further.
-     *
-     * @return <code>true</code> if locked, <code>false</code> otherwise
-     * @since 5.2.0
-     */
-    boolean locked();
-
-    /**
-     * If not already, locks the score from further updates. This effectively leaves the score in an immutable
-     * state, until later unlocked.
-     *
-     * @since 5.2.0
-     */
-    void lock();
-
-    /**
-     * If not already, unlocks the score to allow updating of the interval score value. This leaves the score
-     * in a mutable state until locked.
-     *
-     * @since 5.2.0
-     */
-    void unlock();
-
-    /**
      * Updates the current score value using the internal value as the source input. This option allows for dynamic
      * updates based on the current score. This logic can otherwise be repeated with {@link #set(int)}, but this
      * option shorthands operations where setting the score requires a callback to {@link #value()}.
@@ -117,6 +95,10 @@ public interface Score {
      * @return <code>true</code> if the value was accepted, <code>false</code> otherwise
      */
     boolean set(int value);
+
+    static ScoreBuilder builder() {
+        return Impactor.instance().builders().provide(ScoreBuilder.class);
+    }
 
     /**
      * Represents a builder capable of building a score.

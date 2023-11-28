@@ -65,7 +65,7 @@ public interface Scoreboard {
      * @return The renderer used to display the scoreboard to the target client.
      * @since 5.2.0
      */
-    ScoreboardRenderer implementation();
+    ScoreboardRenderer renderer();
 
     /**
      * Represents the objective of a scoreboard, or otherwise the "title" element.
@@ -95,13 +95,13 @@ public interface Scoreboard {
      * @return A version of the scoreboard relative to the player.
      * @since 5.2.0
      */
-    default AssignedScoreboard createFor(PlatformPlayer viewer) {
+    default AssignedScoreboard assignTo(PlatformPlayer viewer) {
         return AssignedScoreboard.create(this, viewer);
     }
 
     interface ScoreboardBuilder extends Builder<Scoreboard> {
 
-        ScoreboardBuilder implementation(ScoreboardRenderer implementation);
+        ScoreboardBuilder renderer(ScoreboardRenderer implementation);
 
         ScoreboardBuilder objective(Objective objective);
 

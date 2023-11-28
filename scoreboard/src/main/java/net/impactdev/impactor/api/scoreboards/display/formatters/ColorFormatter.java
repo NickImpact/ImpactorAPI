@@ -25,7 +25,6 @@
 
 package net.impactdev.impactor.api.scoreboards.display.formatters;
 
-import net.impactdev.impactor.api.scoreboards.display.DisplayFormatter;
 import net.impactdev.impactor.api.utility.Context;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -33,7 +32,13 @@ import net.kyori.adventure.text.format.TextColor;
 
 import java.util.PrimitiveIterator;
 
-public abstract class ColorFormatter extends AbstractFormatter {
+public abstract class ColorFormatter extends AbstractFormatter implements DisplayFormatter.Stateful {
+
+    private boolean locked = false;
+
+    protected ColorFormatter(boolean locked) {
+        this.locked = locked;
+    }
 
     // TODO - This needs to consider children
     @Override
@@ -68,4 +73,20 @@ public abstract class ColorFormatter extends AbstractFormatter {
     protected abstract void advance(Context context);
 
     protected abstract TextColor color(Context context);
+
+    @Override
+    public boolean locked() {
+        return this.locked;
+    }
+
+    @Override
+    public void lock() {
+        this.locked = true;
+    }
+
+    @Override
+    public void unlock() {
+        this.locked = false;
+    }
+
 }

@@ -26,6 +26,7 @@
 package net.impactdev.impactor.api.scoreboards.display.resolvers.listening;
 
 import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ConfigurationSupplier;
 import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverBuilder;
 import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
 import net.kyori.event.EventSubscription;
@@ -39,7 +40,6 @@ public interface ListenerConfiguration extends ResolverConfiguration {
         return Impactor.instance().builders().provide(Configuration.class);
     }
 
-
     interface Configuration extends ResolverBuilder<ListenerConfiguration, Configuration> {
 
         <T> Subscribe<T> listenFor(Class<T> event);
@@ -47,6 +47,9 @@ public interface ListenerConfiguration extends ResolverConfiguration {
         <T> EventConditions<T> listenForWithConditions(Class<T> event);
 
     }
+
+    @FunctionalInterface
+    interface ConfigSupplier extends ConfigurationSupplier<ListenerConfiguration, Configuration> {}
 
     interface EventConditions<T> {
 

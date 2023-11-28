@@ -25,22 +25,26 @@
 
 package net.impactdev.impactor.api.scoreboards.display.formatters.rgb;
 
-import net.impactdev.impactor.api.scoreboards.display.DisplayFormatter;
+import net.impactdev.impactor.api.scoreboards.display.formatters.DisplayFormatter;
 import net.impactdev.impactor.api.scoreboards.display.formatters.ColorFormatter;
 import net.impactdev.impactor.api.utility.Context;
+import net.impactdev.impactor.api.utility.builders.Builder;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.util.HSVLike;
 
-public class RainbowFormatter extends ColorFormatter {
+public final class RainbowFormatter extends ColorFormatter implements DisplayFormatter.Stateful {
 
     private final boolean reversed;
     private final int phase;
+    private final int increment;
 
     private int index;
 
-    public RainbowFormatter(int phase, boolean reversed) {
-        this.phase = phase;
-        this.reversed = reversed;
+    private RainbowFormatter(RainbowFormatterConfiguration config) {
+        super(config.locked);
+        this.phase = config.phase;
+        this.reversed = config.reversed;
+        this.increment = config.increment;
     }
 
     @Override
@@ -63,4 +67,52 @@ public class RainbowFormatter extends ColorFormatter {
         return TextColor.color(HSVLike.hsvLike(hue, 1f, 1f));
     }
 
+    @Override
+    public void step() {
+
+    }
+
+    @Override
+    public int increment() {
+        return this.increment;
+    }
+
+    public static RainbowFormatterConfiguration builder() {
+        return new RainbowFormatterConfiguration();
+    }
+
+    public static final class RainbowFormatterConfiguration implements Builder<RainbowFormatter> {
+
+        private int phase;
+        private boolean reversed;
+
+        private boolean locked;
+        private int increment;
+
+        public RainbowFormatterConfiguration phase(int phase) {
+            this.phase = phase;
+            return this;
+        }
+
+        public RainbowFormatterConfiguration reversed(boolean state) {
+            this.reversed = state;
+            return this;
+        }
+
+        public RainbowFormatterConfiguration locked(boolean locked) {
+            this.locked = locked;
+            return this;
+        }
+
+        public RainbowFormatterConfiguration increment(int increment) {
+            this.increment = increment;
+            return this;
+        }
+
+        @Override
+        public RainbowFormatter build() {
+            return null;
+        }
+
+    }
 }

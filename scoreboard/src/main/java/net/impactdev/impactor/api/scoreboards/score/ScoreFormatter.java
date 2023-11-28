@@ -28,6 +28,7 @@ package net.impactdev.impactor.api.scoreboards.score;
 import net.impactdev.impactor.api.annotations.Minecraft;
 import net.kyori.adventure.text.Component;
 
+@FunctionalInterface
 @Minecraft("1.20.3")
 public interface ScoreFormatter {
 

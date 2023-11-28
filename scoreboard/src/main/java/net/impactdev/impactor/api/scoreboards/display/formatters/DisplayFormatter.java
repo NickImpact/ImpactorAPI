@@ -23,11 +23,27 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display.formatters.rgb;
+package net.impactdev.impactor.api.scoreboards.display.formatters;
 
-public final class DynamicRGBFormatter extends RainbowFormatter {
+import net.impactdev.impactor.api.utility.Context;
+import net.impactdev.impactor.api.utility.Lockable;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.pointer.Pointer;
+import net.kyori.adventure.text.Component;
 
-    public DynamicRGBFormatter(int phase, boolean reversed) {
-        super(phase, reversed);
+public interface DisplayFormatter {
+
+    Pointer<Component> INPUT = Pointer.pointer(Component.class, Key.key("scoreboards", "input"));
+    Pointer<Integer> INPUT_SIZE = Pointer.pointer(Integer.class, Key.key("scoreboards", "component_length"));
+
+    Component format(Context context);
+
+    interface Stateful extends Lockable {
+
+        void step();
+
+        int increment();
+
     }
+
 }
