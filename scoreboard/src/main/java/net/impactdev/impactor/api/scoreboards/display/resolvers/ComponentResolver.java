@@ -25,17 +25,19 @@
 
 package net.impactdev.impactor.api.scoreboards.display.resolvers;
 
+import net.impactdev.impactor.api.scoreboards.display.Display;
+import net.impactdev.impactor.api.scoreboards.display.Displayable;
 import net.impactdev.impactor.api.utility.Context;
 import net.kyori.adventure.text.Component;
 
 public interface ComponentResolver {
 
+    ComponentProvider provider();
+
     Component resolve(Context context);
 
-    void initialize();
+    void start(Display display);
 
-    void start();
-
-    void shutdown();
+    void shutdown(Display display);
 
 }

@@ -27,7 +27,11 @@ package net.impactdev.impactor.api.scoreboards;
 
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.platform.players.PlatformPlayer;
+import net.impactdev.impactor.api.scoreboards.lines.ScoreboardLine;
+import net.impactdev.impactor.api.scoreboards.objectives.Objective;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public interface AssignedScoreboard {
 
@@ -38,6 +42,10 @@ public interface AssignedScoreboard {
     Scoreboard configuration();
 
     PlatformPlayer viewer();
+
+    Objective.Displayed objective();
+
+    List<ScoreboardLine.Displayed> lines();
 
     void open();
 

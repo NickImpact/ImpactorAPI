@@ -34,22 +34,35 @@ import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverC
 
 import java.util.concurrent.TimeUnit;
 
-public interface SchedulerConfiguration extends ResolverConfiguration {
+/**
+ * This class represents configurable values associated with creating a displayable object that is capable
+ * of being refreshed/updated on a scheduled basis. For example, this type of resolver may attempt
+ * to update the contents of a displayable instance every 5 seconds.
+ *
+ * @since 5.2.0
+ */
+public interface ScheduledResolverConfiguration extends ResolverConfiguration {
 
+    /**
+     * Specifies the configured scheduler to be used by the resolver once initialized.
+     *
+     * @return The scheduler to be used by this resolver
+     * @since 5.2.0
+     */
     Scheduler scheduler();
 
     static Configuration builder() {
         return Impactor.instance().builders().provide(Configuration.class);
     }
 
-    interface Configuration extends ResolverBuilder<SchedulerConfiguration, Configuration> {
+    interface Configuration extends ResolverBuilder<ScheduledResolverConfiguration, Configuration> {
 
         TaskProperties scheduler(Scheduler scheduler);
 
     }
 
     @FunctionalInterface
-    interface ConfigSupplier extends ConfigurationSupplier<SchedulerConfiguration, Configuration> {}
+    interface ConfigSupplier extends ConfigurationSupplier<ScheduledResolverConfiguration, Configuration> {}
 
     interface TaskProperties {
 

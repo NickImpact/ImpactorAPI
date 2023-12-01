@@ -23,7 +23,7 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display.resolvers.listening;
+package net.impactdev.impactor.api.scoreboards.display.resolvers.subscribing;
 
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.events.ImpactorEvent;
@@ -34,8 +34,8 @@ import java.util.function.Consumer;
 
 public final class Subscribers {
 
-    public static <T extends ImpactorEvent> ListenerConfiguration.Subscriber<T> impactor() {
-        return new ListenerConfiguration.Subscriber<>() {
+    public static <T extends ImpactorEvent> Subscriber<T> impactor() {
+        return new Subscriber<>() {
             private final ImpactorEventBus bus = ImpactorEventBus.bus();
 
             @Override

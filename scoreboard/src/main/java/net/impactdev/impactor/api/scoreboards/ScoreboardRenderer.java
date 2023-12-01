@@ -32,9 +32,9 @@ import net.impactdev.impactor.api.scoreboards.objectives.Objective;
 
 public interface ScoreboardRenderer {
 
-    void objective(Objective objective);
+    void objective(PlatformPlayer viewer, Objective.Displayed objective);
 
-    void line(ScoreboardLine line);
+    void line(PlatformPlayer viewer, ScoreboardLine.Displayed line);
 
     void show(AssignedScoreboard scoreboard);
 

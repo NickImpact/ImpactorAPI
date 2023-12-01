@@ -26,10 +26,11 @@
 package net.impactdev.impactor.api.scoreboards.lines;
 
 import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.scoreboards.display.Display;
 import net.impactdev.impactor.api.scoreboards.display.Displayable;
 import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.listening.ListenerConfiguration;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.scheduled.SchedulerConfiguration;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.subscribing.SubscriptionConfiguration;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.scheduled.ScheduledResolverConfiguration;
 import net.impactdev.impactor.api.scoreboards.score.Score;
 import net.impactdev.impactor.api.utility.builders.Builder;
 import org.jetbrains.annotations.NotNull;
@@ -43,19 +44,17 @@ public interface ScoreboardLine extends Displayable {
         return Impactor.instance().builders().provide(LineBuilder.class);
     }
 
-    static LineBuilder scheduled(SchedulerConfiguration.ConfigSupplier config) {
-        return builder().resolver(config.create(SchedulerConfiguration.builder()));
-    }
-
-    static LineBuilder listening(ListenerConfiguration.ConfigSupplier config) {
-        return builder().resolver(config.create(ListenerConfiguration.builder()));
-    }
-
     interface LineBuilder extends Builder<ScoreboardLine> {
 
-        LineBuilder resolver(ResolverConfiguration resolver);
+        LineBuilder resolver(ResolverConfiguration<?> resolver);
 
         LineBuilder score(Score score);
+
+    }
+
+    interface Displayed extends Display {
+
+        ScoreboardLine delegate();
 
     }
 

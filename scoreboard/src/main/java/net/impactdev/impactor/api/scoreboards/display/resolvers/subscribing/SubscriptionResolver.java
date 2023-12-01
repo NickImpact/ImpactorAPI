@@ -23,12 +23,12 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display.resolvers.listening;
+package net.impactdev.impactor.api.scoreboards.display.resolvers.subscribing;
 
 import net.impactdev.impactor.api.scoreboards.display.resolvers.ComponentResolver;
 import net.kyori.event.EventSubscription;
 
-public interface ListenerResolver extends ComponentResolver {
+public interface SubscriptionResolver extends ComponentResolver {
 
     EventSubscription subscription();
 

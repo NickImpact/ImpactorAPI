@@ -25,13 +25,10 @@
 
 package net.impactdev.impactor.api.scoreboards.display;
 
-import net.impactdev.impactor.api.scoreboards.display.resolvers.ComponentResolver;
-import net.kyori.adventure.text.Component;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
 
 public interface Displayable {
 
-    Component display();
-
-    ComponentResolver resolver();
+    ResolverConfiguration<?> resolver();
 
 }

@@ -26,30 +26,35 @@
 package net.impactdev.impactor.api.scoreboards.display.resolvers.scheduled;
 
 import net.impactdev.impactor.api.scheduler.SchedulerTask;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.AbstractComponentResolver;
+import net.impactdev.impactor.api.scoreboards.display.Displayable;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.ComponentResolver;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 
 /**
  * Represents a component updater which refreshes the resolved component on after a scheduled amount of time.
  * This type of updater is capable of running async where possible.
+ *
+ * @since 5.2.0
  */
-public final class ScheduledResolver extends AbstractComponentResolver {
+public interface ScheduledResolver extends ComponentResolver {
 
-    @Override
-    public void initialize() {
+    /**
+     * Represents the configuration used to create this resolver.
+     *
+     * @return The configuration of the resolver
+     * @since 5.2.0
+     */
+    ScheduledResolverConfiguration configuration();
 
-    }
+    /**
+     * Specifies the task associated with this resolver. This is set when the resolver is officially started
+     * for the first time, and never becomes null again after the fact. While it can be replaced by other calls
+     * to {@link ComponentResolver#start(Displayable)}, this can never be made null.
+     *
+     * @return The scheduler task associated with this resolver
+     * @since 5.2.0
+     */
+    @MonotonicNonNull
+    SchedulerTask task();
 
-    @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void shutdown() {
-
-    }
-
-    public SchedulerTask task() {
-        return null;
-    }
 }

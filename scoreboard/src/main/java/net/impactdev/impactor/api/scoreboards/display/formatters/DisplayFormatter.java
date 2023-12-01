@@ -25,7 +25,6 @@
 
 package net.impactdev.impactor.api.scoreboards.display.formatters;
 
-import net.impactdev.impactor.api.utility.Context;
 import net.impactdev.impactor.api.utility.Lockable;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.pointer.Pointer;
@@ -36,7 +35,7 @@ public interface DisplayFormatter {
     Pointer<Component> INPUT = Pointer.pointer(Component.class, Key.key("scoreboards", "input"));
     Pointer<Integer> INPUT_SIZE = Pointer.pointer(Integer.class, Key.key("scoreboards", "component_length"));
 
-    Component format(Context context);
+    Component format(Component input);
 
     interface Stateful extends Lockable {
 

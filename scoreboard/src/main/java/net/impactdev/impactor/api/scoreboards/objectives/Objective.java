@@ -27,10 +27,9 @@ package net.impactdev.impactor.api.scoreboards.objectives;
 
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.annotations.Minecraft;
+import net.impactdev.impactor.api.scoreboards.display.Display;
 import net.impactdev.impactor.api.scoreboards.display.Displayable;
 import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.listening.ListenerConfiguration;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.scheduled.SchedulerConfiguration;
 import net.impactdev.impactor.api.scoreboards.score.ScoreFormatter;
 import net.impactdev.impactor.api.utility.builders.Builder;
 import org.jetbrains.annotations.Nullable;
@@ -54,24 +53,18 @@ public interface Objective extends Displayable {
         return Impactor.instance().builders().provide(ObjectiveBuilder.class);
     }
 
-    static ObjectiveBuilder constant() {
-        return builder();
-    }
-
-    static ObjectiveBuilder scheduled(SchedulerConfiguration.ConfigSupplier config) {
-        return builder().resolver(config.create(SchedulerConfiguration.builder()));
-    }
-
-    static ObjectiveBuilder listening(ListenerConfiguration.ConfigSupplier config) {
-        return builder().resolver(config.create(ListenerConfiguration.builder()));
-    }
-
     interface ObjectiveBuilder extends Builder<Objective> {
 
-        ObjectiveBuilder resolver(ResolverConfiguration configuration);
+        ObjectiveBuilder resolver(ResolverConfiguration<?> configuration);
 
         @Minecraft("1.20.3")
         ObjectiveBuilder formatter(ScoreFormatter formatter);
+
+    }
+
+    interface Displayed extends Display {
+
+        Objective delegate();
 
     }
 

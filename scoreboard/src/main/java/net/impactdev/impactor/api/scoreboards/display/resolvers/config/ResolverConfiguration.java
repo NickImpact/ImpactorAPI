@@ -25,10 +25,34 @@
 
 package net.impactdev.impactor.api.scoreboards.display.resolvers.config;
 
+import net.impactdev.impactor.api.scoreboards.display.formatters.DisplayFormatter;
 import net.impactdev.impactor.api.scoreboards.display.resolvers.ComponentProvider;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.ComponentResolver;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 
-public interface ResolverConfiguration {
+@ApiStatus.AvailableSince("5.2.0")
+public interface ResolverConfiguration<R extends ComponentResolver> {
 
+    /**
+     *
+     * @return
+     */
     ComponentProvider provider();
 
+    /**
+     *
+     *
+     * @return
+     */
+    @Nullable
+    DisplayFormatter formatter();
+
+    /**
+     * Creates a resolver using this given configuration. Each call should create a new unique entry, where applicable,
+     * such that
+     *
+     * @return A new resolver based on this configuration.
+     */
+    R create();
 }

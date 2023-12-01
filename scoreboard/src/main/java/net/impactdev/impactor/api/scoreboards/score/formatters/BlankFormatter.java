@@ -32,6 +32,10 @@ import net.kyori.adventure.text.Component;
 @Minecraft("1.20.3")
 public final class BlankFormatter implements ScoreFormatter {
 
+    public static final BlankFormatter INSTANCE = new BlankFormatter();
+
+    private BlankFormatter() {}
+
     @Override
     public Component format(int score) {
         return Component.empty();

@@ -23,33 +23,31 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display.resolvers.listening;
+package net.impactdev.impactor.api.scoreboards.display.resolvers.subscribing;
 
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ConfigurationSupplier;
 import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverBuilder;
 import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
-import net.kyori.event.EventSubscription;
 
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public interface ListenerConfiguration extends ResolverConfiguration {
+public interface SubscriptionConfiguration extends ResolverConfiguration {
 
     static Configuration builder() {
         return Impactor.instance().builders().provide(Configuration.class);
     }
 
-    interface Configuration extends ResolverBuilder<ListenerConfiguration, Configuration> {
+    @FunctionalInterface
+    interface ConfigSupplier extends ConfigurationSupplier<SubscriptionConfiguration, Configuration> {}
+
+    interface Configuration extends ResolverBuilder<SubscriptionConfiguration, Configuration> {
 
         <T> Subscribe<T> listenFor(Class<T> event);
 
         <T> EventConditions<T> listenForWithConditions(Class<T> event);
 
     }
-
-    @FunctionalInterface
-    interface ConfigSupplier extends ConfigurationSupplier<ListenerConfiguration, Configuration> {}
 
     interface EventConditions<T> {
 
@@ -65,11 +63,4 @@ public interface ListenerConfiguration extends ResolverConfiguration {
 
     }
 
-    interface Subscriber<T> {
-
-        void validateEventType(Class<T> event) throws IllegalArgumentException;
-
-        EventSubscription subscribe(Class<T> event, Consumer<T> listener);
-
-    }
 }
