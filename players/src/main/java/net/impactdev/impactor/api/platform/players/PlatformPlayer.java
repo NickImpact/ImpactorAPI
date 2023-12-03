@@ -29,6 +29,8 @@ import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.items.ImpactorItemStack;
 import net.impactdev.impactor.api.items.platform.ItemTransaction;
 import net.impactdev.impactor.api.platform.sources.PlatformSource;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.pointer.Pointer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -44,6 +46,8 @@ import java.util.UUID;
  * dummy results, or fail exceptionally.
  */
 public interface PlatformPlayer extends PlatformSource {
+
+    Pointer<PlatformPlayer> PLAYER = Pointer.pointer(PlatformPlayer.class, Key.key("impactor", "player"));
 
     /**
      * Fetches or creates a PlatformPlayer representing a player identified by the given UUID.

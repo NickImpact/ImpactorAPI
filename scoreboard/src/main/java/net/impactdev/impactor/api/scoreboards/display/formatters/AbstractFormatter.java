@@ -31,9 +31,8 @@ import net.kyori.adventure.text.TextComponent;
 
 public abstract class AbstractFormatter implements DisplayFormatter {
 
-    protected void calculateLength(Context context) {
-        Component source = context.require(DisplayFormatter.INPUT);
-        context.pointer(DisplayFormatter.INPUT_SIZE, this.length(source));
+    protected int calculateLength(Component input) {
+        return this.length(input);
     }
 
     private int length(Component root) {

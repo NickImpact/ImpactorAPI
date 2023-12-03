@@ -29,6 +29,7 @@ import net.impactdev.impactor.api.scoreboards.display.formatters.DisplayFormatte
 import net.impactdev.impactor.api.scoreboards.display.formatters.ColorFormatter;
 import net.impactdev.impactor.api.utility.Context;
 import net.impactdev.impactor.api.utility.builders.Builder;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.util.HSVLike;
 
@@ -48,10 +49,10 @@ public final class RainbowFormatter extends ColorFormatter implements DisplayFor
     }
 
     @Override
-    protected void advance(Context context) {
+    protected void advance(int length) {
         if (this.reversed) {
             if (this.index == 0) {
-                this.index = context.require(DisplayFormatter.INPUT_SIZE) - 1;
+                this.index = length - 1;
             } else {
                 this.index--;
             }
@@ -61,9 +62,9 @@ public final class RainbowFormatter extends ColorFormatter implements DisplayFor
     }
 
     @Override
-    protected TextColor color(Context context) {
+    protected TextColor color(int length) {
         final float index = this.index;
-        final float hue = (index / context.require(DisplayFormatter.INPUT_SIZE) + this.phase / 10f) % 1;
+        final float hue = (index / length + this.phase / 10f) % 1;
         return TextColor.color(HSVLike.hsvLike(hue, 1f, 1f));
     }
 
@@ -111,7 +112,7 @@ public final class RainbowFormatter extends ColorFormatter implements DisplayFor
 
         @Override
         public RainbowFormatter build() {
-            return null;
+            return new RainbowFormatter(this);
         }
 
     }

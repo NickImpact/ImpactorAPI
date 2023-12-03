@@ -29,6 +29,8 @@ import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.platform.audience.LocalizedAudience;
 import net.impactdev.impactor.api.platform.sources.metadata.MetadataKey;
 import net.impactdev.impactor.api.platform.sources.metadata.MetadataKeys;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.pointer.Pointer;
 import net.kyori.adventure.text.Component;
 
 import java.util.Optional;
@@ -44,6 +46,8 @@ public interface PlatformSource extends LocalizedAudience {
 
     /** A default UUID of all 0's, used to represent the console */
     UUID SERVER_UUID = new UUID(0, 0);
+
+    Pointer<PlatformSource> SOURCE = Pointer.pointer(PlatformSource.class, Key.key("impactor", "source"));
 
     /**
      * Creates a source which represents the server console for the running server instance.

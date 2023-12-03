@@ -30,6 +30,7 @@ import net.impactdev.impactor.api.annotations.Minecraft;
 import net.impactdev.impactor.api.utility.Lockable;
 import net.impactdev.impactor.api.utility.builders.Builder;
 import net.kyori.adventure.text.Component;
+import net.kyori.examination.Examinable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.IntBinaryOperator;

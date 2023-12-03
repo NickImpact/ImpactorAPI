@@ -23,26 +23,18 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display.formatters;
+package net.impactdev.impactor.api.scoreboards;
 
-import net.impactdev.impactor.api.utility.Lockable;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.pointer.Pointer;
-import net.kyori.adventure.text.Component;
 
-public interface DisplayFormatter {
+public final class ScoreboardPointers {
 
-    Pointer<Component> INPUT = Pointer.pointer(Component.class, Key.key("scoreboards", "input"));
-    Pointer<Integer> INPUT_SIZE = Pointer.pointer(Integer.class, Key.key("scoreboards", "component_length"));
+    public static final Pointer<Scoreboard> CONFIGURATION = create(Scoreboard.class, Key.key("impactor", "scoreboard"));
+    public static final Pointer<AssignedScoreboard> ASSIGNED = create(AssignedScoreboard.class, Key.key("impactor", "assigned-scoreboard"));
 
-    Component format(Component root);
-
-    interface Stateful extends Lockable {
-
-        void step();
-
-        int increment();
-
+    private static <T> Pointer<T> create(Class<T> type, Key key) {
+        return Pointer.pointer(type, key);
     }
 
 }

@@ -30,6 +30,7 @@ import net.impactdev.impactor.api.platform.players.PlatformPlayer;
 import net.impactdev.impactor.api.utility.builders.Builder;
 import net.impactdev.impactor.api.scoreboards.lines.ScoreboardLine;
 import net.impactdev.impactor.api.scoreboards.objectives.Objective;
+import net.kyori.examination.Examinable;
 
 import java.util.List;
 

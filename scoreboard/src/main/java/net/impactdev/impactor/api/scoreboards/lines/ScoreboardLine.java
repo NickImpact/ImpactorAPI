@@ -33,9 +33,10 @@ import net.impactdev.impactor.api.scoreboards.display.resolvers.subscribing.Subs
 import net.impactdev.impactor.api.scoreboards.display.resolvers.scheduled.ScheduledResolverConfiguration;
 import net.impactdev.impactor.api.scoreboards.score.Score;
 import net.impactdev.impactor.api.utility.builders.Builder;
+import net.kyori.examination.Examinable;
 import org.jetbrains.annotations.NotNull;
 
-public interface ScoreboardLine extends Displayable {
+public interface ScoreboardLine extends Displayable, Examinable {
 
     @NotNull
     Score score();

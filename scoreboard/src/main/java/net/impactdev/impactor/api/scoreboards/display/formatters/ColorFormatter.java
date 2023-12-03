@@ -26,13 +26,22 @@
 package net.impactdev.impactor.api.scoreboards.display.formatters;
 
 import net.impactdev.impactor.api.utility.Context;
+import net.kyori.adventure.pointer.Pointer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.flattener.ComponentFlattener;
 import net.kyori.adventure.text.format.TextColor;
 
+import java.util.Collections;
 import java.util.PrimitiveIterator;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class ColorFormatter extends AbstractFormatter implements DisplayFormatter.Stateful {
+
+    private static final ComponentFlattener LENGTH_CALCULATOR = ComponentFlattener.builder()
+            .mapper(TextComponent.class, TextComponent::content)
+            .unknownMapper(x -> "_")
+            .build();
 
     private boolean locked = false;
 
@@ -40,39 +49,16 @@ public abstract class ColorFormatter extends AbstractFormatter implements Displa
         this.locked = locked;
     }
 
-    // TODO - This needs to consider children
     @Override
-    public Component format(Context context) {
-        this.calculateLength(context);
+    public Component format(Component root) {
+        AtomicInteger length = new AtomicInteger(0);
+        LENGTH_CALCULATOR.flatten(root, s -> length.set(s.codePointCount(0, s.length())));
 
-        Component input = context.require(DisplayFormatter.INPUT);
-        if(input instanceof TextComponent) {
-            if(input.style().color() != null) {
-                return input;
-            }
-
-            String content = ((TextComponent) input).content();
-            if(!content.isEmpty()) {
-                final TextComponent.Builder builder = Component.text();
-
-                final int[] holder = new int[1];
-                for (final PrimitiveIterator.OfInt it = content.codePoints().iterator(); it.hasNext();) {
-                    holder[0] = it.nextInt();
-                    final Component comp = Component.text(new String(holder, 0, 1), input.style().color(this.color(context)));
-                    this.advance(context);
-                    builder.append(comp);
-                }
-
-                return builder.build();
-            }
-        }
-
-        return input;
+        return Component.empty();
     }
 
-    protected abstract void advance(Context context);
-
-    protected abstract TextColor color(Context context);
+    protected abstract void advance(int length);
+    protected abstract TextColor color(int length);
 
     @Override
     public boolean locked() {
@@ -87,6 +73,46 @@ public abstract class ColorFormatter extends AbstractFormatter implements Displa
     @Override
     public void unlock() {
         this.locked = false;
+    }
+
+    private Component apply(Component component, int totalSize) {
+        if(component instanceof TextComponent text) {
+            // If this component has a color, we will not overwrite it. Instead, we will
+            // simply track the length for the remainder of the text to format.
+            if(text.style().color() != null) {
+                final String content = text.content();
+                final int length = content.codePointCount(0, content.length());
+
+                for(int i = 0; i < length; i++) {
+                    this.advance(totalSize);
+                }
+
+                return text;
+            }
+
+            String content = text.content();
+            if(content.length() > 0) {
+                final TextComponent.Builder parent = Component.text();
+
+                final int[] holder = new int[1];
+                for(final PrimitiveIterator.OfInt it = content.codePoints().iterator(); it.hasNext();) {
+                    holder[0] = it.nextInt();
+                    final Component letter = Component.text(new String(holder, 0, 1), component.style().color(this.color(totalSize)));
+                    this.advance(totalSize);
+
+                    parent.append(letter);
+                }
+
+                return parent.build();
+            }
+        } else {
+            final Component other = component.children(Collections.emptyList()).colorIfAbsent(this.color(totalSize));
+            this.advance(totalSize);
+
+            return other;
+        }
+
+        return Component.empty().mergeStyle(component);
     }
 
 }

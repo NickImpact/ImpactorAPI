@@ -32,6 +32,7 @@ import net.impactdev.impactor.api.scoreboards.display.Displayable;
 import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
 import net.impactdev.impactor.api.scoreboards.score.ScoreFormatter;
 import net.impactdev.impactor.api.utility.builders.Builder;
+import net.kyori.examination.Examinable;
 import org.jetbrains.annotations.Nullable;
 
 public interface Objective extends Displayable {
