@@ -25,7 +25,6 @@
 
 package net.impactdev.impactor.api.scoreboards.display.formatters;
 
-import net.impactdev.impactor.api.utility.Context;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 

@@ -29,11 +29,12 @@ import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.platform.players.PlatformPlayer;
 import net.impactdev.impactor.api.scoreboards.lines.ScoreboardLine;
 import net.impactdev.impactor.api.scoreboards.objectives.Objective;
+import net.impactdev.impactor.api.utility.pointers.PointerCapable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public interface AssignedScoreboard {
+public interface AssignedScoreboard extends PointerCapable {
 
     static AssignedScoreboard create(final @NotNull Scoreboard parent, final @NotNull PlatformPlayer viewer) {
         return Impactor.instance().factories().provide(Factory.class).create(parent, viewer);

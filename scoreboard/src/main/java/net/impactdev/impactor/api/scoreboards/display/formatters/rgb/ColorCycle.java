@@ -23,34 +23,30 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards;
+package net.impactdev.impactor.api.scoreboards.display.formatters.rgb;
 
 import net.impactdev.impactor.api.Impactor;
-import net.impactdev.impactor.api.platform.players.PlatformPlayer;
-import net.impactdev.impactor.api.scoreboards.lines.ScoreboardLine;
-import net.impactdev.impactor.api.scoreboards.objectives.Objective;
+import net.impactdev.impactor.api.scoreboards.display.formatters.DisplayFormatter;
+import net.impactdev.impactor.api.utility.builders.Builder;
+import org.checkerframework.checker.index.qual.Positive;
 
-public interface ScoreboardRenderer {
+public interface ColorCycle extends DisplayFormatter.Stateful {
 
-    void objective(AssignedScoreboard scoreboard, Objective.Displayed objective);
+    int frames();
 
-    void line(AssignedScoreboard scoreboard, ScoreboardLine.Displayed line);
+    int phase();
 
-    void createTeam(AssignedScoreboard scoreboard, ScoreboardLine.Displayed line);
-
-    void destroyTeam(AssignedScoreboard scoreboard, ScoreboardLine.Displayed line);
-
-    void show(AssignedScoreboard scoreboard);
-
-    void hide(AssignedScoreboard scoreboard);
-
-    static ScoreboardRenderer packets() {
-        return Impactor.instance().factories().provide(Factory.class).packets();
+    static Config configure() {
+        return Impactor.instance().builders().provide(Config.class);
     }
 
-    interface Factory {
+    interface Config extends Builder<ColorCycle> {
 
-        ScoreboardRenderer packets();
+        Config frames(@Positive int frames);
+
+        Config phase(int phase);
+
+        Config increment(int increment);
 
     }
 

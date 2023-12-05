@@ -26,6 +26,7 @@
 package net.impactdev.impactor.api.scoreboards.display.resolvers.scheduled;
 
 import net.impactdev.impactor.api.scheduler.SchedulerTask;
+import net.impactdev.impactor.api.scoreboards.display.Display;
 import net.impactdev.impactor.api.scoreboards.display.Displayable;
 import net.impactdev.impactor.api.scoreboards.display.resolvers.ComponentResolver;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -49,7 +50,7 @@ public interface ScheduledResolver extends ComponentResolver {
     /**
      * Specifies the task associated with this resolver. This is set when the resolver is officially started
      * for the first time, and never becomes null again after the fact. While it can be replaced by other calls
-     * to {@link ComponentResolver#start(Displayable)}, this can never be made null.
+     * to {@link ComponentResolver#start(Display)}, this can never be made null.
      *
      * @return The scheduler task associated with this resolver
      * @since 5.2.0

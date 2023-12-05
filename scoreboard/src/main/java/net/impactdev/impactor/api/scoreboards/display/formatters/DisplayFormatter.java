@@ -37,7 +37,7 @@ public interface DisplayFormatter {
 
     Component format(Component root);
 
-    interface Stateful extends Lockable {
+    interface Stateful extends DisplayFormatter, Lockable {
 
         void step();
 

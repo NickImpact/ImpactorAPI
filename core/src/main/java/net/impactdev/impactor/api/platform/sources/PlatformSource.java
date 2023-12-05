@@ -29,6 +29,7 @@ import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.platform.audience.LocalizedAudience;
 import net.impactdev.impactor.api.platform.sources.metadata.MetadataKey;
 import net.impactdev.impactor.api.platform.sources.metadata.MetadataKeys;
+import net.impactdev.impactor.api.utility.pointers.PointerCapable;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.pointer.Pointer;
 import net.kyori.adventure.text.Component;
@@ -42,7 +43,7 @@ import java.util.function.Supplier;
  * Some sources may or may not exist within the world itself, such as players or command blocks.
  *
  */
-public interface PlatformSource extends LocalizedAudience {
+public interface PlatformSource extends LocalizedAudience, PointerCapable {
 
     /** A default UUID of all 0's, used to represent the console */
     UUID SERVER_UUID = new UUID(0, 0);

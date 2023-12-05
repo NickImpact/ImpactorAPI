@@ -25,6 +25,7 @@
 
 package net.impactdev.impactor.api.scoreboards.display.resolvers;
 
+import net.impactdev.impactor.api.platform.sources.PlatformSource;
 import net.impactdev.impactor.api.scoreboards.display.formatters.DisplayFormatter;
 import net.impactdev.impactor.api.utility.Context;
 import net.kyori.adventure.text.Component;
@@ -41,8 +42,8 @@ public abstract class AbstractComponentResolver implements ComponentResolver {
     }
 
     @Override
-    public Component resolve(Context context) {
-        Component result = this.provider.parse(context);
+    public Component resolve(PlatformSource viewer, Context context) {
+        Component result = this.provider.parse(viewer, context);
 
         if(this.formatter != null) {
             result = this.formatter.format(result);

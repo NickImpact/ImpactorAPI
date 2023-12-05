@@ -25,12 +25,11 @@
 
 package net.impactdev.impactor.api.scoreboards.display.formatters;
 
-import net.impactdev.impactor.api.utility.Context;
-import net.kyori.adventure.pointer.Pointer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.flattener.ComponentFlattener;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import java.util.Collections;
 import java.util.PrimitiveIterator;
@@ -51,10 +50,9 @@ public abstract class ColorFormatter extends AbstractFormatter implements Displa
 
     @Override
     public Component format(Component root) {
-        AtomicInteger length = new AtomicInteger(0);
-        LENGTH_CALCULATOR.flatten(root, s -> length.set(s.codePointCount(0, s.length())));
+        int length = PlainTextComponentSerializer.plainText().serialize(root).length();
 
-        return Component.empty();
+        return this.apply(root, length);
     }
 
     protected abstract void advance(int length);
@@ -87,11 +85,16 @@ public abstract class ColorFormatter extends AbstractFormatter implements Displa
                     this.advance(totalSize);
                 }
 
-                return text;
+                Component result = text.children(Collections.emptyList());
+                for(Component child : text.children()) {
+                    result = result.append(this.apply(child, totalSize));
+                }
+
+                return result;
             }
 
             String content = text.content();
-            if(content.length() > 0) {
+            if(!content.isEmpty()) {
                 final TextComponent.Builder parent = Component.text();
 
                 final int[] holder = new int[1];
@@ -103,11 +106,20 @@ public abstract class ColorFormatter extends AbstractFormatter implements Displa
                     parent.append(letter);
                 }
 
-                return parent.build();
+                Component result = parent.build();
+                for(Component child : component.children()) {
+                    result = result.append(this.apply(child, totalSize));
+                }
+
+                return result;
             }
         } else {
-            final Component other = component.children(Collections.emptyList()).colorIfAbsent(this.color(totalSize));
+            Component other = component.children(Collections.emptyList()).colorIfAbsent(this.color(totalSize));
             this.advance(totalSize);
+
+            for(Component child : component.children()) {
+                other = other.append(this.apply(child, totalSize));
+            }
 
             return other;
         }

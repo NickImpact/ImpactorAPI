@@ -25,12 +25,13 @@
 
 package net.impactdev.impactor.api.scoreboards.display.resolvers;
 
+import net.impactdev.impactor.api.platform.sources.PlatformSource;
 import net.impactdev.impactor.api.utility.Context;
 import net.kyori.adventure.text.Component;
 
 @FunctionalInterface
 public interface ComponentProvider {
 
-    Component parse(Context context);
+    Component parse(PlatformSource viewer, Context context);
 
 }

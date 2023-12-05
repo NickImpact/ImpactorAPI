@@ -27,21 +27,19 @@ package net.impactdev.impactor.api.scoreboards.display.formatters.rgb;
 
 import net.impactdev.impactor.api.scoreboards.display.formatters.DisplayFormatter;
 import net.impactdev.impactor.api.scoreboards.display.formatters.ColorFormatter;
-import net.impactdev.impactor.api.utility.Context;
 import net.impactdev.impactor.api.utility.builders.Builder;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.util.HSVLike;
 
-public final class RainbowFormatter extends ColorFormatter implements DisplayFormatter.Stateful {
+public final class Rainbow extends ColorFormatter implements DisplayFormatter.Stateful {
 
     private final boolean reversed;
-    private final int phase;
     private final int increment;
 
+    private int phase;
     private int index;
 
-    private RainbowFormatter(RainbowFormatterConfiguration config) {
+    private Rainbow(RainbowFormatterConfiguration config) {
         super(config.locked);
         this.phase = config.phase;
         this.reversed = config.reversed;
@@ -70,7 +68,7 @@ public final class RainbowFormatter extends ColorFormatter implements DisplayFor
 
     @Override
     public void step() {
-
+        this.phase += this.increment;
     }
 
     @Override
@@ -82,13 +80,19 @@ public final class RainbowFormatter extends ColorFormatter implements DisplayFor
         return new RainbowFormatterConfiguration();
     }
 
-    public static final class RainbowFormatterConfiguration implements Builder<RainbowFormatter> {
+    public static final class RainbowFormatterConfiguration implements Builder<Rainbow> {
 
+        private int frames;
         private int phase;
         private boolean reversed;
 
         private boolean locked;
         private int increment;
+
+        public RainbowFormatterConfiguration frames(int frames) {
+            this.frames = frames;
+            return this;
+        }
 
         public RainbowFormatterConfiguration phase(int phase) {
             this.phase = phase;
@@ -111,8 +115,8 @@ public final class RainbowFormatter extends ColorFormatter implements DisplayFor
         }
 
         @Override
-        public RainbowFormatter build() {
-            return new RainbowFormatter(this);
+        public Rainbow build() {
+            return new Rainbow(this);
         }
 
     }

@@ -26,9 +26,10 @@
 package net.impactdev.impactor.api.scoreboards.display;
 
 import net.impactdev.impactor.api.scoreboards.display.resolvers.ComponentResolver;
+import net.impactdev.impactor.api.utility.pointers.PointerCapable;
 import net.kyori.adventure.text.Component;
 
-public interface Display {
+public interface Display extends PointerCapable {
 
     ComponentResolver resolver();
 
