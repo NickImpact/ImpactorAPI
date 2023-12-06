@@ -28,12 +28,13 @@ package net.impactdev.impactor.api.scoreboards.display.resolvers;
 import net.impactdev.impactor.api.platform.sources.PlatformSource;
 import net.impactdev.impactor.api.scoreboards.display.Display;
 import net.impactdev.impactor.api.scoreboards.display.Displayable;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.text.ScoreboardComponent;
 import net.impactdev.impactor.api.utility.Context;
 import net.kyori.adventure.text.Component;
 
 public interface ComponentResolver {
 
-    ComponentProvider provider();
+    ScoreboardComponent component();
 
     Component resolve(PlatformSource viewer, Context context);
 

@@ -27,37 +27,26 @@ package net.impactdev.impactor.api.scoreboards.display.resolvers;
 
 import net.impactdev.impactor.api.platform.sources.PlatformSource;
 import net.impactdev.impactor.api.scoreboards.display.formatters.DisplayFormatter;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.text.ScoreboardComponent;
 import net.impactdev.impactor.api.utility.Context;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractComponentResolver implements ComponentResolver {
 
-    private final ComponentProvider provider;
-    private final @Nullable DisplayFormatter formatter;
+    private final ScoreboardComponent component;
 
-    protected AbstractComponentResolver(ComponentProvider provider, @Nullable DisplayFormatter formatter) {
-        this.provider = provider;
-        this.formatter = formatter;
+    protected AbstractComponentResolver(ScoreboardComponent component) {
+        this.component = component;
     }
 
     @Override
     public Component resolve(PlatformSource viewer, Context context) {
-        Component result = this.provider.parse(viewer, context);
-
-        if(this.formatter != null) {
-            result = this.formatter.format(result);
-
-            if(this.formatter instanceof DisplayFormatter.Stateful stateful) {
-                stateful.step();
-            }
-        }
-        
-        return result;
+        return this.component.resolve(viewer, context);
     }
 
     @Override
-    public ComponentProvider provider() {
-        return this.provider;
+    public ScoreboardComponent component() {
+        return this.component;
     }
 }

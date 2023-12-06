@@ -23,7 +23,47 @@
  *
  */
 
-package net.impactdev.impactor.minecraft.scoreboard.display.resolvers;
+package net.impactdev.impactor.api.scoreboards.display.resolvers;
 
-public interface Dummy {
+import net.impactdev.impactor.api.scoreboards.display.Display;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.text.ScoreboardComponent;
+
+public final class NoOpResolver extends AbstractComponentResolver implements ComponentResolver {
+
+    private NoOpResolver(ScoreboardComponent component) {
+        super(component);
+    }
+
+    @Override
+    public void start(Display display) {
+        display.resolve();
+    }
+
+    @Override
+    public void shutdown(Display display) {}
+
+    public static NoOpResolver.Config create(ScoreboardComponent component) {
+        return new Config(component);
+    }
+
+    public static final class Config implements ResolverConfiguration<NoOpResolver> {
+
+        private final ScoreboardComponent component;
+
+        private Config(ScoreboardComponent component) {
+            this.component = component;
+        }
+
+        @Override
+        public ScoreboardComponent component() {
+            return this.component;
+        }
+
+        @Override
+        public NoOpResolver create() {
+            return new NoOpResolver(this.component);
+        }
+    }
+
 }

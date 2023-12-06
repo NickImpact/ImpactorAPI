@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @since 5.2.0
  */
-public interface ScheduledResolverConfiguration extends ResolverConfiguration {
+public interface ScheduledResolverConfiguration extends ResolverConfiguration<ScheduledResolver> {
 
     /**
      * Specifies the configured scheduler to be used by the resolver once initialized.

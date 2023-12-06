@@ -25,14 +25,11 @@
 
 package net.impactdev.impactor.api.scoreboards.display.resolvers.config;
 
-import net.impactdev.impactor.api.scoreboards.display.formatters.DisplayFormatter;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.ComponentProvider;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.text.ScoreboardComponent;
 import net.impactdev.impactor.api.utility.builders.Builder;
 
 public interface ResolverBuilder<T, B extends Builder<T>> extends Builder<T> {
 
-    B provider(ComponentProvider provider);
-
-    B formatter(DisplayFormatter formatter);
+    B component(ScoreboardComponent component);
 
 }
