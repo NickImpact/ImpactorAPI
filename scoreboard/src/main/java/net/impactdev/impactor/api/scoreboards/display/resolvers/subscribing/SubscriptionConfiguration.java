@@ -26,40 +26,36 @@
 package net.impactdev.impactor.api.scoreboards.display.resolvers.subscribing;
 
 import net.impactdev.impactor.api.Impactor;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ConfigurationSupplier;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverBuilder;
+import net.impactdev.impactor.api.events.ImpactorEvent;
 import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
+import net.impactdev.impactor.api.scoreboards.display.resolvers.text.ScoreboardComponent;
+import net.kyori.event.EventSubscription;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
-public interface SubscriptionConfiguration extends ResolverConfiguration {
+public interface SubscriptionConfiguration<T extends ImpactorEvent> extends ResolverConfiguration<SubscriptionResolver> {
 
-    static Configuration builder() {
-        return Impactor.instance().builders().provide(Configuration.class);
+    Class<T> event();
+
+    @Nullable
+    Predicate<T> filter();
+
+    static Subscriber component(ScoreboardComponent component) {
+        return Impactor.instance().factories().provide(Component.class).component(component);
     }
 
-    @FunctionalInterface
-    interface ConfigSupplier extends ConfigurationSupplier<SubscriptionConfiguration, Configuration> {}
+    interface Component {
 
-    interface Configuration extends ResolverBuilder<SubscriptionConfiguration, Configuration> {
-
-        <T> Subscribe<T> listenFor(Class<T> event);
-
-        <T> EventConditions<T> listenForWithConditions(Class<T> event);
-
-    }
-
-    interface EventConditions<T> {
-
-        EventConditions<T> condition(Predicate<T> condition);
-
-        Subscribe<T> complete();
+        Subscriber component(ScoreboardComponent component);
 
     }
 
-    interface Subscribe<T> {
+    interface Subscriber {
 
-        Configuration subscribe(Subscriber<T> subscriber);
+        <T extends ImpactorEvent> SubscriptionConfiguration<T> listen(Class<T> event);
+
+        <T extends ImpactorEvent> SubscriptionConfiguration<T> listenAndFilter(Class<T> event, Predicate<T> filter);
 
     }
 

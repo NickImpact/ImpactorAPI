@@ -23,8 +23,9 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display.formatters;
+package net.impactdev.impactor.api.scoreboards.display.formatters.styling;
 
+import net.impactdev.impactor.api.scoreboards.display.formatters.DisplayFormatter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.flattener.ComponentFlattener;
@@ -35,18 +36,7 @@ import java.util.Collections;
 import java.util.PrimitiveIterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public abstract class ColorFormatter extends AbstractFormatter implements DisplayFormatter.Stateful {
-
-    private static final ComponentFlattener LENGTH_CALCULATOR = ComponentFlattener.builder()
-            .mapper(TextComponent.class, TextComponent::content)
-            .unknownMapper(x -> "_")
-            .build();
-
-    private boolean locked = false;
-
-    protected ColorFormatter(boolean locked) {
-        this.locked = locked;
-    }
+public abstract class ColorFormatter implements DisplayFormatter.Stateful {
 
     @Override
     public Component format(Component root) {
@@ -57,21 +47,6 @@ public abstract class ColorFormatter extends AbstractFormatter implements Displa
 
     protected abstract void advance(int length);
     protected abstract TextColor color(int length);
-
-    @Override
-    public boolean locked() {
-        return this.locked;
-    }
-
-    @Override
-    public void lock() {
-        this.locked = true;
-    }
-
-    @Override
-    public void unlock() {
-        this.locked = false;
-    }
 
     private Component apply(Component component, int totalSize) {
         if(component instanceof TextComponent text) {

@@ -23,33 +23,31 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display.resolvers.subscribing;
+package net.impactdev.impactor.api.scoreboards.display.formatters.styling.rgb;
 
 import net.impactdev.impactor.api.Impactor;
-import net.impactdev.impactor.api.events.ImpactorEvent;
-import net.impactdev.impactor.api.events.ImpactorEventBus;
-import net.kyori.event.EventSubscription;
+import net.impactdev.impactor.api.scoreboards.display.formatters.DisplayFormatter;
+import net.impactdev.impactor.api.utility.builders.Builder;
+import org.checkerframework.checker.index.qual.Positive;
 
-import java.util.function.Consumer;
+public interface ColorCycle extends DisplayFormatter.Stateful {
 
-public final class Subscribers {
+    int frames();
 
-    public static <T extends ImpactorEvent> Subscriber<T> impactor() {
-        return new Subscriber<>() {
-            private final ImpactorEventBus bus = ImpactorEventBus.bus();
+    int phase();
 
-            @Override
-            public void validateEventType(Class<T> type) throws IllegalArgumentException {
-                if(!this.bus.type().isAssignableFrom(type)) {
-                    throw new IllegalArgumentException("Invalid event for Impactor Event Bus");
-                }
-            }
+    static Config configure() {
+        return Impactor.instance().builders().provide(Config.class);
+    }
 
-            @Override
-            public EventSubscription subscribe(Class<T> event, Consumer<T> listener) {
-                return Impactor.instance().events().subscribe(event, listener::accept);
-            }
-        };
+    interface Config extends Builder<ColorCycle> {
+
+        Config frames(@Positive int frames);
+
+        Config phase(int phase);
+
+        Config increment(int increment);
+
     }
 
 }
