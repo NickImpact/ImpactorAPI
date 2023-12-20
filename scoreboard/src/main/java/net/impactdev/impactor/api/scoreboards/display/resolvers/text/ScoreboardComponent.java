@@ -41,6 +41,11 @@ public interface ScoreboardComponent {
     @Contract(pure = true)
     ScoreboardComponent append(ComponentElement element);
 
+    @Contract(pure = true)
+    default ScoreboardComponent append(ComponentLike component) {
+        return this.append(ComponentElement.create((viewer, context) -> component.asComponent()));
+    }
+
     List<ComponentElement> elements();
 
     static ScoreboardComponent create(ComponentElement root) {
