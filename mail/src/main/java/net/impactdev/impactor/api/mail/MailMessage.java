@@ -25,6 +25,7 @@
 
 package net.impactdev.impactor.api.mail;
 
+import net.impactdev.impactor.api.Impactor;
 import net.kyori.adventure.text.Component;
 import net.kyori.examination.Examinable;
 
@@ -33,6 +34,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface MailMessage {
+
+    static MailMessage create(Component message) {
+        return Impactor.instance().factories().provide(Factory.class).create(message);
+    }
+
+    static MailMessage create(UUID source, Component message) {
+        return Impactor.instance().factories().provide(Factory.class).create(source, message);
+    }
 
     /**
      * Represents a personal unique identifier in an effort to aid in message locating. This field
@@ -65,5 +74,11 @@ public interface MailMessage {
      * @return The Instant this message was generated and sent
      */
     Instant timestamp();
+
+    interface Factory {
+        MailMessage create(Component message);
+
+        MailMessage create(UUID source, Component message);
+    }
 
 }

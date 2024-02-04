@@ -97,6 +97,16 @@ public interface MailService extends Service {
     CompletableFuture<Boolean> send(final @NotNull UUID source, final @NotNull UUID target, final @NotNull Component message);
 
     /**
+     * Sends a pre-generated message to the target. Details such as source and message content should be provided
+     * as a part of the constructed message.
+     *
+     * @param target The user receiving this message
+     * @param message The message to be sent to the target
+     * @return A future wrapping the task of sending the message
+     */
+    CompletableFuture<Boolean> send(final @NotNull UUID target, final @NotNull MailMessage message);
+
+    /**
      * Deletes a message from the inbox of the target.
      *
      * @param target The uuid of the target

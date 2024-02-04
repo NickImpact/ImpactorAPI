@@ -23,35 +23,29 @@
  *
  */
 
-package net.impactdev.impactor.api.storage.connection.configurate.loaders;
+package net.impactdev.impactor.api.utility.serializers;
 
-import net.impactdev.impactor.api.storage.connection.configurate.ConfigurateLoader;
-import net.impactdev.impactor.api.utility.serializers.InstantSerializer;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.loader.ConfigurationLoader;
-import org.spongepowered.configurate.yaml.NodeStyle;
-import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
+import org.spongepowered.configurate.serialize.SerializationException;
+import org.spongepowered.configurate.serialize.TypeSerializer;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.lang.reflect.Type;
 import java.time.Instant;
 
-public class YamlLoader implements ConfigurateLoader {
-
+public final class InstantSerializer implements TypeSerializer<Instant> {
     @Override
-    public String name() {
-        return "YAML";
+    public Instant deserialize(Type type, ConfigurationNode node) throws SerializationException {
+        String sequence = node.getString();
+        if(sequence != null) {
+            return Instant.parse(sequence);
+        }
+
+        throw new SerializationException("Deserialization failed");
     }
 
     @Override
-    public ConfigurationLoader<? extends ConfigurationNode> loader(Path path) {
-        return YamlConfigurationLoader.builder()
-                .defaultOptions(defaults -> defaults.serializers(builder -> builder.register(Instant.class, new InstantSerializer())))
-                .nodeStyle(NodeStyle.BLOCK)
-                .indent(2)
-                .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
-                .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8))
-                .build();
+    public void serialize(Type type, @Nullable Instant source, ConfigurationNode node) throws SerializationException {
+        node.set(source.toString());
     }
 }
