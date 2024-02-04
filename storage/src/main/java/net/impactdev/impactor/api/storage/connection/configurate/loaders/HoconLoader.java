@@ -26,6 +26,7 @@
 package net.impactdev.impactor.api.storage.connection.configurate.loaders;
 
 import net.impactdev.impactor.api.storage.connection.configurate.ConfigurateLoader;
+import net.impactdev.impactor.api.utility.serializers.InstantSerializer;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 import org.spongepowered.configurate.loader.ConfigurationLoader;
@@ -33,6 +34,7 @@ import org.spongepowered.configurate.loader.ConfigurationLoader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
 
 public class HoconLoader implements ConfigurateLoader {
 
@@ -44,6 +46,7 @@ public class HoconLoader implements ConfigurateLoader {
     @Override
     public ConfigurationLoader<? extends ConfigurationNode> loader(Path path) {
         return HoconConfigurationLoader.builder()
+                .defaultOptions(defaults -> defaults.serializers(builder -> builder.register(Instant.class, new InstantSerializer())))
                 .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
                 .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8))
                 .build();

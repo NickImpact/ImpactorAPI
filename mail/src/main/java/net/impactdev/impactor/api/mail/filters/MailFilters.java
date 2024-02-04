@@ -23,35 +23,33 @@
  *
  */
 
-package net.impactdev.impactor.api.storage.connection.configurate.loaders;
+package net.impactdev.impactor.api.mail.filters;
 
-import net.impactdev.impactor.api.storage.connection.configurate.ConfigurateLoader;
-import net.impactdev.impactor.api.utility.serializers.InstantSerializer;
-import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.loader.ConfigurationLoader;
-import org.spongepowered.configurate.yaml.NodeStyle;
-import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
+import com.google.common.base.Preconditions;
+import net.impactdev.impactor.api.platform.sources.PlatformSource;
+import org.jetbrains.annotations.Nullable;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.UUID;
 
-public class YamlLoader implements ConfigurateLoader {
+public final class MailFilters {
 
-    @Override
-    public String name() {
-        return "YAML";
+    static MailFilter createSenderFilter(final boolean includeConsole, final UUID... players) {
+        return createSenderFilter(includeConsole, Arrays.asList(players));
     }
 
-    @Override
-    public ConfigurationLoader<? extends ConfigurationNode> loader(Path path) {
-        return YamlConfigurationLoader.builder()
-                .defaultOptions(defaults -> defaults.serializers(builder -> builder.register(Instant.class, new InstantSerializer())))
-                .nodeStyle(NodeStyle.BLOCK)
-                .indent(2)
-                .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
-                .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8))
-                .build();
+    static MailFilter createSenderFilter(final boolean includeConsole, final Collection<UUID> players) {
+        return m -> m.source().map(players::contains).orElse(includeConsole);
     }
+
+    static MailFilter createDateFilter(@Nullable final Instant after, @Nullable final Instant before) {
+        Preconditions.checkArgument(after != null || before != null);
+        final Instant iAfter = after == null ? Instant.ofEpochMilli(0) : after;
+        final Instant iBefore = before == null ? Instant.now() : before;
+
+        return m -> iAfter.isBefore(m.timestamp()) && iBefore.isAfter(m.timestamp());
+    }
+
 }

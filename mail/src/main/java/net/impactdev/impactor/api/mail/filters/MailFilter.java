@@ -23,33 +23,29 @@
  *
  */
 
-package net.impactdev.impactor.api.storage.connection.configurate.loaders;
+package net.impactdev.impactor.api.mail.filters;
 
-import net.impactdev.impactor.api.storage.connection.configurate.ConfigurateLoader;
-import net.impactdev.impactor.api.utility.serializers.InstantSerializer;
-import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.gson.GsonConfigurationLoader;
-import org.spongepowered.configurate.loader.ConfigurationLoader;
+import net.impactdev.impactor.api.mail.MailMessage;
+import org.jetbrains.annotations.NotNull;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.Instant;
+import java.util.function.Predicate;
 
-public class JsonLoader implements ConfigurateLoader {
+@FunctionalInterface
+public interface MailFilter extends Predicate<MailMessage> {
 
-    @Override
-    public String name() {
-        return "JSON";
+    @NotNull
+    default MailFilter and(@NotNull MailFilter other) {
+        return message -> this.test(message) && other.test(message);
     }
 
-    @Override
-    public ConfigurationLoader<? extends ConfigurationNode> loader(Path path) {
-        return GsonConfigurationLoader.builder()
-                .defaultOptions(opts -> opts.serializers(build -> build.register(Instant.class, new InstantSerializer())))
-                .indent(2)
-                .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
-                .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8))
-                .build();
+    @NotNull
+    default MailFilter or(@NotNull MailFilter other) {
+        return message -> this.test(message) || other.test(message);
+    }
+
+    @NotNull
+    default MailFilter negate() {
+        return message -> !this.test(message);
     }
 }
+
