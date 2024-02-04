@@ -23,29 +23,16 @@
  *
  */
 
-package net.impactdev.impactor.api.mail.filters;
+package net.impactdev.impactor.api.economy.events;
 
-import net.impactdev.impactor.api.mail.MailMessage;
-import org.jetbrains.annotations.NotNull;
+import net.impactdev.impactor.api.economy.EconomyService;
+import net.impactdev.impactor.api.events.ImpactorEvent;
+import net.impactdev.impactor.api.platform.plugins.PluginMetadata;
 
-import java.util.function.Predicate;
+public interface EstablishEconomyServiceEvent extends ImpactorEvent {
 
-@FunctionalInterface
-public interface MailFilter extends Predicate<MailMessage> {
+    PluginMetadata source();
 
-    @NotNull
-    default MailFilter and(@NotNull MailFilter other) {
-        return message -> this.test(message) && other.test(message);
-    }
+    EconomyService service();
 
-    @NotNull
-    default MailFilter or(@NotNull MailFilter other) {
-        return message -> this.test(message) || other.test(message);
-    }
-
-    @NotNull
-    default MailFilter negate() {
-        return message -> !this.test(message);
-    }
 }
-

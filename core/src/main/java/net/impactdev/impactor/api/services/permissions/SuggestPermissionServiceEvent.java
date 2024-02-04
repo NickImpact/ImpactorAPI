@@ -23,29 +23,23 @@
  *
  */
 
-package net.impactdev.impactor.api.mail.filters;
+package net.impactdev.impactor.api.services.permissions;
 
-import net.impactdev.impactor.api.mail.MailMessage;
-import org.jetbrains.annotations.NotNull;
+import net.impactdev.impactor.api.events.ImpactorEvent;
+import net.impactdev.impactor.api.platform.PlatformInfo;
+import net.impactdev.impactor.api.platform.plugins.PluginMetadata;
+import org.jetbrains.annotations.Range;
 
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
-@FunctionalInterface
-public interface MailFilter extends Predicate<MailMessage> {
+public interface SuggestPermissionServiceEvent extends ImpactorEvent {
 
-    @NotNull
-    default MailFilter and(@NotNull MailFilter other) {
-        return message -> this.test(message) && other.test(message);
-    }
+    void suggest(
+            final PluginMetadata suggestor,
+            final Predicate<PlatformInfo> filter,
+            final Supplier<PermissionsService> service,
+            final @Range(from = 0, to = Integer.MAX_VALUE) int priority
+    );
 
-    @NotNull
-    default MailFilter or(@NotNull MailFilter other) {
-        return message -> this.test(message) || other.test(message);
-    }
-
-    @NotNull
-    default MailFilter negate() {
-        return message -> !this.test(message);
-    }
 }
-

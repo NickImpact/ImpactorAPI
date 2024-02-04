@@ -23,29 +23,29 @@
  *
  */
 
-package net.impactdev.impactor.api.mail.filters;
+package net.impactdev.impactor.api.mail.events;
 
-import net.impactdev.impactor.api.mail.MailMessage;
-import org.jetbrains.annotations.NotNull;
+import net.impactdev.impactor.api.events.ImpactorEvent;
+import net.impactdev.impactor.api.mail.MailService;
+import net.impactdev.impactor.api.platform.plugins.PluginMetadata;
+import org.jetbrains.annotations.Range;
 
-import java.util.function.Predicate;
+import java.util.function.Supplier;
 
-@FunctionalInterface
-public interface MailFilter extends Predicate<MailMessage> {
+public interface SuggestMailServiceEvent extends ImpactorEvent {
 
-    @NotNull
-    default MailFilter and(@NotNull MailFilter other) {
-        return message -> this.test(message) && other.test(message);
-    }
+    /**
+     * Suggests the given mail service that should act as the APIs implementation end-point.
+     * <strong>This should only ever be called once per listener!</strong>
+     *
+     * @param suggestor A set of metadata detailing who is supplying the service
+     * @param service A supplier used to create the service
+     * @param priority The priority of the service
+     */
+    void suggest(
+            final PluginMetadata suggestor,
+            final Supplier<MailService> service,
+            final @Range(from = 0, to = Integer.MAX_VALUE) int priority
+    );
 
-    @NotNull
-    default MailFilter or(@NotNull MailFilter other) {
-        return message -> this.test(message) || other.test(message);
-    }
-
-    @NotNull
-    default MailFilter negate() {
-        return message -> !this.test(message);
-    }
 }
-

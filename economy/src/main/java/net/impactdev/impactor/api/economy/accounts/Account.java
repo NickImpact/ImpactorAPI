@@ -27,6 +27,7 @@ package net.impactdev.impactor.api.economy.accounts;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import kotlin.ReplaceWith;
+import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.economy.currency.Currency;
 import net.impactdev.impactor.api.economy.transactions.details.EconomyResultType;
 import net.impactdev.impactor.api.economy.transactions.EconomyTransaction;
@@ -94,17 +95,9 @@ public interface Account {
      * balance, you'll want to make use of the below methods to achieve this task.
      *
      * @return The current balance of this account.
-     * @deprecated This call might require data look up in the event an account cannot be cached
-     * by an implementation. As such, this method will attempt to await the async variant before
-     * computing a result.
-     * @see #balanceAsync()
      */
     @NotNull
-    @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
-    default BigDecimal balance() {
-        return this.balanceAsync().join();
-    }
+    BigDecimal balance();
 
     /**
      * Asynchronously fetches the current balance on an account. This method properly considers the possibility
@@ -112,9 +105,16 @@ public interface Account {
      *
      * @return A completable future which computes the balance of this account
      * @since 5.1.0
+     * @deprecated Early on, there were worries transactions would also need to be made async
+     * to better support external stores. To better serve the API and thread usage, this design
+     * is being deprecated in favor of retaining the original account access future.
      */
     @NotNull
-    CompletableFuture<BigDecimal> balanceAsync();
+    @Deprecated(forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
+    default CompletableFuture<BigDecimal> balanceAsync() {
+        return CompletableFuture.completedFuture(this.balance());
+    }
 
     /**
      * Sets this account's balance to the given amount specified. This value should conform
@@ -125,18 +125,10 @@ public interface Account {
      *
      * @param amount The amount to set the account's balance to
      * @return A transaction report indicating the result of the operation
-     * @deprecated This call might require data look up in the event an account cannot be cached
-     * by an implementation. As such, this method will attempt to await the async variant before
-     * computing a result. This is scheduled for removal with 6.0.0.
-     * @see #setAsync(BigDecimal)
      */
     @NotNull
     @CanIgnoreReturnValue
-    @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
-    default EconomyTransaction set(BigDecimal amount) {
-        return this.setAsync(amount).join();
-    }
+    EconomyTransaction set(BigDecimal amount);
 
     /**
      * Asynchronously sets this account's balance to the given amount specified. This value should conform
@@ -151,9 +143,16 @@ public interface Account {
      * @return A completable future which reports an {@link EconomyTransaction} describing the result
      * of the operation
      * @since 5.1.0
+     * @deprecated Early on, there were worries transactions would also need to be made async
+     * to better support external stores. To better serve the API and thread usage, this design
+     * is being deprecated in favor of retaining the original account access future.
      */
     @NotNull
-    CompletableFuture<@NotNull EconomyTransaction> setAsync(BigDecimal amount);
+    @Deprecated(forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
+    default CompletableFuture<@NotNull EconomyTransaction> setAsync(BigDecimal amount) {
+        return CompletableFuture.completedFuture(this.set(amount));
+    }
 
     /**
      * Withdraws from the account's balance by the specified amount. This value should
@@ -164,18 +163,10 @@ public interface Account {
      *
      * @param amount The amount to withdraw from the account
      * @return A transaction report indicating the result of the operation
-     * @deprecated This call might require data look up in the event an account cannot be cached
-     * by an implementation. As such, this method will attempt to await the async variant before
-     * computing a result. This is scheduled for removal with 6.0.0.
-     * @see #withdrawAsync(BigDecimal)
      */
     @NotNull
     @CanIgnoreReturnValue
-    @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
-    default EconomyTransaction withdraw(BigDecimal amount) {
-        return this.withdrawAsync(amount).join();
-    }
+    EconomyTransaction withdraw(BigDecimal amount);
 
     /**
      * Asynchronously withdraws from the account's balance by the specified amount. This value should
@@ -190,9 +181,16 @@ public interface Account {
      * @return A completable future which reports an {@link EconomyTransaction} describing the result
      * of the operation
      * @since 5.1.0
+     * @deprecated Early on, there were worries transactions would also need to be made async
+     * to better support external stores. To better serve the API and thread usage, this design
+     * is being deprecated in favor of retaining the original account access future.
      */
     @NotNull
-    CompletableFuture<@NotNull EconomyTransaction> withdrawAsync(BigDecimal amount);
+    @Deprecated(forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
+    default CompletableFuture<@NotNull EconomyTransaction> withdrawAsync(BigDecimal amount) {
+        return CompletableFuture.completedFuture(this.withdraw(amount));
+    }
 
     /**
      * Deposits the amount specified into the account. This value should conform to the
@@ -205,18 +203,10 @@ public interface Account {
      *
      * @param amount The amount to deposit into the account
      * @return A transaction report indicating the result of the operation
-     * @deprecated This call might require data look up in the event an account cannot be cached
-     * by an implementation. As such, this method will attempt to await the async variant before
-     * computing a result. This is scheduled for removal with 6.0.0.
-     * @see #depositAsync(BigDecimal)
      */
     @NotNull
     @CanIgnoreReturnValue
-    @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
-    default EconomyTransaction deposit(BigDecimal amount) {
-        return this.depositAsync(amount).join();
-    }
+    EconomyTransaction deposit(BigDecimal amount);
 
     /**
      * Asynchronously deposits the amount specified into the account. This value should conform to the
@@ -233,9 +223,16 @@ public interface Account {
      * @return A completable future which reports an {@link EconomyTransaction} describing the result
      * of the operation
      * @since 5.1.0
+     * @deprecated Early on, there were worries transactions would also need to be made async
+     * to better support external stores. To better serve the API and thread usage, this design
+     * is being deprecated in favor of retaining the original account access future.
      */
     @NotNull
-    CompletableFuture<@NotNull EconomyTransaction> depositAsync(BigDecimal amount);
+    @Deprecated(forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
+    default CompletableFuture<@NotNull EconomyTransaction> depositAsync(BigDecimal amount) {
+        return CompletableFuture.completedFuture(this.deposit(amount));
+    }
 
     /**
      * Performs a bank transfer of the specified amount from this account to the target
@@ -245,18 +242,10 @@ public interface Account {
      * @param to The account money is being transferred to
      * @param amount The amount to transfer
      * @return A transaction report indicating the result of the operation
-     * @deprecated This call might require data look up in the event an account cannot be cached
-     * by an implementation. As such, this method will attempt to await the async variant before
-     * computing a result. This is scheduled for removal with 6.0.0.
-     * @see #transferAsync(Account, BigDecimal)
      */
     @NotNull
     @CanIgnoreReturnValue
-    @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
-    default EconomyTransferTransaction transfer(Account to, BigDecimal amount) {
-        return this.transferAsync(to, amount).join();
-    }
+    EconomyTransferTransaction transfer(Account to, BigDecimal amount);
 
     /**
      * Asynchronously performs a bank transfer of the specified amount from this account to the target
@@ -269,27 +258,26 @@ public interface Account {
      * @return A completable future which reports an {@link EconomyTransferTransaction} describing the result
      * of the operation
      * @since 5.1.0
+     * @deprecated Early on, there were worries transactions would also need to be made async
+     * to better support external stores. To better serve the API and thread usage, this design
+     * is being deprecated in favor of retaining the original account access future.
      */
     @NotNull
-    CompletableFuture<@NotNull EconomyTransferTransaction> transferAsync(Account to, BigDecimal amount);
+    @Deprecated(forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
+    default CompletableFuture<@NotNull EconomyTransferTransaction> transferAsync(Account to, BigDecimal amount) {
+        return CompletableFuture.completedFuture(this.transfer(to, amount));
+    }
 
     /**
      * Resets an account's balance to the defined starting balance of the currency,
      * or a config's given override, if set.
      *
      * @return A transaction report indicating the result of the operation
-     * @deprecated This call might require data look up in the event an account cannot be cached
-     * by an implementation. As such, this method will attempt to await the async variant before
-     * computing a result. This is scheduled for removal with 6.0.0.
-     * @see #resetAsync()
      */
     @NotNull
     @CanIgnoreReturnValue
-    @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
-    default EconomyTransaction reset() {
-        return this.resetAsync().join();
-    }
+    EconomyTransaction reset();
 
     /**
      * Asynchronously resets an account's balance to the defined starting balance of the currency,
@@ -301,9 +289,26 @@ public interface Account {
      * @return A completable future which reports an {@link EconomyTransferTransaction} describing the result
      * of the operation
      * @since 5.1.0
+     * @deprecated Early on, there were worries transactions would also need to be made async
+     * to better support external stores. To better serve the API and thread usage, this design
+     * is being deprecated in favor of retaining the original account access future.
      */
     @NotNull
-    CompletableFuture<@NotNull EconomyTransaction> resetAsync();
+    @Deprecated(forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
+    default CompletableFuture<@NotNull EconomyTransaction> resetAsync() {
+        return CompletableFuture.completedFuture(this.reset());
+    }
+
+    /**
+     * Most implementations should not really make use of this,
+     *
+     * @return A builder for accounts
+     * @since 5.1.1
+     */
+    static AccountBuilder builder() {
+        return Impactor.instance().builders().provide(AccountBuilder.class);
+    }
 
     interface AccountBuilder extends Builder<Account> {
 

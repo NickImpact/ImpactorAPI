@@ -25,6 +25,7 @@
 
 package net.impactdev.impactor.api.economy.transactions.composer;
 
+import com.google.common.base.Suppliers;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import net.impactdev.impactor.api.economy.accounts.Account;
 import net.impactdev.impactor.api.economy.transactions.details.EconomyResultType;
@@ -39,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public interface TransactionComposer extends Builder<EconomyTransaction> {
 
@@ -87,7 +89,21 @@ public interface TransactionComposer extends Builder<EconomyTransaction> {
      */
     @Contract("_,_ -> this")
     @CanIgnoreReturnValue
-    TransactionComposer message(final @NotNull EconomyResultType type, final @NotNull Component message);
+    default TransactionComposer message(final @NotNull EconomyResultType type, final @NotNull Component message) {
+        return this.message(type, Suppliers.memoize(() -> message));
+    }
+
+    /**
+     * Binds a message to a particular result type. If a transaction completes with a binding in place, this
+     * method will supply the transaction with that particular message.
+     *
+     * @param type The result type to bind to
+     * @param message The message to set if the transaction completes with that result option
+     * @return This composer
+     */
+    @Contract("_,_ -> this")
+    @CanIgnoreReturnValue
+    TransactionComposer message(final @NotNull EconomyResultType type, final @NotNull Supplier<@NotNull Component> message);
 
     /**
      * Using the provided transaction details, executes the composed transaction against the economy service.
@@ -95,11 +111,7 @@ public interface TransactionComposer extends Builder<EconomyTransaction> {
      * @return The transaction response detailing how the transaction applied
      */
     @Override
-    @Deprecated
-    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
-    default EconomyTransaction build() {
-        return this.send().join();
-    }
+    EconomyTransaction build();
 
     /**
      * Using the provided transaction details, executes the composed transaction asynchronously against
@@ -108,6 +120,10 @@ public interface TransactionComposer extends Builder<EconomyTransaction> {
      * @return The transaction response detailing how the transaction applied
      */
     @NotNull
-    CompletableFuture<@NotNull EconomyTransaction> send();
+    @Deprecated(forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "6.0.0")
+    default CompletableFuture<@NotNull EconomyTransaction> send() {
+        return CompletableFuture.completedFuture(this.build());
+    }
 
 }

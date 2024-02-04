@@ -23,29 +23,20 @@
  *
  */
 
-package net.impactdev.impactor.api.mail.filters;
+package net.impactdev.impactor.api.mail.events;
 
+import net.impactdev.impactor.api.events.ImpactorEvent;
 import net.impactdev.impactor.api.mail.MailMessage;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Predicate;
+import java.time.Instant;
+import java.util.UUID;
 
-@FunctionalInterface
-public interface MailFilter extends Predicate<MailMessage> {
-
-    @NotNull
-    default MailFilter and(@NotNull MailFilter other) {
-        return message -> this.test(message) && other.test(message);
-    }
-
-    @NotNull
-    default MailFilter or(@NotNull MailFilter other) {
-        return message -> this.test(message) || other.test(message);
-    }
-
-    @NotNull
-    default MailFilter negate() {
-        return message -> !this.test(message);
-    }
-}
-
+/**
+ * Sent the moment a message is sent through the MailService. Implementations are expected to fire
+ * this event in both server sourced and player/entity sourced messages. Pretty much all metadata
+ * contained via the message will be contained within the message object itself.
+ *
+ * @param recipient The recipient of the message
+ * @param message The message itself, with complete source, {@link Instant}, and text data
+ */
+public record SendMailEvent(UUID recipient, MailMessage message) implements ImpactorEvent {}
