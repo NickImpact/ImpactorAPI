@@ -26,6 +26,7 @@
 package net.impactdev.impactor.api.economy;
 
 import com.google.common.collect.Multimap;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.services.Service;
 import net.impactdev.impactor.api.economy.accounts.Account;
@@ -175,5 +176,13 @@ public interface EconomyService extends Service {
      * @return A future useful for indicating task completion
      */
     CompletableFuture<Void> deleteAccount(Currency currency, UUID uuid);
+
+    /**
+     * Saves the given account.
+     *
+     * @param account The account to save
+     */
+    @CanIgnoreReturnValue
+    CompletableFuture<Void> save(Account account);
 
 }
