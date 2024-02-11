@@ -23,33 +23,20 @@
  *
  */
 
-package net.impactdev.impactor.api.storage.connection.configurate.loaders;
+package net.impactdev.impactor.api.mail.events;
 
-import net.impactdev.impactor.api.storage.connection.configurate.ConfigurateLoader;
-import net.impactdev.impactor.api.utility.serializers.InstantSerializer;
-import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.gson.GsonConfigurationLoader;
-import org.spongepowered.configurate.loader.ConfigurationLoader;
+import net.impactdev.impactor.api.events.ImpactorEvent;
+import net.impactdev.impactor.api.mail.MailMessage;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.Instant;
+import java.util.UUID;
 
-public class JsonLoader implements ConfigurateLoader {
-
-    @Override
-    public String name() {
-        return "JSON";
-    }
-
-    @Override
-    public ConfigurationLoader<? extends ConfigurationNode> loader(Path path) {
-        return GsonConfigurationLoader.builder()
-                .defaultOptions(opts -> opts.serializers(build -> build.register(Instant.class, new InstantSerializer())))
-                .indent(2)
-                .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
-                .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8))
-                .build();
-    }
-}
+/**
+ * Sent the moment a message is sent through the MailService. Implementations are expected to fire
+ * this event in both server sourced and player/entity sourced messages. Pretty much all metadata
+ * contained via the message will be contained within the message object itself.
+ *
+ * @param recipient The recipient of the message
+ * @param message The message itself, with complete source, {@link Instant}, and text data
+ */
+public record SendMailEvent(UUID recipient, MailMessage message) implements ImpactorEvent {}
