@@ -23,33 +23,29 @@
  *
  */
 
-package net.impactdev.impactor.api.storage.connection.configurate.loaders;
+package net.impactdev.impactor.api.mail.events;
 
-import net.impactdev.impactor.api.storage.connection.configurate.ConfigurateLoader;
-import net.impactdev.impactor.api.utility.serializers.InstantSerializer;
-import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.gson.GsonConfigurationLoader;
-import org.spongepowered.configurate.loader.ConfigurationLoader;
+import net.impactdev.impactor.api.events.ImpactorEvent;
+import net.impactdev.impactor.api.mail.MailService;
+import net.impactdev.impactor.api.platform.plugins.PluginMetadata;
+import org.jetbrains.annotations.Range;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.Instant;
+import java.util.function.Supplier;
 
-public class JsonLoader implements ConfigurateLoader {
+public interface SuggestMailServiceEvent extends ImpactorEvent {
 
-    @Override
-    public String name() {
-        return "JSON";
-    }
+    /**
+     * Suggests the given mail service that should act as the APIs implementation end-point.
+     * <strong>This should only ever be called once per listener!</strong>
+     *
+     * @param suggestor A set of metadata detailing who is supplying the service
+     * @param service A supplier used to create the service
+     * @param priority The priority of the service
+     */
+    void suggest(
+            final PluginMetadata suggestor,
+            final Supplier<MailService> service,
+            final @Range(from = 0, to = Integer.MAX_VALUE) int priority
+    );
 
-    @Override
-    public ConfigurationLoader<? extends ConfigurationNode> loader(Path path) {
-        return GsonConfigurationLoader.builder()
-                .defaultOptions(opts -> opts.serializers(build -> build.register(Instant.class, new InstantSerializer())))
-                .indent(2)
-                .source(() -> Files.newBufferedReader(path, StandardCharsets.UTF_8))
-                .sink(() -> Files.newBufferedWriter(path, StandardCharsets.UTF_8))
-                .build();
-    }
 }
