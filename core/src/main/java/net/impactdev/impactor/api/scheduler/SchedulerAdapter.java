@@ -56,6 +56,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * A scheduler for running tasks using the systems provided by the platform
  */
+@Deprecated(since = "5.2.0", forRemoval = true)
 public interface SchedulerAdapter {
 
     /**

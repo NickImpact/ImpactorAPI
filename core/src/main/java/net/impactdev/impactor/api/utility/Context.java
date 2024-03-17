@@ -48,8 +48,53 @@ public final class Context implements PrettyPrinter.IPrettyPrintable, Pointered 
         return new Context();
     }
 
-    public Context with(Context child) {
-        this.context.putAll(child.context);
+    /**
+     * Creates a new set of Context with the given type/value mapping.
+     *
+     * @param type A TypeToken describing the mapped type
+     * @param value The actual data we are storing to this context
+     * @return A new Context set
+     * @param <T> The type of data to be mapped against
+     * @since 5.2.0
+     */
+    public static <T> Context of(Class<T> type, T value) {
+        return new Context().append(type, value);
+    }
+
+    /**
+     * Creates a new set of Context with the given type/value mapping.
+     *
+     * @param type A TypeToken describing the mapped type
+     * @param value The actual data we are storing to this context
+     * @return A new Context set
+     * @param <T> The type of data to be mapped against
+     * @since 5.2.0
+     */
+    public static <T> Context of(TypeToken<T> type, T value) {
+        return new Context().append(type, value);
+    }
+
+    /**
+     * Creates a new set of Context with the given pointer/value mapping.
+     *
+     * @param pointer A pointer acting as the key to the given value
+     * @param value The actual data we are storing to this context
+     * @return A new Context set
+     * @param <T> The type of data to be mapped against
+     * @since 5.2.0
+     */
+    public static <T> Context of(Pointer<T> pointer, T value) {
+        return new Context().pointer(pointer, value);
+    }
+
+    /**
+     * Combines two sets of contexts together, merging their context maps as capable as possible.
+     *
+     * @param other The other context to merge into this context
+     * @return This context, with all accepted merges
+     */
+    public Context with(Context other) {
+        this.context.putAll(other.context);
         return this;
     }
 
