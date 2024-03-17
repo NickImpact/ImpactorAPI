@@ -23,16 +23,14 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display.resolvers;
+package net.impactdev.impactor.api.scoreboards.updaters;
 
-import net.impactdev.impactor.api.platform.sources.PlatformSource;
-import net.impactdev.impactor.api.scoreboards.display.formatters.DisplayFormatter;
-import net.impactdev.impactor.api.utility.Context;
-import net.kyori.adventure.text.Component;
+import net.impactdev.impactor.api.scoreboards.display.Display;
 
-@FunctionalInterface
-public interface ComponentProvider {
+public interface Updater {
 
-    Component parse(PlatformSource viewer, Context context);
+    void start(Display display);
+
+    void stop(Display display);
 
 }

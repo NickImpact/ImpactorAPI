@@ -23,40 +23,14 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display.resolvers.subscribing;
+package net.impactdev.impactor.api.scoreboards.lines;
 
-import net.impactdev.impactor.api.Impactor;
-import net.impactdev.impactor.api.events.ImpactorEvent;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.text.ScoreboardComponent;
-import net.kyori.event.EventSubscription;
-import org.jetbrains.annotations.Nullable;
+import net.impactdev.impactor.api.platform.players.PlatformPlayer;
+import net.impactdev.impactor.api.scoreboards.score.Score;
 
-import java.util.function.Predicate;
+@FunctionalInterface
+public interface LineTickConsumer {
 
-public interface SubscriptionConfiguration<T extends ImpactorEvent> extends ResolverConfiguration<SubscriptionResolver> {
-
-    Class<T> event();
-
-    @Nullable
-    Predicate<T> filter();
-
-    static Subscriber component(ScoreboardComponent component) {
-        return Impactor.instance().factories().provide(Component.class).component(component);
-    }
-
-    interface Component {
-
-        Subscriber component(ScoreboardComponent component);
-
-    }
-
-    interface Subscriber {
-
-        <T extends ImpactorEvent> SubscriptionConfiguration<T> listen(Class<T> event);
-
-        <T extends ImpactorEvent> SubscriptionConfiguration<T> listenAndFilter(Class<T> event, Predicate<T> filter);
-
-    }
+    void onScoreTick(PlatformPlayer viewer, Score.Mutable score);
 
 }

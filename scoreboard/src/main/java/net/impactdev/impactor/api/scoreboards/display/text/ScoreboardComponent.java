@@ -23,23 +23,42 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display.resolvers;
+package net.impactdev.impactor.api.scoreboards.display.text;
 
+import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.platform.sources.PlatformSource;
-import net.impactdev.impactor.api.scoreboards.display.Display;
-import net.impactdev.impactor.api.scoreboards.display.Displayable;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.text.ScoreboardComponent;
-import net.impactdev.impactor.api.utility.Context;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
+import org.jetbrains.annotations.Contract;
 
-public interface ComponentResolver {
+import java.util.List;
 
-    ScoreboardComponent component();
+public interface ScoreboardComponent {
 
-    Component resolve(PlatformSource viewer, Context context);
+    Component resolve(PlatformSource viewer);
 
-    void start(Display display);
+    @Contract(pure = true)
+    ScoreboardComponent append(ComponentElement element);
 
-    void shutdown(Display display);
+    @Contract(pure = true)
+    default ScoreboardComponent append(ComponentLike component) {
+        return this.append(ComponentElement.create(viewer -> component.asComponent()));
+    }
+
+    List<ComponentElement> elements();
+
+    static ScoreboardComponent create(ComponentElement root) {
+        return Impactor.instance().factories().provide(Factory.class).create(root);
+    }
+
+    static ScoreboardComponent create(ComponentLike component) {
+        return create(ComponentElement.create(viewer-> component.asComponent()));
+    }
+
+    interface Factory {
+
+        ScoreboardComponent create(ComponentElement root);
+
+    }
 
 }

@@ -29,11 +29,8 @@ import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.annotations.Minecraft;
 import net.impactdev.impactor.api.utility.Lockable;
 import net.impactdev.impactor.api.utility.builders.Builder;
-import net.kyori.adventure.text.Component;
-import net.kyori.examination.Examinable;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.IntBinaryOperator;
 import java.util.function.IntUnaryOperator;
 
 /**
@@ -53,6 +50,22 @@ import java.util.function.IntUnaryOperator;
  * proper sorting, where necessary.
  */
 public interface Score extends Lockable {
+
+    static Score of(int value) {
+        return of(value, null, false);
+    }
+
+    static Score of(int value, @Nullable ScoreFormatter formatter) {
+        return of(value, formatter, false);
+    }
+
+    static Score of(int value, boolean locked) {
+        return of(value, null, locked);
+    }
+
+    static Score of(int value, @Nullable ScoreFormatter formatter, boolean locked) {
+        return Score.builder().score(value).formatter(formatter).locked(locked).build();
+    }
 
     /**
      * Represents the actual score as an integer value. This is the default display criteria for a scoreboard
@@ -76,26 +89,35 @@ public interface Score extends Lockable {
     ScoreFormatter formatter();
 
     /**
-     * Updates the current score value using the internal value as the source input. This option allows for dynamic
-     * updates based on the current score. This logic can otherwise be repeated with {@link #set(int)}, but this
-     * option shorthands operations where setting the score requires a callback to {@link #value()}.
-     *
-     * <p>This call requires the score to be in an unlocked state for the score to apply.</p>
-     *
-     * @param operator The operator that will update the score
-     * @since 5.2.0
-     * @return <code>true</code> if the value was accepted, <code>false</code> otherwise
+     * Represents a version of a score that is meant for a viewed Scoreboard. This type of score allows
+     * its contents to be redefined, based on a locking variable. Individual scoreboard lines, when displayed,
+     * will have any score configuration cloned to this element.
      */
-    boolean update(IntUnaryOperator operator);
+    interface Mutable extends Score, Lockable.Mutable {
 
-    /**
-     * Sets the current score to the specified value. This call requires the score to be in an unlocked state
-     * for the score to apply.
-     *
-     * @param value The value to set the internal value of this score to
-     * @return <code>true</code> if the value was accepted, <code>false</code> otherwise
-     */
-    boolean set(int value);
+        /**
+         * Updates the current score value using the internal value as the source input. This option allows for dynamic
+         * updates based on the current score. This logic can otherwise be repeated with {@link #set(int)}, but this
+         * option shorthands operations where setting the score requires a callback to {@link #value()}.
+         *
+         * <p>This call requires the score to be in an unlocked state for the score to apply.</p>
+         *
+         * @param operator The operator that will update the score
+         * @since 5.2.0
+         * @return <code>true</code> if the value was accepted, <code>false</code> otherwise
+         */
+        boolean update(IntUnaryOperator operator);
+
+        /**
+         * Sets the current score to the specified value. This call requires the score to be in an unlocked state
+         * for the score to apply.
+         *
+         * @param value The value to set the internal value of this score to
+         * @return <code>true</code> if the value was accepted, <code>false</code> otherwise
+         */
+        boolean set(int value);
+
+    }
 
     static ScoreBuilder builder() {
         return Impactor.instance().builders().provide(ScoreBuilder.class);

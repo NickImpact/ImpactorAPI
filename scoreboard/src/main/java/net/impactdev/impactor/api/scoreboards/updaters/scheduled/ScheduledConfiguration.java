@@ -23,17 +23,48 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display;
+package net.impactdev.impactor.api.scoreboards.updaters.scheduled;
 
-import net.impactdev.impactor.api.scoreboards.display.text.ScoreboardComponent;
+import net.impactdev.impactor.api.scheduler.Ticks;
+import net.impactdev.impactor.api.scheduler.v2.Scheduler;
+import net.impactdev.impactor.api.scheduler.v2.Schedulers;
 import net.impactdev.impactor.api.scoreboards.updaters.UpdaterConfiguration;
-import org.jetbrains.annotations.Nullable;
+import net.kyori.adventure.key.Key;
 
-public interface Displayable {
+import java.util.concurrent.TimeUnit;
 
-    ScoreboardComponent component();
+public interface ScheduledConfiguration extends UpdaterConfiguration<ScheduledUpdater> {
 
-    @Nullable
-    UpdaterConfiguration<?> updater();
+    Scheduler scheduler();
+
+    interface ProvideScheduler {
+
+        default ConfigureTask scheduler(Key key) {
+            return this.scheduler(Schedulers.require(key));
+        }
+
+        ConfigureTask scheduler(Scheduler scheduler);
+
+    }
+
+    interface ConfigureTask {
+
+        default ScheduledConfiguration repeating(long interval, TimeUnit unit) {
+            return this.repeating(0, interval, unit);
+        }
+
+        ScheduledConfiguration repeating(long delay, long interval, TimeUnit unit);
+
+        default ScheduledConfiguration repeating(Ticks interval) {
+            return this.repeating(Ticks.zero(), interval);
+        }
+
+        ScheduledConfiguration repeating(Ticks delay, Ticks interval);
+
+        ScheduledConfiguration delayed(long delay, TimeUnit unit);
+
+        ScheduledConfiguration delayed(Ticks delay);
+
+    }
 
 }

@@ -34,24 +34,64 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * This class represents a scoreboard built from the global {@link Scoreboard} configuration, assigned to a particular
+ * player. Elements of the scoreboard would then update for this player alone, allowing for relative deserialization
+ *
+ */
 public interface AssignedScoreboard extends PointerCapable {
 
     static AssignedScoreboard create(final @NotNull Scoreboard parent, final @NotNull PlatformPlayer viewer) {
         return Impactor.instance().factories().provide(Factory.class).create(parent, viewer);
     }
 
+    /**
+     * Represents the scoreboard configuration used for this particular assigned scoreboard. This contains the definitions
+     * for each component of the scoreboard, such as the title (objective) and lines with their individual scores.
+     *
+     * @return The configurable scoreboard to be used for rendering the assigned scoreboard
+     */
     Scoreboard configuration();
 
+    /**
+     * The user assigned to this particular scoreboard, in which components would otherwise be relatively
+     * resolved around as necessary
+     *
+     * @return The viewer of this scoreboard
+     */
     PlatformPlayer viewer();
 
+    /**
+     * Represents the displayed version of the objective through the scoreboard configuration. This instance maintains
+     * the running tasks assigned to the configuration, and is responsible for updating elements to itself only.
+     *
+     * @return The displayed version of the configured objective
+     */
     Objective.Displayed objective();
 
+    /**
+     * Represents the list of displayed scoreboard lines built from the scoreboard configuration. Each instance
+     * maintains their running tasks assigned via the configuration, and is responsible for updating elements to
+     * itself only.
+     *
+     * @return The displayed version of the configured lines
+     */
     List<ScoreboardLine.Displayed> lines();
 
+    /**
+     * Opens the scoreboard to the target, if not open already.
+     */
     void open();
 
+    /**
+     * Hides the scoreboard from the target if not already visible.
+     */
     void hide();
 
+    /**
+     * Responsible for destroying all elements of the scoreboard when being cleaned up. In other words, this
+     * should tell each displayable to cancel its running tasks.
+     */
     void destroy();
 
     interface Factory {

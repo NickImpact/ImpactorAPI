@@ -23,13 +23,25 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display.resolvers.config;
+package net.impactdev.impactor.api.scoreboards.updaters.subscriber;
 
-import net.impactdev.impactor.api.scoreboards.display.resolvers.text.ScoreboardComponent;
-import net.impactdev.impactor.api.utility.builders.Builder;
+import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.events.ImpactorEvent;
+import net.impactdev.impactor.api.scoreboards.updaters.Updater;
+import net.kyori.event.EventSubscription;
 
-public interface ResolverBuilder<T, B extends Builder<T>> extends Builder<T> {
+import java.io.IOException;
+import java.util.function.Predicate;
 
-    B component(ScoreboardComponent component);
+public interface SubscriberUpdater extends Updater {
 
+    static <T extends ImpactorEvent> SubscriberConfiguration listen(Class<T> event) {
+        return Impactor.instance().factories().provide(SubscriberConfiguration.Factory.class).listen(event);
+    }
+
+    static <T extends ImpactorEvent> SubscriberConfiguration listenAndFilter(Class<T> event, Predicate<T> filter) {
+        return Impactor.instance().factories().provide(SubscriberConfiguration.Factory.class).listenAndFilter(event, filter);
+    }
+
+    EventSubscription subscription();
 }

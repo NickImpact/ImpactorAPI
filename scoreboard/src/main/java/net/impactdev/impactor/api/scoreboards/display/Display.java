@@ -25,15 +25,12 @@
 
 package net.impactdev.impactor.api.scoreboards.display;
 
-import net.impactdev.impactor.api.scoreboards.display.resolvers.ComponentResolver;
+import net.impactdev.impactor.api.scoreboards.updaters.Updatable;
+import net.impactdev.impactor.api.scoreboards.updaters.Updater;
 import net.impactdev.impactor.api.utility.pointers.PointerCapable;
 import net.kyori.adventure.text.Component;
 
-public interface Display extends PointerCapable {
-
-    ComponentResolver resolver();
-
-    void resolve();
+public interface Display extends PointerCapable, Updatable {
 
     Component text();
 

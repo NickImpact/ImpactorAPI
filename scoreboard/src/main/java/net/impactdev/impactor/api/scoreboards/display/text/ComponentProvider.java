@@ -23,35 +23,14 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display.resolvers.text;
+package net.impactdev.impactor.api.scoreboards.display.text;
 
-import net.impactdev.impactor.api.Impactor;
-import net.impactdev.impactor.api.scoreboards.display.formatters.DisplayFormatter;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.ComponentProvider;
-import org.jetbrains.annotations.Nullable;
+import net.impactdev.impactor.api.platform.sources.PlatformSource;
+import net.kyori.adventure.text.Component;
 
-public interface ComponentElement {
+@FunctionalInterface
+public interface ComponentProvider {
 
-    ComponentProvider provider();
-
-    DisplayFormatter formatter();
-
-    static ComponentElement create(ComponentProvider provider) {
-        return Impactor.instance().factories().provide(ElementFactory.class).element(provider);
-    }
-
-    static ComponentElement create(DisplayFormatter formatter, ComponentProvider provider) {
-        return Impactor.instance().factories().provide(ElementFactory.class).element(provider, formatter);
-    }
-
-    interface ElementFactory {
-
-        default ComponentElement element(ComponentProvider provider) {
-            return this.element(provider, null);
-        }
-
-        ComponentElement element(ComponentProvider provider, @Nullable DisplayFormatter formatter);
-
-    }
+    Component parse(PlatformSource viewer);
 
 }

@@ -23,47 +23,34 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display.resolvers;
+package net.impactdev.impactor.api.scoreboards.display.text;
 
-import net.impactdev.impactor.api.scoreboards.display.Display;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.text.ScoreboardComponent;
+import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.scoreboards.display.formatters.DisplayFormatter;
+import org.jetbrains.annotations.Nullable;
 
-public final class NoOpResolver extends AbstractComponentResolver implements ComponentResolver {
+public interface ComponentElement {
 
-    private NoOpResolver(ScoreboardComponent component) {
-        super(component);
+    ComponentProvider provider();
+
+    DisplayFormatter formatter();
+
+    static ComponentElement create(ComponentProvider provider) {
+        return Impactor.instance().factories().provide(ElementFactory.class).element(provider);
     }
 
-    @Override
-    public void start(Display display) {
-        display.resolve();
+    static ComponentElement create(DisplayFormatter formatter, ComponentProvider provider) {
+        return Impactor.instance().factories().provide(ElementFactory.class).element(provider, formatter);
     }
 
-    @Override
-    public void shutdown(Display display) {}
+    interface ElementFactory {
 
-    public static NoOpResolver.Config create(ScoreboardComponent component) {
-        return new Config(component);
-    }
-
-    public static final class Config implements ResolverConfiguration<NoOpResolver> {
-
-        private final ScoreboardComponent component;
-
-        private Config(ScoreboardComponent component) {
-            this.component = component;
+        default ComponentElement element(ComponentProvider provider) {
+            return this.element(provider, null);
         }
 
-        @Override
-        public ScoreboardComponent component() {
-            return this.component;
-        }
+        ComponentElement element(ComponentProvider provider, @Nullable DisplayFormatter formatter);
 
-        @Override
-        public NoOpResolver create() {
-            return new NoOpResolver(this.component);
-        }
     }
 
 }

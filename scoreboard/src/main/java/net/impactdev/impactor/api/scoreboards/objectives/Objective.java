@@ -29,13 +29,15 @@ import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.annotations.Minecraft;
 import net.impactdev.impactor.api.scoreboards.display.Display;
 import net.impactdev.impactor.api.scoreboards.display.Displayable;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
+import net.impactdev.impactor.api.scoreboards.display.text.ScoreboardComponent;
 import net.impactdev.impactor.api.scoreboards.score.ScoreFormatter;
+import net.impactdev.impactor.api.scoreboards.updaters.UpdaterConfiguration;
 import net.impactdev.impactor.api.utility.builders.Builder;
-import net.kyori.examination.Examinable;
 import org.jetbrains.annotations.Nullable;
 
 public interface Objective extends Displayable {
+
+    ScoreboardComponent text();
 
     /**
      * Represents a parent formatter that will be used to decorate scores for any score, within the objective,
@@ -56,10 +58,12 @@ public interface Objective extends Displayable {
 
     interface ObjectiveBuilder extends Builder<Objective> {
 
-        ObjectiveBuilder resolver(ResolverConfiguration<?> configuration);
+        ObjectiveBuilder text(ScoreboardComponent component);
 
         @Minecraft("1.20.3")
         ObjectiveBuilder formatter(ScoreFormatter formatter);
+
+        ObjectiveBuilder updater(UpdaterConfiguration<?> config);
 
     }
 

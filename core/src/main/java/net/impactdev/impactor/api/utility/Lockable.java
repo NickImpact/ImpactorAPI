@@ -35,18 +35,20 @@ public interface Lockable {
      */
     boolean locked();
 
-    /**
-     * Locks the inheriting object from receiving updates.
-     *
-     * @since 5.2.0
-     */
-    void lock();
+    interface Mutable {
+        /**
+         * Locks the inheriting object from receiving updates.
+         *
+         * @since 5.2.0
+         */
+        void lock();
 
-    /**
-     * Unlocks the inheriting object, allowing any update requests to apply.
-     *
-     * @since 5.2.0
-     */
-    void unlock();
+        /**
+         * Unlocks the inheriting object, allowing any update requests to apply.
+         *
+         * @since 5.2.0
+         */
+        void unlock();
+    }
 
 }

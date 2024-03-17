@@ -28,35 +28,25 @@ package net.impactdev.impactor.api.scoreboards.lines;
 import net.impactdev.impactor.api.Impactor;
 import net.impactdev.impactor.api.scoreboards.display.Display;
 import net.impactdev.impactor.api.scoreboards.display.Displayable;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.config.ResolverConfiguration;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.subscribing.SubscriptionConfiguration;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.scheduled.ScheduledResolverConfiguration;
 import net.impactdev.impactor.api.scoreboards.score.Score;
-import net.impactdev.impactor.api.utility.builders.Builder;
+import net.impactdev.impactor.api.scoreboards.updaters.Updatable;
 import net.kyori.examination.Examinable;
 import org.jetbrains.annotations.NotNull;
 
 public interface ScoreboardLine extends Displayable, Examinable {
 
+    static ScoreboardLineBuilder builder() {
+        return Impactor.instance().builders().provide(ScoreboardLineBuilder.class);
+    }
+
     @NotNull
     Score score();
 
-    static LineBuilder builder() {
-        return Impactor.instance().builders().provide(LineBuilder.class);
-    }
-
-    interface LineBuilder extends Builder<ScoreboardLine> {
-
-        LineBuilder resolver(ResolverConfiguration<?> resolver);
-
-        LineBuilder score(Score score);
-
-    }
-
-    interface Displayed extends Display {
+    interface Displayed extends Display, Updatable {
 
         ScoreboardLine delegate();
 
-    }
+        Score.Mutable score();
 
+    }
 }

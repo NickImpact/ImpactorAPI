@@ -23,18 +23,12 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards;
+package net.impactdev.impactor.api.scoreboards.updaters;
 
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.pointer.Pointer;
+public interface Updatable {
 
-public final class ScoreboardPointers {
+    Updater updater();
 
-    public static final Pointer<Scoreboard> CONFIGURATION = create(Scoreboard.class, Key.key("impactor", "scoreboard"));
-    public static final Pointer<AssignedScoreboard> ASSIGNED = create(AssignedScoreboard.class, Key.key("impactor", "assigned-scoreboard"));
-
-    private static <T> Pointer<T> create(Class<T> type, Key key) {
-        return Pointer.pointer(type, key);
-    }
+    void tick();
 
 }

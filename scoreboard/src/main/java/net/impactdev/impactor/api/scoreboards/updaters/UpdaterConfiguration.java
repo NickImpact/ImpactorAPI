@@ -23,13 +23,10 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display.resolvers.config;
+package net.impactdev.impactor.api.scoreboards.updaters;
 
-import net.impactdev.impactor.api.utility.builders.Builder;
+public interface UpdaterConfiguration<T extends Updater> {
 
-@FunctionalInterface
-public interface ConfigurationSupplier<T, B extends Builder<T>> {
-
-    T create(B builder);
+    T generate();
 
 }

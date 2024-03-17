@@ -23,13 +23,24 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display.resolvers.subscribing;
+package net.impactdev.impactor.api.scoreboards.lines;
 
-import net.impactdev.impactor.api.scoreboards.display.resolvers.ComponentResolver;
-import net.kyori.event.EventSubscription;
+import net.impactdev.impactor.api.scoreboards.display.text.ScoreboardComponent;
+import net.impactdev.impactor.api.scoreboards.score.Score;
+import net.impactdev.impactor.api.scoreboards.updaters.UpdaterConfiguration;
+import net.impactdev.impactor.api.utility.builders.Builder;
 
-public interface SubscriptionResolver extends ComponentResolver {
+public interface ScoreboardLineBuilder extends Builder<ScoreboardLine> {
 
-    EventSubscription subscription();
+    ScoreboardLineBuilder text(ScoreboardComponent component);
 
+    default ScoreboardLineBuilder score(int value) {
+        return this.score(Score.of(value));
+    }
+
+    ScoreboardLineBuilder score(Score score);
+
+    ScoreboardLineBuilder updater(UpdaterConfiguration<?> config);
+
+    ScoreboardLineBuilder onTickLine(LineTickConsumer resolver);
 }

@@ -23,43 +23,19 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display.resolvers.text;
+package net.impactdev.impactor.api.scoreboards.updaters.subscriber;
 
-import net.impactdev.impactor.api.Impactor;
-import net.impactdev.impactor.api.platform.sources.PlatformSource;
-import net.impactdev.impactor.api.utility.Context;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentLike;
-import org.jetbrains.annotations.Contract;
+import net.impactdev.impactor.api.events.ImpactorEvent;
+import net.impactdev.impactor.api.scoreboards.updaters.UpdaterConfiguration;
 
-import java.util.List;
+import java.util.function.Predicate;
 
-public interface ScoreboardComponent {
-
-    Component resolve(PlatformSource viewer, Context context);
-
-    @Contract(pure = true)
-    ScoreboardComponent append(ComponentElement element);
-
-    @Contract(pure = true)
-    default ScoreboardComponent append(ComponentLike component) {
-        return this.append(ComponentElement.create((viewer, context) -> component.asComponent()));
-    }
-
-    List<ComponentElement> elements();
-
-    static ScoreboardComponent create(ComponentElement root) {
-        return Impactor.instance().factories().provide(Factory.class).create(root);
-    }
-
-    static ScoreboardComponent create(ComponentLike component) {
-        return create(ComponentElement.create((viewer, context) -> component.asComponent()));
-    }
+public interface SubscriberConfiguration extends UpdaterConfiguration<SubscriberUpdater> {
 
     interface Factory {
+        <T extends ImpactorEvent> SubscriberConfiguration listen(Class<T> event);
 
-        ScoreboardComponent create(ComponentElement root);
-
+        <T extends ImpactorEvent> SubscriberConfiguration listenAndFilter(Class<T> event, Predicate<T> filter);
     }
 
 }

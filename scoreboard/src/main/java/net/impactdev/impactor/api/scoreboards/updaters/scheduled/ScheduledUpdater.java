@@ -23,26 +23,26 @@
  *
  */
 
-package net.impactdev.impactor.api.scoreboards.display.resolvers.config;
+package net.impactdev.impactor.api.scoreboards.updaters.scheduled;
 
-import net.impactdev.impactor.api.scoreboards.display.resolvers.ComponentResolver;
-import net.impactdev.impactor.api.scoreboards.display.resolvers.text.ScoreboardComponent;
-import org.jetbrains.annotations.ApiStatus;
+import net.impactdev.impactor.api.Impactor;
+import net.impactdev.impactor.api.scheduler.SchedulerTask;
+import net.impactdev.impactor.api.scheduler.v2.Scheduler;
+import net.impactdev.impactor.api.scoreboards.updaters.Updater;
+import net.kyori.adventure.key.Key;
 
-@ApiStatus.AvailableSince("5.2.0")
-public interface ResolverConfiguration<R extends ComponentResolver> {
+import java.io.IOException;
 
-    /**
-     *
-     * @return
-     */
-    ScoreboardComponent component();
+public interface ScheduledUpdater extends Updater {
 
-    /**
-     * Creates a resolver using this given configuration. Each call should create a new unique entry, where applicable,
-     * such that
-     *
-     * @return A new resolver based on this configuration.
-     */
-    R create();
+    static ScheduledConfiguration.ConfigureTask scheduler(Key key) {
+        return Impactor.instance().factories().provide(ScheduledConfiguration.ProvideScheduler.class).scheduler(key);
+    }
+
+    static ScheduledConfiguration.ConfigureTask scheduler(Scheduler scheduler) {
+        return Impactor.instance().factories().provide(ScheduledConfiguration.ProvideScheduler.class).scheduler(scheduler);
+    }
+
+    SchedulerTask task();
+
 }
