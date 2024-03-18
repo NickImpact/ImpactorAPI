@@ -34,6 +34,7 @@ import net.impactdev.impactor.api.utility.builders.Builder;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.util.TriState;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -85,7 +86,7 @@ public interface Currency {
      *
      * @return An enum value indicating symbol placement
      */
-    SymbolFormatting formatting();
+    CurrencyFormatting formatting();
 
     /**
      * The amount of money an account using this balance should start with, whether the
@@ -197,30 +198,7 @@ public interface Currency {
         return Impactor.instance().builders().provide(CurrencyBuilder.class);
     }
 
-    enum SymbolFormatting {
-        BEFORE((currency, in) -> currency.symbol().append(in)),
-        AFTER((currency, in) -> in.append(currency.symbol()));
-
-        private final BiFunction<Currency, Component, Component> modifier;
-
-        SymbolFormatting(BiFunction<Currency, Component, Component> modifier) {
-            this.modifier = modifier;
-        }
-
-        public static SymbolFormatting fromIdentifier(final @NotNull String identifier) {
-            for(SymbolFormatting type : values()) {
-                if(identifier.equalsIgnoreCase(type.name())) {
-                    return type;
-                }
-            }
-
-            throw new IllegalArgumentException("Invalid formatting spec");
-        }
-
-        public Component modify(Currency currency, Component in) {
-            return this.modifier.apply(currency, in);
-        }
-    }
+    record CurrencyFormatting(String condensed, String expanded) {}
 
     interface CurrencyBuilder extends Builder<Currency> {
 
@@ -242,7 +220,7 @@ public interface Currency {
 
         @CanIgnoreReturnValue
         @Contract("_ -> this")
-        CurrencyBuilder formatting(final @NotNull SymbolFormatting format);
+        CurrencyBuilder formatting(final @NotNull CurrencyFormatting format);
 
         @CanIgnoreReturnValue
         @Contract("_ -> this")
