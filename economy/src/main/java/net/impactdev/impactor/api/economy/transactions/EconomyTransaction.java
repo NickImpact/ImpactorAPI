@@ -33,9 +33,12 @@ import net.impactdev.impactor.api.economy.transactions.details.EconomyResultType
 import net.impactdev.impactor.api.economy.transactions.details.EconomyTransactionType;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.function.Supplier;
 
 public interface EconomyTransaction {
@@ -112,6 +115,18 @@ public interface EconomyTransaction {
      * @return A component indicating a human-readable result status, or null if not bound
      */
     @Nullable Supplier<Component> message();
+
+    /**
+     * Specifies when this particular transaction took place, down to the instant it was applied. This is
+     * meant to help systems decipher transactions from multiple sources at once, ensuring transaction history
+     * is managed accordingly and can't possibly run into race conditions where transactions are applied or synced
+     * out of order.
+     *
+     * @return The timestamp at which this transaction completed
+     */
+    @NotNull
+    @ApiStatus.AvailableSince("5.2.0")
+    Instant timestamp();
 
     /**
      * If a message representing the transaction's result status is bound and populated, this will inform
