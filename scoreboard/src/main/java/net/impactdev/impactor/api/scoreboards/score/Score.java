@@ -83,9 +83,13 @@ public interface Score extends Lockable {
      *
      * @return The formatter responsible for formatting the integer value representing this score
      * @since 5.2.0
+     * @deprecated Upon updating to 1.21.1, it seems Mojang implemented a hard codec requirement
+     * on this parser, disallowing custom formatters outside the built-in designs. If this line of
+     * thinking is wrong, this deprecation will be dropped.
      */
     @Nullable
     @Minecraft("1.20.3")
+    @Deprecated(since = "5.3.0", forRemoval = true)
     ScoreFormatter formatter();
 
     /**

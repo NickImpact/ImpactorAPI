@@ -7,14 +7,14 @@ dependencies {
     api("net.impactdev:json:1.0.0")
 
     // Adventure
-    api("net.kyori:adventure-api:4.14.0")
-    api("net.kyori:adventure-nbt:4.14.0")
-    api("net.kyori:adventure-text-serializer-plain:4.14.0")
-    api("net.kyori:adventure-text-serializer-legacy:4.14.0")
-    api("net.kyori:adventure-text-serializer-gson:4.14.0")
-    api("net.kyori:adventure-text-minimessage:4.14.0")
-    api("net.kyori:adventure-text-logger-slf4j:4.14.0")
-    api("net.kyori:adventure-platform-api:4.3.0")
+    api("net.kyori:adventure-api:4.17.0")
+    api("net.kyori:adventure-nbt:4.17.0")
+    api("net.kyori:adventure-text-serializer-plain:4.17.0")
+    api("net.kyori:adventure-text-serializer-legacy:4.17.0")
+    api("net.kyori:adventure-text-serializer-gson:4.17.0")
+    api("net.kyori:adventure-text-minimessage:4.17.0")
+    api("net.kyori:adventure-text-logger-slf4j:4.17.0")
+    api("net.kyori:adventure-platform-api:4.3.4")
 
     // Google
     api("com.google.guava:guava:32.0.0-jre")

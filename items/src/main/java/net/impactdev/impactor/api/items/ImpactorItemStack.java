@@ -134,7 +134,10 @@ public interface ImpactorItemStack {
      * indicate such.
      *
      * @return An immutable set of flags applied to the item
+     * @deprecated With the inclusion of data components, this flag is effectively only valid
+     * on versions from 1.20.4 and lower.
      */
+    @Deprecated(since = "5.3.0", forRemoval = true)
     Set<MetaFlag> flags();
 
     /**

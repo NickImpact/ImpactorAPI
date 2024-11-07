@@ -58,7 +58,7 @@ public interface PerformanceMonitor {
      *
      * @return The average tick duration for the last minute
      */
-    double averageTickDuration();
+    double impactor$averageTickDuration();
 
     /**
      * Provides memory usage statistics for the platform runtime environment. This includes the currently
