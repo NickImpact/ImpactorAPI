@@ -31,8 +31,18 @@ import net.impactdev.impactor.api.platform.plugins.PluginMetadata;
 
 public interface EstablishEconomyServiceEvent extends ImpactorEvent {
 
+    /**
+     * The plugin details which provided the service.
+     *
+     * @return The providing plugin details
+     */
     PluginMetadata source();
 
+    /**
+     * The target economy service which was chosen by the API.
+     *
+     * @return The running economy service
+     */
     EconomyService service();
 
 }
