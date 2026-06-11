@@ -27,7 +27,6 @@ package net.impactdev.impactor.api.mail;
 
 import net.impactdev.impactor.api.Impactor;
 import net.kyori.adventure.text.Component;
-import net.kyori.examination.Examinable;
 
 import java.time.Instant;
 import java.util.Optional;
