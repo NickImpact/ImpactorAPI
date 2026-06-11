@@ -7,14 +7,16 @@ dependencies {
     api("net.impactdev:json:1.0.0")
 
     // Adventure
-    api("net.kyori:adventure-api:4.17.0")
-    api("net.kyori:adventure-nbt:4.17.0")
-    api("net.kyori:adventure-text-serializer-plain:4.17.0")
-    api("net.kyori:adventure-text-serializer-legacy:4.17.0")
-    api("net.kyori:adventure-text-serializer-gson:4.17.0")
-    api("net.kyori:adventure-text-minimessage:4.17.0")
-    api("net.kyori:adventure-text-logger-slf4j:4.17.0")
-    api("net.kyori:adventure-platform-api:4.3.4")
+    api("net.kyori:examination-api:1.3.0")
+    api("net.kyori:examination-string:1.3.0")
+    api("net.kyori:adventure-api:4.26.1")
+    api("net.kyori:adventure-nbt:4.26.1")
+    api("net.kyori:adventure-text-serializer-plain:4.26.1")
+    api("net.kyori:adventure-text-serializer-legacy:4.26.1")
+    api("net.kyori:adventure-text-serializer-gson:4.26.1")
+    api("net.kyori:adventure-text-minimessage:4.26.1")
+    api("net.kyori:adventure-text-logger-slf4j:4.26.1")
+    api("net.kyori:adventure-platform-api:4.4.1")
 
     // Google
     api("com.google.guava:guava:32.0.0-jre")
@@ -22,7 +24,7 @@ dependencies {
     api("com.google.code.gson:gson:2.10.1")
 
     // Kyori Events
-    api("net.kyori:event-api:5.0.0-SNAPSHOT")
+    api("com.github.KyoriPowered.event:event-api:master-SNAPSHOT")
 
     // Configurate
     api("org.spongepowered:configurate-core:4.1.2")
@@ -45,6 +47,7 @@ dependencies {
 
     testImplementation("net.kyori:adventure-text-serializer-ansi:4.14.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 
     testImplementation("org.mockito:mockito-core:5.2.0")
